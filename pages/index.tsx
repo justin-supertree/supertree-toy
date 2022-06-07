@@ -14,6 +14,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1>Welcome to Justin Toy project</h1>
+        <div>test commit 2</div>
       </main>
 
       <footer></footer>
