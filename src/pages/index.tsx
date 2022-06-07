@@ -16,6 +16,7 @@ const IndexPage: NextPage = () => {
     <>
       <Container>
         <Header />
+
         <MainLayout>Here is Main body</MainLayout>
 
         <Footer />

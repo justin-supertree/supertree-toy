@@ -7,7 +7,9 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 50rem;
+  margin-top: 8rem;
   border: 1px solid;
+  z-index: 0;
 `;
 
 type Props = {

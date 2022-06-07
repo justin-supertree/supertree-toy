@@ -1,12 +1,15 @@
-import React from 'react';
 import styled from '@emotion/styled';
 
 const Container = styled.div`
+  position: fixed;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 15rem;
+  top: 0;
+  width: 100%;
+  min-height: 8rem;
   background-color: lightgreen;
+  z-index: 1;
 `;
 
 const Header = () => {
