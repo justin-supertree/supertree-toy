@@ -16,7 +16,9 @@
     "incremental": true,
     "paths": {
       "@/components/*": ["./components/*"],
+      "@/contexts/*": ["./contexts/*"]
     },
+    "jsxImportSource": "@emotion/react"
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
