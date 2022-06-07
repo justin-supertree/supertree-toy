@@ -2,8 +2,11 @@ import type { NextPage } from 'next';
 
 import styled from '@emotion/styled';
 
+import Header from '../components/Layout/Header';
+import MainLayout from '../components/Layout/MainLayout';
+import Footer from '../components/Layout/Footer';
+
 const Container = styled.div`
-  border: 1px solid;
   width: auto;
   text-align: center;
 `;
@@ -12,14 +15,10 @@ const IndexPage: NextPage = () => {
   return (
     <>
       <Container>
-        <div>
-          <h1>Welcome to Justin Toy projecasdadsadt</h1>
-          <div>Here is Main body</div>
-        </div>
+        <Header />
+        <MainLayout>Here is Main body</MainLayout>
 
-        <div>
-          <h1>Here is footer Area</h1>
-        </div>
+        <Footer />
       </Container>
     </>
   );
