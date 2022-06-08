@@ -288,11 +288,6 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@playdapp/ui@^2.0.0-alpha.12":
-  version "2.0.0-alpha.12"
-  resolved "https://registry.yarnpkg.com/@playdapp/ui/-/ui-2.0.0-alpha.12.tgz#19dfee5f3de9fab222f9c5bd8df76995f631b8cc"
-  integrity sha512-3aUVdve1dODAD/bKAeRWYhEalJ9LlpnOtAmLv+AprdeYXV53fN/yDZOjTZyFh44Pv05JDAaouNHk5UupwvNsEw==
-
 "@reduxjs/toolkit@^1.8.2":
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.8.2.tgz#352fd17bc858af51d21ce8d28183a930cab9e638"

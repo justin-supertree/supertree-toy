@@ -3,12 +3,13 @@ import type { NextPage } from 'next';
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Header from '@/components/Layout/Header';
 import MainLayout from '@/components/Layout/MainLayout';
 import Table from '@/components/Table';
 import Footer from '@/components/Layout/Footer';
-import Counter from '@/components/Counter';
+import Counter from 'pages/counter/Counter';
 import NewCounter from '@/components/NewCounter';
 import User from '@/components/User';
 
@@ -83,13 +84,17 @@ const IndexPage: NextPage = () => {
               <input onChange={handleInput(title)} />
             </InsertItem> */}
 
-            <BrowserRouter>
+            {/* <Counter />
+            <NewCounter /> */}
+            <User />
+
+            {/* <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Counter />} />
                 <Route path="/counter" element={<NewCounter />} />
                 <Route path="/user" element={<User />} />
               </Routes>
-            </BrowserRouter>
+            </BrowserRouter> */}
 
             {/* <InsertButton type="submit">Add Info</InsertButton> */}
           </InsertArea>

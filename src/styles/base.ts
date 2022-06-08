@@ -1,5 +1,4 @@
 import { css } from '@emotion/react';
-import { palette } from '@playdapp/ui';
 
 const base = css`
   html,
@@ -23,11 +22,9 @@ const base = css`
   }
 
   #nprogress .bar {
-    background-color: ${palette.primary600};
     height: 3px;
   }
   #nprogress .peg {
-    box-shadow: 0 0 10px ${palette.primary600}, 0 0 5px ${palette.primary600};
   }
 `;
 
