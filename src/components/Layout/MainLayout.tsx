@@ -6,7 +6,8 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 50rem;
+  min-height: 70rem;
+  height: 100%;
   margin-top: 8rem;
   border: 1px solid;
   z-index: 0;

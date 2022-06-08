@@ -13,7 +13,11 @@ const Container = styled.div`
 `;
 
 const Header = () => {
-  return <Container>Here is Header Area</Container>;
+  return (
+    <Container>
+      <h1>Header Area</h1>
+    </Container>
+  );
 };
 
 export default Header;
