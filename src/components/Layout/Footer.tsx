@@ -6,7 +6,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-height: 20rem;
+  max-height: 10rem;
   height: 100%;
   background-color: yellow;
 `;

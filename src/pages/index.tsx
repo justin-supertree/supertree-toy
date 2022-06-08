@@ -2,7 +2,6 @@ import type { NextPage } from 'next';
 
 import { useState } from 'react';
 import styled from '@emotion/styled';
-// import { breakpoints, palette, spacing, fontSize } from '@playdapp/ui';
 
 import Header from '@/components/Layout/Header';
 import MainLayout from '@/components/Layout/MainLayout';
@@ -34,22 +33,23 @@ const InsertItem = styled(FlexMixin)`
   text-align: left;
 `;
 
+const InsertButton = styled.button`
+  height: 3rem;
+  font-weight: 600;
+  font-size: 25px;
+  border-radius: 14px;
+`;
+
 const IndexPage: NextPage = () => {
   const [title, setTitle] = useState('');
   const [nftcode, setNftcode] = useState('');
 
   const handleNftCode = (nftcode: string) => () => {
-    console.log('nftcode values', nftcode);
     setNftcode(nftcode);
   };
 
   const handleInput = (title: string) => () => {
-    console.log('title values', title);
     setTitle(title);
-  };
-
-  const handleSubmite = () => {
-    console.log('Submit datas');
   };
 
   return (
@@ -68,9 +68,18 @@ const IndexPage: NextPage = () => {
               <h3>title :</h3>
               <input onChange={handleInput(title)} />
             </InsertItem>
-            <button type="button" onClick={handleSubmite}>
-              button
-            </button>
+
+            <InsertItem>
+              <h3>Demo :</h3>
+              <input onChange={handleNftCode(nftcode)} />
+            </InsertItem>
+
+            <InsertItem>
+              <h3>example :</h3>
+              <input onChange={handleInput(title)} />
+            </InsertItem>
+
+            <InsertButton type="submit">Add Info</InsertButton>
           </InsertArea>
 
           <Table title="main-table" headers={['one', 'two', 'three', 'four']}>
