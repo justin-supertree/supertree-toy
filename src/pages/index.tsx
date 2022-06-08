@@ -2,11 +2,15 @@ import type { NextPage } from 'next';
 
 import { useState } from 'react';
 import styled from '@emotion/styled';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Header from '@/components/Layout/Header';
 import MainLayout from '@/components/Layout/MainLayout';
 import Table from '@/components/Table';
 import Footer from '@/components/Layout/Footer';
+import Counter from '@/components/Counter';
+import NewCounter from '@/components/NewCounter';
+import User from '@/components/User';
 
 const FlexMixin = styled.div`
   display: flex;
@@ -59,7 +63,7 @@ const IndexPage: NextPage = () => {
 
         <MainLayout>
           <InsertArea>
-            <InsertItem>
+            {/* <InsertItem>
               <h3>NFT Code :</h3>
               <input onChange={handleNftCode(nftcode)} />
             </InsertItem>
@@ -77,9 +81,17 @@ const IndexPage: NextPage = () => {
             <InsertItem>
               <h3>example :</h3>
               <input onChange={handleInput(title)} />
-            </InsertItem>
+            </InsertItem> */}
 
-            <InsertButton type="submit">Add Info</InsertButton>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Counter />} />
+                <Route path="/counter" element={<NewCounter />} />
+                <Route path="/user" element={<User />} />
+              </Routes>
+            </BrowserRouter>
+
+            {/* <InsertButton type="submit">Add Info</InsertButton> */}
           </InsertArea>
 
           <Table title="main-table" headers={['one', 'two', 'three', 'four']}>
