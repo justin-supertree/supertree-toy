@@ -9,7 +9,7 @@ import Header from '@/components/Layout/Header';
 import MainLayout from '@/components/Layout/MainLayout';
 import Table from '@/components/Table';
 import Footer from '@/components/Layout/Footer';
-import Counter from 'pages/counter/Counter';
+import Counter from '@/components/Counter';
 import NewCounter from '@/components/NewCounter';
 import User from '@/components/User';
 

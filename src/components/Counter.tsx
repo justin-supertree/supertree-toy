@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { increament, decreament } from 'store/counter';
 import { useAppDispatch, useAppSelector } from 'store/hook';
-import User from '../../components/User';
+import User from './User';
 
 const Counter = () => {
   const { count } = useAppSelector(({ counter }) => counter);
