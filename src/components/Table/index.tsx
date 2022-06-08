@@ -22,20 +22,16 @@ const TableHeader = styled.div`
   border: 1px solid;
 `;
 
-const TableTitle = styled.div`
+const TableTitle = styled.p`
   display: flex;
   align-items: center;
   text-align: center;
   width: 100%;
-
-  /* &:first-of-type {
-  }
-  &:nth-of-type(2) {
-  }
-  &:nth-of-type(3) {
-  }
-  &:nth-of-type(4) {
-  } */
+  font-size: 25px;
+  font-weight: 500;
+  margin: 0;
+  padding: 10px 0 10px 15px;
+  text-transform: capitalize;
 `;
 
 const TableBody = styled.div`

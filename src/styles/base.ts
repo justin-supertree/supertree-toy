@@ -5,7 +5,7 @@ const base = css`
   html,
   body,
   #__next {
-    height: 100%;
+    /* height: 100%; */
     padding: 0;
     margin: 0;
     font-family: hero-new, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,

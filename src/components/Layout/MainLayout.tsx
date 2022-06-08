@@ -3,12 +3,10 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 70rem;
+  min-height: 50rem;
   height: 100%;
   margin-top: 8rem;
+  padding: 5rem 0;
   border: 1px solid;
   z-index: 0;
 `;
