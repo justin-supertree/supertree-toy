@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.2.1",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@playdapp/ui": "^2.0.0-alpha.12",
     "@reduxjs/toolkit": "^1.8.2",
     "axios": "^0.27.2",
     "lodash": "^4.17.21",
