@@ -1,29 +1,19 @@
 import type { AppProps } from 'next/app';
 import { Global } from '@emotion/react';
-// import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
-import styles from '../styles';
 import { Provider } from 'react-redux';
-import { store } from '../store';
+import { ChakraProvider } from '@chakra-ui/react';
 
-// import Counter from '@/components/Counter';
-// import NewCounter from '@/components/NewCounter';
-// import User from '@/components/User';
+import { store } from '../store';
+import styles from '../styles';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Provider store={store}>
         <Global styles={styles} />
-        <Component {...pageProps} />
-
-        {/* <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Counter />} />
-            <Route path="/counter" element={<NewCounter />} />
-            <Route path="/user" element={<User />} />
-          </Routes>
-        </BrowserRouter> */}
+        <ChakraProvider>
+          <Component {...pageProps} />
+        </ChakraProvider>
       </Provider>
     </>
   );
