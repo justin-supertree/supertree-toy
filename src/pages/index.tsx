@@ -2,31 +2,26 @@ import type { NextPage } from 'next';
 
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 
 import Header from '@/components/Layout/Header';
 import MainLayout from '@/components/Layout/MainLayout';
 import Table from '@/components/Table';
 import Footer from '@/components/Layout/Footer';
-import Counter from '@/components/Counter';
-import NewCounter from '@/components/NewCounter';
 import User from '@/components/User';
 
 const FlexMixin = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 `;
 
 const Container = styled.div`
   width: auto;
-  text-align: center;
 `;
 
 const InsertArea = styled.div`
   width: 50%;
-  padding: 5rem 0;
+  padding: 5rem 2rem;
   margin: auto;
   margin-bottom: 5rem;
   border-radius: 24px;
@@ -34,8 +29,9 @@ const InsertArea = styled.div`
 `;
 
 const InsertItem = styled(FlexMixin)`
-  margin-right: 15px;
+  margin-bottom: 15px;
   text-align: left;
+  white-space: nowrap;
 `;
 
 const InsertButton = styled.button`
@@ -45,16 +41,36 @@ const InsertButton = styled.button`
   border-radius: 14px;
 `;
 
+const OptionTitle = styled.span`
+  font-size: 25px;
+  font-weight: 700;
+  margin-right: 15px;
+`;
+
+const ContentTitleInput = styled.input`
+  width: 100%;
+  min-height: 3rem;
+  margin: 0;
+`;
+
+const ContentInputBox = styled.input`
+  width: 100%;
+  min-height: 20rem;
+  margin-top: 1rem;
+`;
+
 const IndexPage: NextPage = () => {
   const [title, setTitle] = useState('');
-  const [nftcode, setNftcode] = useState('');
+  const [content, setContent] = useState('');
 
-  const handleNftCode = (nftcode: string) => () => {
-    setNftcode(nftcode);
+  const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+    console.log('title', title);
   };
 
-  const handleInput = (title: string) => () => {
-    setTitle(title);
+  const handleContent = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setContent(e.target.value);
+    console.log('content', content);
   };
 
   return (
@@ -64,42 +80,27 @@ const IndexPage: NextPage = () => {
 
         <MainLayout>
           <InsertArea>
-            {/* <InsertItem>
-              <h3>NFT Code :</h3>
-              <input onChange={handleNftCode(nftcode)} />
+            <InsertItem>
+              <OptionTitle>Title :</OptionTitle>
+              <ContentTitleInput onChange={handleTitle} />
             </InsertItem>
 
             <InsertItem>
-              <h3>title :</h3>
-              <input onChange={handleInput(title)} />
+              <OptionTitle>Type :</OptionTitle>
+              <ContentTitleInput />
             </InsertItem>
 
-            <InsertItem>
-              <h3>Demo :</h3>
-              <input onChange={handleNftCode(nftcode)} />
-            </InsertItem>
-
-            <InsertItem>
-              <h3>example :</h3>
-              <input onChange={handleInput(title)} />
-            </InsertItem> */}
-
-            {/* <Counter />
-            <NewCounter /> */}
-            <User />
-
-            {/* <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Counter />} />
-                <Route path="/counter" element={<NewCounter />} />
-                <Route path="/user" element={<User />} />
-              </Routes>
-            </BrowserRouter> */}
-
-            {/* <InsertButton type="submit">Add Info</InsertButton> */}
+            <div>
+              <OptionTitle>Content :</OptionTitle>
+              <br />
+              <ContentInputBox type="text" onChange={handleContent} />
+            </div>
           </InsertArea>
 
-          <Table title="main-table" headers={['one', 'two', 'three', 'four']}>
+          <Table
+            title="main-table"
+            headers={['Title', 'Type', 'Content', 'Expired Date']}
+          >
             <Table.Item />
           </Table>
         </MainLayout>
