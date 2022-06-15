@@ -7,8 +7,9 @@ const Container = styled.div`
   justify-content: center;
   top: 0;
   width: 100%;
-  min-height: 8rem;
-  background-color: lightgreen;
+  min-height: 80px;
+  background-color: white;
+  box-shadow: 0px 4px 8px 0px #1516190d;
   z-index: 1;
 `;
 

@@ -36,6 +36,34 @@ const Container = styled.div`
   width: auto;
 `;
 
+const NoticeTitle = styled.div`
+  font-size: 2rem;
+  margin-bottom: 40px;
+`;
+
+const TabBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 732px;
+  margin: auto;
+  margin-bottom: 40px;
+  border-radius: 12px;
+  background-color: #efeff1;
+`;
+
+const Tab = styled.div`
+  width: 178px;
+  height: 48px;
+  margin: 4px;
+  border: 1px solid;
+  border-radius: 12px;
+
+  &:hover {
+    background-color: #d0d1d7;
+  }
+`;
+
 const WriteButton = styled(Button)``;
 
 const IndexPage: NextPage = () => {
@@ -92,6 +120,14 @@ const IndexPage: NextPage = () => {
         <Header />
 
         <MainLayout>
+          <NoticeTitle>Notice</NoticeTitle>
+          <TabBox>
+            <Tab />
+            <Tab />
+            <Tab />
+            <Tab />
+          </TabBox>
+
           <WriteButton>Write</WriteButton>
 
           <Table title="main-table" headers={['No', 'Title', 'Date']}>

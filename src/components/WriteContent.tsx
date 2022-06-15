@@ -58,13 +58,27 @@ const UpdateButton = styled(Button)`
   color: #ffff;
 `;
 
-const WriteContent = () => {
+type Props = {
+  noticeId?: number;
+  title?: string;
+  type?: string;
+  content?: string;
+  dateCreate?: string;
+};
+
+const WriteContent = ({
+  noticeId,
+  title,
+  type,
+  content,
+  dateCreate,
+}: Props) => {
   return (
     <>
       <InsertArea>
         <InsertItem>
           <OptionTitle>Title :</OptionTitle>
-          <ContentTitleInput value={title} onChange={handleTitle} />
+          {/* <ContentTitleInput value={title} onChange={handleTitle} /> */}
         </InsertItem>
 
         <InsertItem>
@@ -82,14 +96,14 @@ const WriteContent = () => {
           <ContentInputBox
             type="text"
             value={content}
-            onChange={handleContent}
+            // onChange={handleContent}
             placeholder="Please Write your contents in here"
           />
         </div>
 
-        <UpdateButton color="marketplace" onClick={uploadNewData}>
+        {/* <UpdateButton color="marketplace" onClick={uploadNewData}>
           Button
-        </UpdateButton>
+        </UpdateButton> */}
       </InsertArea>
     </>
   );

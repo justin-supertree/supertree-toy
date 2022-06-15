@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { breakpoints, palette, Button } from '@playdapp/ui';
 
 const Container = styled.div`
   position: absolute;
@@ -8,7 +9,7 @@ const Container = styled.div`
   width: 100%;
   max-height: 10rem;
   height: 100%;
-  background-color: yellow;
+  background-color: ${palette.gray200};
 `;
 
 const Footer = () => {
