@@ -14,24 +14,36 @@ const TableBox = styled.div`
   flex-direction: column;
   border-bottom: 1px solid;
   width: 100%;
+  margin: auto;
 `;
 
 const TableHeader = styled.div`
   display: flex;
   align-items: center;
-  border: 1px solid;
+  border-bottom: 1px solid;
 `;
 
-const TableTitle = styled.p`
-  display: flex;
+const TableTitle = styled.div`
+  display: grid;
   align-items: center;
-  text-align: center;
+  text-align: left;
   width: 100%;
-  font-size: 25px;
+  font-size: 12px;
   font-weight: 500;
   margin: 0;
   padding: 10px 0 10px 15px;
   text-transform: capitalize;
+
+  &:first-of-type {
+    width: 25%;
+  }
+
+  &:nth-of-type(2) {
+  }
+
+  &:nth-of-type(3) {
+    width: 25%;
+  }
 `;
 
 const TableBody = styled.div`

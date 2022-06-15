@@ -1,40 +1,45 @@
 import styled from '@emotion/styled';
 
-type Props = {};
+type Props = {
+  noticeId: number;
+  title: string;
+  dateCreate: string;
+};
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+
+  &:hover {
+    background-color: #f5f5f7;
+  }
 `;
 
 const ColumnData = styled.div`
   display: flex;
-  border-right: 1px solid;
+  align-items: center;
   width: 100%;
   padding: 10px 0 10px 15px;
 
-  /* &:first-of-type {
-    width: 15%;
+  &:first-of-type {
+    width: 25%;
   }
+
   &:nth-of-type(2) {
-    width: 15%;
   }
+
   &:nth-of-type(3) {
-    width: 15%;
+    width: 25%;
   }
-  &:nth-of-type(4) {
-    width: 15%;
-  } */
 `;
 
-const Item = () => {
+const Item = ({ noticeId, title, dateCreate }: Props) => {
   return (
     <Container>
-      <ColumnData>Here is Item Table</ColumnData>
-      <ColumnData>Here is Item Table</ColumnData>
-      <ColumnData>Here is Item Table</ColumnData>
-      <ColumnData>Here is Item Table</ColumnData>
+      <ColumnData>{noticeId}</ColumnData>
+      <ColumnData>{title}</ColumnData>
+      <ColumnData>{dateCreate}</ColumnData>
     </Container>
   );
 };

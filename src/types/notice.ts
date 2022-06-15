@@ -1,8 +1,10 @@
 export type NoticeItemRequest = {
-  title: string;
+  noticeId: number;
   content: string;
-  type: string;
+  dateCreate: string;
   expireTime: string;
+  title: string;
+  type: string;
 };
 
 export type NoticeGetData = {
