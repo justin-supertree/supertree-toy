@@ -4,7 +4,7 @@ const Container = styled.div`
   position: fixed;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   top: 0;
   width: 100%;
   min-height: 80px;
@@ -16,7 +16,8 @@ const Container = styled.div`
 const Header = () => {
   return (
     <Container>
-      <h1>Header Area</h1>
+      <h1>Project Logo</h1>
+      <h1>User Icon</h1>
     </Container>
   );
 };

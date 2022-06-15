@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled from '@emotion/styled';
 
 type Props = {
@@ -6,7 +7,7 @@ type Props = {
   dateCreate: string;
 };
 
-const Container = styled.div`
+const ItemContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
@@ -37,11 +38,17 @@ const ColumnData = styled.div`
 
 const Item = ({ noticeId, title, dateCreate }: Props) => {
   return (
-    <Container>
-      <ColumnData>{noticeId}</ColumnData>
-      <ColumnData>{title}</ColumnData>
-      <ColumnData>{dateCreate}</ColumnData>
-    </Container>
+    <>
+      <Link href={`/detail`}>
+        <a>
+          <ItemContainer>
+            <ColumnData>{noticeId}</ColumnData>
+            <ColumnData>{title}</ColumnData>
+            <ColumnData>{dateCreate}</ColumnData>.
+          </ItemContainer>
+        </a>
+      </Link>
+    </>
   );
 };
 

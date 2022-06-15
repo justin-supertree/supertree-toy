@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import type { NextPage } from 'next';
+import Link from 'next/link';
 import styled from '@emotion/styled';
 import { breakpoints, palette, Button } from '@playdapp/ui';
-import { Input, Select, Textarea } from '@chakra-ui/react';
-import type { NextPage } from 'next';
+import { flexbox, Input, Select, Textarea } from '@chakra-ui/react';
 
 import Header from '@/components/Layout/Header';
 import MainLayout from '@/components/Layout/MainLayout';
@@ -52,7 +53,8 @@ const TabBox = styled.div`
   background-color: #efeff1;
 `;
 
-const Tab = styled.div`
+const Tab = styled(FlexMixin)`
+  justify-content: center;
   width: 178px;
   height: 48px;
   margin: 4px;
@@ -122,13 +124,15 @@ const IndexPage: NextPage = () => {
         <MainLayout>
           <NoticeTitle>Notice</NoticeTitle>
           <TabBox>
-            <Tab />
-            <Tab />
-            <Tab />
-            <Tab />
+            <Tab>All</Tab>
+            <Tab>Service</Tab>
+            <Tab>Event</Tab>
+            <Tab>Tip</Tab>
           </TabBox>
 
-          <WriteButton>Write</WriteButton>
+          <WriteButton>
+            <Link href={`/write`}>Write</Link>
+          </WriteButton>
 
           <Table title="main-table" headers={['No', 'Title', 'Date']}>
             {datas?.map((info, index) => {
