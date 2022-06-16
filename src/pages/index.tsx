@@ -70,7 +70,7 @@ const WriteButton = styled(Button)``;
 
 const IndexPage: NextPage = () => {
   const apihost =
-    'https://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
+    'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -107,7 +107,7 @@ const IndexPage: NextPage = () => {
     axios.get(`${apihost}/notice?type=service&page=1`).then((res) => {
       try {
         if (res && res.status === 200) {
-          const data: Props[] = res.data.data.list;
+          const data = res.data.data.list;
           return setDatas(data);
         }
       } catch (error) {

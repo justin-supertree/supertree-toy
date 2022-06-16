@@ -12,7 +12,7 @@ type Props = {
 const TableBox = styled.div`
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #efeff1;
   width: 100%;
   margin: auto;
 `;
@@ -20,7 +20,7 @@ const TableBox = styled.div`
 const TableHeader = styled.div`
   display: flex;
   align-items: center;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #efeff1;
 `;
 
 const TableTitle = styled.div`
@@ -49,6 +49,7 @@ const TableTitle = styled.div`
 const TableBody = styled.div`
   display: flex;
   flex-direction: column;
+  min-height: 723px;
 `;
 
 const Table = ({ children, title, headers, isEmpty }: Props) => {

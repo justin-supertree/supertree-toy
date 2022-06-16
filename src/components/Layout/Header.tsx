@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Link from 'next/link';
 
 const Container = styled.div`
   position: fixed;
@@ -16,7 +17,9 @@ const Container = styled.div`
 const Header = () => {
   return (
     <Container>
-      <h1>Project Logo</h1>
+      <Link href="/">
+        <h1>Project Logo</h1>
+      </Link>
       <h1>User Icon</h1>
     </Container>
   );
