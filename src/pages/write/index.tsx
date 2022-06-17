@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import { breakpoints, palette, Button } from '@playdapp/ui';
+import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
 import { Input, Select, Textarea } from '@chakra-ui/react';
 
 import WriteLayout from '@/components/Layout/WriteLayout';
@@ -21,29 +22,26 @@ const FlexMixin = styled.div`
   justify-content: flex-start;
 `;
 
+const WriteTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+`;
+
 const InsertArea = styled.div`
-  max-width: 50rem;
   width: 100%;
-  padding: 5rem 2rem 3rem 2rem;
-  margin: auto;
-  margin-bottom: 5rem;
-  border-radius: 24px;
-  border: 1px solid ${palette.gray900};
+  text-align: left;
 
   /* ${breakpoints.down('md')} {
   } */
 `;
 
-const InsertItem = styled(FlexMixin)`
-  margin-bottom: 15px;
+const InsertItem = styled(FlexMixin)<{ type: string }>`
+  padding-bottom: 15px;
   text-align: left;
   white-space: nowrap;
-`;
-
-const OptionTitle = styled.span`
-  font-size: 25px;
-  font-weight: 700;
-  margin-right: 15px;
+  border-bottom: ${({ type }) => type === 'type' && '1px solid #E3E4E7'};
 `;
 
 const ContentTitleInput = styled(Input)`
@@ -60,13 +58,20 @@ const ContentTypeSelect = styled(Select)`
 
 const ContentInputBox = styled(Textarea)`
   width: 100%;
-  min-height: 20rem;
+  min-height: 392px;
   margin-top: 1rem;
 `;
 
-const UpdateButton = styled(Button)`
+const ButtonArea = styled(FlexMixin)`
+  justify-content: center;
+  margin-top: 40px;
+  text-align: center;
+`;
+
+const ClickButton = styled(Button)`
   width: 100%;
-  margin-top: 2rem;
+  max-width: 240px;
+  margin: 0 4px;
   color: #ffff;
 `;
 
@@ -75,6 +80,8 @@ const WriteContent = () => {
   const [content, setContent] = useState('');
   const apihost =
     'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
+
+  const router = useRouter();
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -96,25 +103,47 @@ const WriteContent = () => {
         if (res && res.status === 200 && res.data.message === 'Success') {
           setTitle('');
           setContent('');
+          console.log(res);
           alert('Post response success!!');
+          router.push('/');
         }
       });
   };
 
+  const cancelWrite = () => {
+    alert('cancel write contents!!');
+    router.push('/');
+  };
+
   return (
     <WriteLayout>
-      <Link href={`/`}>
-        <Button>Goback</Button>
-      </Link>
+      <WriteTitle>
+        <Typography type="h5" color="black">
+          Write Notice / Edit Notice
+        </Typography>
+
+        <Link href={`/`}>
+          <Button>Goback</Button>
+        </Link>
+      </WriteTitle>
 
       <InsertArea>
-        <InsertItem>
-          <OptionTitle>Title :</OptionTitle>
-          <ContentTitleInput value={title} onChange={handleTitle} />
+        <Typography type="b4" color="gray900">
+          Title :
+        </Typography>
+        <InsertItem type="title">
+          <ContentTitleInput
+            value={title}
+            onChange={handleTitle}
+            placeholder="Notice Title"
+          />
         </InsertItem>
 
-        <InsertItem>
-          <OptionTitle>Type :</OptionTitle>
+        <Typography type="b4" color="gray900">
+          Type :
+        </Typography>
+
+        <InsertItem type="type">
           <ContentTypeSelect placeholder="Select option">
             <option value="Service">Option 1</option>
             <option value="Tip">Option 2</option>
@@ -122,20 +151,34 @@ const WriteContent = () => {
           </ContentTypeSelect>
         </InsertItem>
 
-        <div>
-          <OptionTitle>Content :</OptionTitle>
-          <br />
-          <ContentInputBox
-            type="text"
-            value={content}
-            onChange={handleContent}
-            placeholder="Please Write your contents in here"
-          />
-        </div>
+        <ContentInputBox
+          type="text"
+          value={content}
+          onChange={handleContent}
+          placeholder="Please Write your contents in here"
+        />
 
-        <UpdateButton color="primary" onClick={uploadNewData}>
-          Button
-        </UpdateButton>
+        <ButtonArea>
+          <ClickButton
+            size="md"
+            color="primary"
+            variant="outline"
+            onClick={cancelWrite}
+          >
+            <Typography type="b3" color="primary700">
+              Cancel
+            </Typography>
+          </ClickButton>
+
+          <ClickButton
+            size="md"
+            color="primary"
+            variant="solid"
+            onClick={uploadNewData}
+          >
+            <Typography type="b3">Write</Typography>
+          </ClickButton>
+        </ButtonArea>
       </InsertArea>
     </WriteLayout>
   );

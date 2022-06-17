@@ -3,7 +3,7 @@ import axios from 'axios';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import { breakpoints, palette, Button } from '@playdapp/ui';
+import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
 import { flexbox, Input, Select, Textarea } from '@chakra-ui/react';
 
 import Header from '@/components/Layout/Header';
@@ -66,7 +66,10 @@ const Tab = styled(FlexMixin)`
   }
 `;
 
-const WriteButton = styled(Button)``;
+const LoadMore = styled(Button)`
+  width: 121px;
+  margin-top: 20px;
+`;
 
 const IndexPage: NextPage = () => {
   const apihost =
@@ -76,7 +79,6 @@ const IndexPage: NextPage = () => {
   const [content, setContent] = useState('');
   const [type, setType] = useState('');
   const [datas, setDatas] = useState<Props[]>([]);
-  console.log('datas', datas);
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -130,9 +132,9 @@ const IndexPage: NextPage = () => {
             <Tab>Tip</Tab>
           </TabBox>
 
-          <WriteButton>
+          <Button>
             <Link href={`/write`}>Write</Link>
-          </WriteButton>
+          </Button>
 
           <Table title="main-table" headers={['No', 'Title', 'Date']}>
             {datas?.map((info, index) => {
@@ -146,6 +148,12 @@ const IndexPage: NextPage = () => {
               );
             })}
           </Table>
+
+          <LoadMore size="md" color="primary" variant="outline">
+            <Typography type="b3" color="primary700">
+              LoadMore
+            </Typography>
+          </LoadMore>
         </MainLayout>
 
         <Footer />

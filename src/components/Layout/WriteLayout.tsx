@@ -10,9 +10,9 @@ const WriteContainer = styled.div`
 `;
 
 const Container = styled.div`
-  max-width: 1410px;
   width: 100%;
-  min-height: 50rem;
+  max-width: 838px;
+  min-height: 61rem;
   height: 100%;
   margin-top: 8rem;
   padding: 112px 0 5rem 0;
