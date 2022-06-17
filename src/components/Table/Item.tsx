@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import styled from '@emotion/styled';
+import { Typography } from '@playdapp/ui';
+import { format } from 'date-fns';
 
 type Props = {
   noticeId: number;
@@ -12,8 +14,11 @@ const ItemContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 63px;
+  margin: 2px 0;
+  border-bottom: 1px solid #efeff1;
 
   &:hover {
+    border-radius: 8px;
     background-color: #f5f5f7;
   }
 `;
@@ -37,6 +42,8 @@ const ColumnData = styled.div`
 `;
 
 const Item = ({ noticeId, title, dateCreate }: Props) => {
+  const date = new Date(dateCreate);
+
   return (
     <>
       <Link href={`/detail`}>
@@ -44,7 +51,11 @@ const Item = ({ noticeId, title, dateCreate }: Props) => {
           <ItemContainer>
             <ColumnData>{noticeId}</ColumnData>
             <ColumnData>{title}</ColumnData>
-            <ColumnData>{dateCreate}</ColumnData>.
+            <ColumnData>
+              <Typography color="dgray100">
+                {format(date, 'MMM-dd-yyyy h:mm:ss a')}
+              </Typography>
+            </ColumnData>
           </ItemContainer>
         </a>
       </Link>

@@ -29,9 +29,10 @@ const TableTitle = styled.div`
   text-align: left;
   width: 100%;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   margin: 0;
   padding: 10px 0 10px 15px;
+  color: #999ca8;
   text-transform: capitalize;
 
   &:first-of-type {

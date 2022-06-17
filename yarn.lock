@@ -857,10 +857,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@playdapp/ui@^2.0.0-alpha.12":
-  version "2.0.0-alpha.12"
-  resolved "https://registry.yarnpkg.com/@playdapp/ui/-/ui-2.0.0-alpha.12.tgz#19dfee5f3de9fab222f9c5bd8df76995f631b8cc"
-  integrity sha512-3aUVdve1dODAD/bKAeRWYhEalJ9LlpnOtAmLv+AprdeYXV53fN/yDZOjTZyFh44Pv05JDAaouNHk5UupwvNsEw==
+"@playdapp/ui@^2.0.0-alpha.17":
+  version "2.0.0-alpha.17"
+  resolved "https://registry.yarnpkg.com/@playdapp/ui/-/ui-2.0.0-alpha.17.tgz#c5615a340e29d0e125db208054c59bd92f21e8f4"
+  integrity sha512-GxmOBNVC3/DiV7xKkSrau+Fu9QEszYz8Cd4rp9k3DWw/DnlKuH28GV0ftZLfJA653cTUf2/afDdLLWVyZT0hwg==
 
 "@popperjs/core@^2.9.3":
   version "2.11.5"
@@ -1306,6 +1306,11 @@ damerau-levenshtein@^1.0.7:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.8.tgz#b43d286ccbd36bc5b2f7ed41caf2d0aba1f8a6e7"
   integrity sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==
+
+date-fns@^2.28.0:
+  version "2.28.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.28.0.tgz#9570d656f5fc13143e50c975a3b6bbeb46cd08b2"
+  integrity sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==
 
 debug@^2.6.9:
   version "2.6.9"
