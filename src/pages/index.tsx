@@ -1,30 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import type { GetServerSideProps } from 'next';
+import { dehydrate, QueryClient } from 'react-query';
+import type { NextPageWithLayout } from 'types/next-page';
 import axios from 'axios';
-import type { NextPage } from 'next';
 import Link from 'next/link';
+
 import styled from '@emotion/styled';
 import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
-import { flexbox, Input, Select, Textarea } from '@chakra-ui/react';
 
 import Header from '@/components/Layout/Header';
 import MainLayout from '@/components/Layout/MainLayout';
 import Table from '@/components/Table';
 import Footer from '@/components/Layout/Footer';
-
-type RequestProps =
-  | {
-      noticeId?: number;
-      title?: string;
-      type?: string;
-      content?: string;
-      dateCreate?: string;
-    }
-  | string;
-
-type Event = RequestProps;
+import MetaTag from '@/components/Layout/MetaTag';
 
 type Props = {
-  data: Event[];
+  noticeId: number;
+  title: string;
+  type: string;
+  content: string;
+  dateCreate: string;
 };
 
 const FlexMixin = styled.div`
@@ -71,40 +66,11 @@ const LoadMore = styled(Button)`
   margin-top: 20px;
 `;
 
-const IndexPage: NextPage = () => {
+const IndexPage: NextPageWithLayout = () => {
   const apihost =
     'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
 
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [type, setType] = useState('');
   const [datas, setDatas] = useState<Props[]>([]);
-
-  const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-  };
-
-  const handleContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value);
-  };
-
-  const uploadNewData = () => {
-    axios
-      .post(`${apihost}/notice`, {
-        title: title,
-        content: content,
-        type: 'service',
-        expireTime: '2050-10-04 23:50:11',
-      })
-      .then((res) => {
-        if (res && res.status === 200 && res.data.message === 'Success') {
-          setTitle('');
-          setContent('');
-          alert('Post response success!!');
-        }
-      });
-  };
-
   useEffect(() => {
     axios.get(`${apihost}/notice?type=service&page=1`).then((res) => {
       try {
@@ -161,5 +127,17 @@ const IndexPage: NextPage = () => {
     </>
   );
 };
+
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const apihost =
+//     'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
+
+//   const res = await axios.get(`${apihost}/notice/detail/:59}`);
+//   console.log('res', res);
+
+//   return {
+//     props: {},
+//   };
+// };
 
 export default IndexPage;

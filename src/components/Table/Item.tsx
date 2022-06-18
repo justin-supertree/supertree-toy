@@ -1,7 +1,10 @@
+import { useEffect } from 'react';
 import Link from 'next/link';
-import styled from '@emotion/styled';
+import axios from 'axios';
 import { Typography } from '@playdapp/ui';
 import { format } from 'date-fns';
+import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 
 type Props = {
   noticeId: number;
@@ -46,7 +49,7 @@ const Item = ({ noticeId, title, dateCreate }: Props) => {
 
   return (
     <>
-      <Link href={`/detail`}>
+      <Link href={`/detail/${noticeId}`} passHref>
         <a>
           <ItemContainer>
             <ColumnData>{noticeId}</ColumnData>
