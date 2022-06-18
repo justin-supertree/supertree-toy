@@ -78,6 +78,8 @@ const ClickButton = styled(Button)`
 const WriteContent = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  console.log('title', title);
+  console.log('content', content);
   const apihost =
     'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
 

@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import axios, { Axios } from 'axios';
+import { useState, useEffect } from 'react';
+import { GetServerSideProps } from 'next';
+import axios from 'axios';
 import { useRouter } from 'next/router';
-import { QueryClient, useQuery } from 'react-query';
 import styled from '@emotion/styled';
-import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
+import { breakpoints, palette, Button, Typography, Modal } from '@playdapp/ui';
+import { format } from 'date-fns';
+
+import useOpenControl from 'hooks/useOpenControl';
 
 import WriteLayout from '@/components/Layout/WriteLayout';
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
+import DeleteModal from '@/components/Modal/DeleteModal';
 
 const FlexMixin = styled.div`
   display: flex;
@@ -34,7 +37,6 @@ const ContentDescBox = styled.div`
   width: 100%;
   min-height: 432px;
   margin-top: 1rem;
-  border: 1px solid;
 `;
 
 const ButtonArea = styled(FlexMixin)`
@@ -52,6 +54,10 @@ const ClickButton = styled(Button)`
 
 const TitleBlock = styled.div`
   text-align: left;
+
+  &.title {
+    max-width: 75%;
+  }
 `;
 
 const EditButton = styled(Button)`
@@ -59,7 +65,7 @@ const EditButton = styled(Button)`
   margin: 0 4px;
 `;
 
-type Props = {
+type Prop = {
   noticeId?: number;
   title?: string;
   type?: string;
@@ -67,20 +73,22 @@ type Props = {
   dateCreate?: string;
 };
 
-const DetailContent = ({ noticeId }: any) => {
-  console.log(
-    'Props로 받아온 데이터: ',
-    Number(noticeId),
-    typeof Number(noticeId),
-  );
+type Props = {
+  noticeId?: number;
+};
+
+const DetailContent = ({ noticeId }: Props) => {
   const apihost =
     'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
-  // const id = noticeId.slice(1, 3);
   const id = Number(noticeId);
-  // console.log('가공한후 ', id);
-  // const inject = parseInt(id);
-  // console.log('inject', inject);
   const router = useRouter();
+  const [data, setData] = useState<Prop>({});
+  const [isEdit, setIsEdit] = useOpenControl();
+  const [isRemove, setIsRemove] = useOpenControl();
+
+  const handleDelete = (isDelete: boolean) => () => {
+    setIsRemove(isDelete);
+  };
 
   const viewlist = () => {
     alert('cancel write contents!!');
@@ -88,13 +96,17 @@ const DetailContent = ({ noticeId }: any) => {
   };
 
   useEffect(() => {
-    axios.get(`${apihost}/notice/detail/${id}`).then((response) => {
-      console.log('response', response);
+    axios.get(`${apihost}/notice?detail/${id}`).then((response) => {
       try {
         if (response && response.status === 200) {
-          // const data = res.data.data.list;
-          console.log(response);
-          return response;
+          const req = response.data.data.list;
+          req.map((data: { noticeId: number }) => {
+            if (data.noticeId == id) {
+              setData(data);
+            }
+          });
+
+          return req;
         }
       } catch (error) {
         console.log(error);
@@ -104,39 +116,58 @@ const DetailContent = ({ noticeId }: any) => {
 
   return (
     <WriteLayout>
+      <Typography type="h5" color="black">
+        {noticeId}
+      </Typography>
       <ContentHeadArea>
-        <Typography type="h5" color="black">
-          {noticeId}
-        </Typography>
-        <TitleBlock>
-          <Typography type="h5" color="black">
-            Notice Title
-          </Typography>
+        {data && data !== undefined && (
+          <>
+            <TitleBlock className="title">
+              <Typography type="h5" color="black">
+                {data.title}
+              </Typography>
 
-          <div>
-            <Typography type="p4" color="dgray300">
-              May-04-2022 ~ Jun-06-2022
-            </Typography>
-          </div>
-        </TitleBlock>
+              <div>
+                <Typography type="p4" color="dgray300">
+                  {data.dateCreate}
+                </Typography>
+              </div>
+            </TitleBlock>
 
-        <TitleBlock>
-          <EditButton size="sm" color="primary" variant="outline">
-            <Typography type="h6" color="primary700">
-              Edit
-            </Typography>
-          </EditButton>
+            <TitleBlock>
+              <EditButton size="sm" color="primary" variant="outline">
+                <Typography type="h6" color="primary700">
+                  Edit
+                </Typography>
+              </EditButton>
 
-          <EditButton size="sm" color="primary" variant="outline">
-            <Typography type="h6" color="primary700">
-              Delete
-            </Typography>
-          </EditButton>
-        </TitleBlock>
+              <EditButton
+                size="sm"
+                color="primary"
+                variant="outline"
+                onClick={handleDelete(true)}
+              >
+                <Typography type="h6" color="primary700">
+                  Delete
+                </Typography>
+              </EditButton>
+            </TitleBlock>
+          </>
+        )}
       </ContentHeadArea>
 
+      {isRemove && (
+        <Modal
+          isOpen={isRemove}
+          handleOpen={handleDelete(false)}
+          shouldCloseOnOverlayClick
+        >
+          DeleteModal
+        </Modal>
+      )}
+
       <InsertArea>
-        <ContentDescBox />
+        <ContentDescBox>{data.content}</ContentDescBox>
 
         <ButtonArea>
           <ClickButton
@@ -145,7 +176,9 @@ const DetailContent = ({ noticeId }: any) => {
             variant="solid"
             onClick={viewlist}
           >
-            <Typography type="b3">View list</Typography>
+            <Typography type="b3" color="atlantic">
+              View list
+            </Typography>
           </ClickButton>
         </ButtonArea>
       </InsertArea>
@@ -155,21 +188,6 @@ const DetailContent = ({ noticeId }: any) => {
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const noticeId = query.slug;
-
-  // const queryClient = new QueryClient();
-  // await queryClient.prefetchQuery(['getDetail'], async () => {
-  //   try {
-  //     const response = await fetch(`${apihost}/notice/detail/:${noticeId}`);
-  //     const data = await response.json();
-
-  //     if (response.status !== 200) {
-  //       throw new Error('invalid data');
-  //     }
-  //     return data;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // });
 
   return {
     props: { noticeId },
