@@ -65,6 +65,30 @@ const EditButton = styled(Button)`
   margin: 0 4px;
 `;
 
+const ImageArea = styled.div`
+  width: 120px;
+  height: 106.69px;
+  border: 1px solid;
+  margin: auto;
+  margin-bottom: 32px;
+`;
+
+const ModalTextBlock = styled.div`
+  display: block;
+  text-align: center;
+`;
+
+const TextArea = styled.div`
+  margin-bottom: 12px;
+`;
+
+const ModalButtonBlock = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  text-align: center;
+`;
+
 type Prop = {
   noticeId?: number;
   title?: string;
@@ -102,7 +126,6 @@ const DetailContent = ({ noticeId }: Props) => {
         try {
           if (response && response.status === 200) {
             const result = response.status;
-            console.log(response);
             setIsRemove(result);
             router.push('/');
             return isRemove;
@@ -181,26 +204,45 @@ const DetailContent = ({ noticeId }: Props) => {
           handleOpen={handleOpenModal(false)}
           shouldCloseOnOverlayClick
         >
-          <Typography type="b3" color="atlantic">
-            DeleteModal
-          </Typography>
+          <ModalTextBlock>
+            <ImageArea />
 
-          <ClickButton size="sm" color="primary" variant="solid">
-            <Typography type="b3" color="atlantic">
-              Cancel
-            </Typography>
-          </ClickButton>
+            <TextArea>
+              <Typography type="h4" color="atlantic">
+                Are you sure you want to delete the post?
+              </Typography>
+            </TextArea>
 
-          <ClickButton
-            size="sm"
-            color="primary"
-            variant="solid"
-            onClick={handleDelete(true)}
-          >
-            <Typography type="b3" color="atlantic">
-              Delete
-            </Typography>
-          </ClickButton>
+            <TextArea>
+              <Typography type="b3" color="gray900">
+                Deleted posts will not be recovered.
+              </Typography>
+            </TextArea>
+          </ModalTextBlock>
+
+          <ModalButtonBlock>
+            <ClickButton
+              size="sm"
+              color="primary"
+              variant="outline"
+              onClick={handleOpenModal(false)}
+            >
+              <Typography type="b3" color="primary700">
+                Cancel
+              </Typography>
+            </ClickButton>
+
+            <ClickButton
+              size="sm"
+              color="primary"
+              variant="solid"
+              onClick={handleDelete(true)}
+            >
+              <Typography type="b3" color="atlantic">
+                Delete
+              </Typography>
+            </ClickButton>
+          </ModalButtonBlock>
         </Modal>
       )}
 

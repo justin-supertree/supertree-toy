@@ -37,6 +37,12 @@ const NoticeTitle = styled.div`
   margin-bottom: 40px;
 `;
 
+const WriteButton = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+`;
+
 const TabBox = styled.div`
   display: flex;
   align-items: center;
@@ -48,13 +54,15 @@ const TabBox = styled.div`
   background-color: #efeff1;
 `;
 
-const Tab = styled(FlexMixin)`
+const Tab = styled(FlexMixin)<{ isSelect: boolean }>`
   justify-content: center;
   width: 178px;
   height: 48px;
   margin: 4px;
-  border: 1px solid;
   border-radius: 12px;
+  background-color: ${({ isSelect }) => (isSelect ? '#36383F' : '')};
+  color: ${({ isSelect }) => (isSelect ? 'white' : '')};
+  cursor: pointer;
 
   &:hover {
     background-color: #d0d1d7;
@@ -71,8 +79,12 @@ const IndexPage: NextPageWithLayout = () => {
     'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
 
   const [datas, setDatas] = useState<Props[]>([]);
+  const [tab, setTab] = useState('');
+
+  console.log('tab', tab);
+
   useEffect(() => {
-    axios.get(`${apihost}/notice?type=service&page=1`).then((res) => {
+    axios.get(`${apihost}/notice?type=all&page=1`).then((res) => {
       try {
         if (res && res.status === 200) {
           const data = res.data.data.list;
@@ -92,15 +104,24 @@ const IndexPage: NextPageWithLayout = () => {
         <MainLayout>
           <NoticeTitle>Notice</NoticeTitle>
           <TabBox>
-            <Tab>All</Tab>
-            <Tab>Service</Tab>
-            <Tab>Event</Tab>
-            <Tab>Tip</Tab>
+            <Tab onClick={() => setTab('all')} isSelect={tab === 'all'}>
+              All
+            </Tab>
+            <Tab onClick={() => setTab('service')} isSelect={tab === 'service'}>
+              Service
+            </Tab>
+            <Tab onClick={() => setTab('event')} isSelect={tab === 'event'}>
+              Event
+            </Tab>
+            <Tab onClick={() => setTab('tip')} isSelect={tab === 'tip'}>
+              Tip
+            </Tab>
           </TabBox>
-
-          <Button>
-            <Link href={`/write`}>Write</Link>
-          </Button>
+          <Link href={`/write`}>
+            <WriteButton>
+              <Button>Write</Button>
+            </WriteButton>
+          </Link>
 
           <Table title="main-table" headers={['No', 'Title', 'Date']}>
             {datas?.map((info, index) => {
@@ -109,7 +130,9 @@ const IndexPage: NextPageWithLayout = () => {
                   key={index}
                   noticeId={info.noticeId}
                   title={info.title}
+                  type={info.type}
                   dateCreate={info.dateCreate}
+                  tab={tab}
                 />
               );
             })}
@@ -127,17 +150,5 @@ const IndexPage: NextPageWithLayout = () => {
     </>
   );
 };
-
-// export const getServerSideProps: GetServerSideProps = async () => {
-//   const apihost =
-//     'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
-
-//   const res = await axios.get(`${apihost}/notice/detail/:59}`);
-//   console.log('res', res);
-
-//   return {
-//     props: {},
-//   };
-// };
 
 export default IndexPage;

@@ -78,8 +78,9 @@ const ClickButton = styled(Button)`
 const WriteContent = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  console.log('title', title);
-  console.log('content', content);
+  const [select, setSelect] = useState('');
+  console.log('select', select);
+
   const apihost =
     'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
 
@@ -98,7 +99,7 @@ const WriteContent = () => {
       .post(`${apihost}/notice`, {
         title: title,
         content: content,
-        type: 'service',
+        type: select,
         expireTime: '2050-10-04 23:50:11',
       })
       .then((res) => {
@@ -146,10 +147,16 @@ const WriteContent = () => {
         </Typography>
 
         <InsertItem type="type">
-          <ContentTypeSelect placeholder="Select option">
-            <option value="Service">Option 1</option>
-            <option value="Tip">Option 2</option>
-            <option value="Event">Option 3</option>
+          <ContentTypeSelect placeholder="타입을 선택해주세요.">
+            <option value="Service" onClick={() => setSelect('service')}>
+              Service
+            </option>
+            <option value="Tip" onClick={() => setSelect('tip')}>
+              Tip
+            </option>
+            <option value="Event" onClick={() => setSelect('event')}>
+              Event
+            </option>
           </ContentTypeSelect>
         </InsertItem>
 
@@ -178,7 +185,9 @@ const WriteContent = () => {
             variant="solid"
             onClick={uploadNewData}
           >
-            <Typography type="b3">Write</Typography>
+            <Typography type="b3" color="atlantic">
+              Write
+            </Typography>
           </ClickButton>
         </ButtonArea>
       </InsertArea>

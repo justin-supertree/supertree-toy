@@ -7,6 +7,8 @@ type Props = {
   noticeId: number;
   title: string;
   dateCreate: string;
+  type: string;
+  tab: string;
 };
 
 const ItemContainer = styled.div`
@@ -41,24 +43,26 @@ const ColumnData = styled.div`
   }
 `;
 
-const Item = ({ noticeId, title, dateCreate }: Props) => {
+const Item = ({ noticeId, title, dateCreate, type, tab }: Props) => {
   const date = new Date(dateCreate);
-
+  console.log('type', type);
   return (
     <>
-      <Link href={`/detail/${noticeId}`} passHref>
-        <a>
-          <ItemContainer>
-            <ColumnData>{noticeId}</ColumnData>
-            <ColumnData>{title}</ColumnData>
-            <ColumnData>
-              <Typography color="dgray100">
-                {format(date, 'MMM-dd-yyyy h:mm:ss a')}
-              </Typography>
-            </ColumnData>
-          </ItemContainer>
-        </a>
-      </Link>
+      {type === tab && (
+        <Link href={`/detail/${noticeId}`} passHref>
+          <a>
+            <ItemContainer>
+              <ColumnData>{noticeId}</ColumnData>
+              <ColumnData>{title}</ColumnData>
+              <ColumnData>
+                <Typography color="dgray100">
+                  {format(date, 'MMM-dd-yyyy h:mm:ss a')}
+                </Typography>
+              </ColumnData>
+            </ItemContainer>
+          </a>
+        </Link>
+      )}
     </>
   );
 };
