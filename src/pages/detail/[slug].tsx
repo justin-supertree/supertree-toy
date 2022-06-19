@@ -84,15 +84,34 @@ const DetailContent = ({ noticeId }: Props) => {
   const router = useRouter();
   const [data, setData] = useState<Prop>({});
   const [isEdit, setIsEdit] = useOpenControl();
-  const [isRemove, setIsRemove] = useOpenControl();
+  const [isOpen, setIsOpen] = useOpenControl();
+  const [isRemove, setIsRemove] = useState(0);
 
-  const handleDelete = (isDelete: boolean) => () => {
-    setIsRemove(isDelete);
+  const handleOpenModal = (isOpen: boolean) => () => {
+    setIsOpen(isOpen);
   };
 
   const viewlist = () => {
     alert('cancel write contents!!');
     router.push('/');
+  };
+
+  const handleDelete = (isDelete: boolean) => () => {
+    if (isDelete) {
+      axios.delete(`/notice?${id}`).then((response) => {
+        try {
+          if (response && response.status === 200) {
+            const result = response.status;
+            console.log(response);
+            setIsRemove(result);
+            router.push('/');
+            return isRemove;
+          }
+        } catch (error) {
+          console.log('error', error);
+        }
+      });
+    }
   };
 
   useEffect(() => {
@@ -145,7 +164,7 @@ const DetailContent = ({ noticeId }: Props) => {
                 size="sm"
                 color="primary"
                 variant="outline"
-                onClick={handleDelete(true)}
+                onClick={handleOpenModal(true)}
               >
                 <Typography type="h6" color="primary700">
                   Delete
@@ -156,13 +175,32 @@ const DetailContent = ({ noticeId }: Props) => {
         )}
       </ContentHeadArea>
 
-      {isRemove && (
+      {isOpen && (
         <Modal
-          isOpen={isRemove}
-          handleOpen={handleDelete(false)}
+          isOpen={isOpen}
+          handleOpen={handleOpenModal(false)}
           shouldCloseOnOverlayClick
         >
-          DeleteModal
+          <Typography type="b3" color="atlantic">
+            DeleteModal
+          </Typography>
+
+          <ClickButton size="sm" color="primary" variant="solid">
+            <Typography type="b3" color="atlantic">
+              Cancel
+            </Typography>
+          </ClickButton>
+
+          <ClickButton
+            size="sm"
+            color="primary"
+            variant="solid"
+            onClick={handleDelete(true)}
+          >
+            <Typography type="b3" color="atlantic">
+              Delete
+            </Typography>
+          </ClickButton>
         </Modal>
       )}
 
