@@ -1,5 +1,9 @@
+import NextImage from 'next/image';
 import styled from '@emotion/styled';
 import Link from 'next/link';
+
+import Logo from '../../../public/assets/icons/header-logo.svg';
+import User from '../../../public/assets/icons/user.png';
 
 const Container = styled.div`
   position: fixed;
@@ -9,6 +13,7 @@ const Container = styled.div`
   top: 0;
   width: 100%;
   min-height: 80px;
+  padding: 0 48px;
   background-color: white;
   box-shadow: 0px 4px 8px 0px #1516190d;
   z-index: 1;
@@ -18,9 +23,16 @@ const Header = () => {
   return (
     <Container>
       <Link href="/">
-        <h1>Project Logo</h1>
+        <NextImage
+          src={Logo}
+          width={213}
+          height={48}
+          layout="fixed"
+          alt="PlayDapp"
+        />
       </Link>
-      <h1>User Icon</h1>
+
+      <NextImage src={User} width={40} height={40} layout="fixed" alt="user" />
     </Container>
   );
 };

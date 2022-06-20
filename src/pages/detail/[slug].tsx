@@ -5,12 +5,15 @@ import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import { breakpoints, palette, Button, Typography, Modal } from '@playdapp/ui';
 import { format } from 'date-fns';
+import NextImage from 'next/image';
+import type { ImageProps } from 'next/image';
 
 import useOpenControl from 'hooks/useOpenControl';
 
 import WriteLayout from '@/components/Layout/WriteLayout';
 import DeleteModal from '@/components/Modal/DeleteModal';
 import MetaTag from '@/components/MetaTag';
+import Error from '../../../public/assets/icons/error.png';
 
 const FlexMixin = styled.div`
   display: flex;
@@ -67,9 +70,6 @@ const EditButton = styled(Button)`
 `;
 
 const ImageArea = styled.div`
-  width: 120px;
-  height: 106.69px;
-  border: 1px solid;
   margin: auto;
   margin-bottom: 32px;
 `;
@@ -106,8 +106,8 @@ const DetailContent = ({ noticeId }: Props) => {
   const apihost =
     'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
   const id = Number(noticeId);
-  console.log(id);
   const router = useRouter();
+
   const [data, setData] = useState<Prop>({});
   const [isEdit, setIsEdit] = useOpenControl();
   const [isOpen, setIsOpen] = useOpenControl();
@@ -122,11 +122,10 @@ const DetailContent = ({ noticeId }: Props) => {
     router.push('/');
   };
 
-  const handleDelete = (isDelete: boolean) => () => {
+  const handleDelete = (isDelete: boolean, id: number) => () => {
     if (isDelete) {
-      axios.delete(`/notice/${id}`).then((response) => {
+      axios.delete(`${apihost}/notice/${id}`).then((response) => {
         try {
-          console.log('hi im delete methods', id);
           if (response && response.status === 200) {
             const result = response.status;
             setIsRemove(result);
@@ -144,12 +143,8 @@ const DetailContent = ({ noticeId }: Props) => {
     axios.get(`${apihost}/notice/detail/${id}`).then((response) => {
       try {
         if (response && response.status === 200) {
-          const req = response.data.data.list;
-          req.map((data: { noticeId: number }) => {
-            if (data.noticeId == id) {
-              setData(data);
-            }
-          });
+          const req = response.data.data.info;
+          setData(req);
 
           return req;
         }
@@ -207,7 +202,15 @@ const DetailContent = ({ noticeId }: Props) => {
             shouldCloseOnOverlayClick
           >
             <ModalTextBlock>
-              <ImageArea />
+              <ImageArea>
+                <NextImage
+                  src={Error}
+                  width={120}
+                  height={120}
+                  layout="fixed"
+                  alt="PlayDapp"
+                />
+              </ImageArea>
 
               <TextArea>
                 <Typography type="h4" color="atlantic">
@@ -238,7 +241,7 @@ const DetailContent = ({ noticeId }: Props) => {
                 size="sm"
                 color="primary"
                 variant="solid"
-                onClick={handleDelete(true)}
+                onClick={handleDelete(true, id)}
               >
                 <Typography type="b3" color="atlantic">
                   Delete

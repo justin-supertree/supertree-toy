@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
+import { breakpoints, Button, Typography } from '@playdapp/ui';
 import { Input, Select, Textarea } from '@chakra-ui/react';
 
 import WriteLayout from '@/components/Layout/WriteLayout';
@@ -190,7 +190,9 @@ const WriteContent = () => {
             size="md"
             color="primary"
             variant="solid"
-            disabled={selected === '' ? true : false}
+            disabled={
+              selected === '' || title === '' || content === '' ? true : false
+            }
             onClick={uploadNewData}
           >
             <Typography type="b3" color="atlantic">

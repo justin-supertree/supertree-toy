@@ -1,6 +1,14 @@
+import NextImage from 'next/image';
 import styled from '@emotion/styled';
 
-import { breakpoints, palette, Button } from '@playdapp/ui';
+import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
+
+import Logo from '../../../public/assets/icons/logo-blank.svg';
+import Twitter from '../../../public/assets/icons/twitter.png';
+import FaceBook from '../../../public/assets/icons/telegram.png';
+import Telegram from '../../../public/assets/icons/telegram.png';
+import Mail from '../../../public/assets/icons/mail.png';
+import Discord from '../../../public/assets/icons/discord.png';
 
 const FlexMixin = styled.div`
   display: flex;
@@ -16,27 +24,83 @@ const Container = styled.div`
   width: 100%;
   max-height: 117px;
   height: 100%;
+  padding: 0 80px;
   background-color: ${palette.gray200};
 `;
 
-const FooterContentArea = styled(FlexMixin)`
-  justify-content: center;
-  width: 231px;
-  height: 100%;
-  border: 1px solid;
+const FooterContentArea = styled.div`
+  text-align: right;
 `;
 
-// const RightArea = styled(FlexMixin)`
-//   width: 265px;
-//   height: 100%;
-//   border: 1px solid;
-// `;
+const LinkContainer = styled(FlexMixin)`
+  & span {
+    margin: 0 8px;
+  }
+`;
 
 const Footer = () => {
   return (
     <Container>
-      <FooterContentArea>LeftArea</FooterContentArea>
-      <FooterContentArea>RightArea</FooterContentArea>
+      <div>
+        <NextImage
+          src={Logo}
+          width={142}
+          height={32}
+          layout="fixed"
+          alt="PlayDapp"
+        />
+        <div>
+          <Typography type="b3" color="black">
+            The Premier Marketplace for NFTs
+          </Typography>
+        </div>
+      </div>
+
+      <FooterContentArea>
+        <div>
+          <NextImage
+            src={FaceBook}
+            width={32}
+            height={32}
+            layout="fixed"
+            alt="PlayDapp"
+          />
+          <NextImage
+            src={Twitter}
+            width={32}
+            height={32}
+            layout="fixed"
+            alt="PlayDapp"
+          />
+          <NextImage
+            src={Telegram}
+            width={32}
+            height={32}
+            layout="fixed"
+            alt="PlayDapp"
+          />
+          <NextImage
+            src={Mail}
+            width={32}
+            height={32}
+            layout="fixed"
+            alt="PlayDapp"
+          />
+          <NextImage
+            src={Discord}
+            width={32}
+            height={32}
+            layout="fixed"
+            alt="PlayDapp"
+          />
+
+          <LinkContainer>
+            <Typography type="b3" color="gray700">
+              © 2022. PlayDapp Limited All rights reserved.
+            </Typography>
+          </LinkContainer>
+        </div>
+      </FooterContentArea>
     </Container>
   );
 };

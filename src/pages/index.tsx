@@ -91,11 +91,10 @@ const IndexPage: NextPageWithLayout = () => {
   };
 
   useEffect(() => {
-    axios.get(`${apihost}/notice/type=all&page=1`).then((res) => {
+    axios.get(`${apihost}/notice?type=all&page=1`).then((res) => {
       try {
         if (res && res.status === 200) {
           const data = res.data.data.list;
-          console.log('data', data);
           return setDatas(data);
         }
       } catch (error) {
