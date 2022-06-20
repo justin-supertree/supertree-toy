@@ -99,7 +99,6 @@ const WriteContent = () => {
   };
 
   const cancelWrite = () => {
-    alert('cancel write contents!!');
     router.push('/');
   };
 
@@ -118,7 +117,6 @@ const WriteContent = () => {
         if (res && res.status === 200 && res.data.message === 'Success') {
           setTitle('');
           setContent('');
-          console.log(res);
           alert('Post response success!!');
           router.push('/');
         }
@@ -131,10 +129,6 @@ const WriteContent = () => {
         <Typography type="h5" color="black">
           Write Notice / Edit Notice
         </Typography>
-
-        <Link href={`/`}>
-          <Button>Goback</Button>
-        </Link>
       </WriteTitle>
 
       <InsertArea>

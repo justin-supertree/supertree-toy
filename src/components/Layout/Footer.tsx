@@ -1,5 +1,6 @@
 import NextImage from 'next/image';
 import styled from '@emotion/styled';
+import Link from 'next/link';
 
 import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
 
@@ -30,13 +31,13 @@ const Container = styled.div`
 
 const FooterContentArea = styled.div`
   text-align: right;
-`;
 
-const LinkContainer = styled(FlexMixin)`
-  & span {
+  & > span {
     margin: 0 8px;
   }
 `;
+
+const LinkContainer = styled.div``;
 
 const Footer = () => {
   return (
@@ -57,49 +58,47 @@ const Footer = () => {
       </div>
 
       <FooterContentArea>
-        <div>
-          <NextImage
-            src={FaceBook}
-            width={32}
-            height={32}
-            layout="fixed"
-            alt="PlayDapp"
-          />
-          <NextImage
-            src={Twitter}
-            width={32}
-            height={32}
-            layout="fixed"
-            alt="PlayDapp"
-          />
-          <NextImage
-            src={Telegram}
-            width={32}
-            height={32}
-            layout="fixed"
-            alt="PlayDapp"
-          />
-          <NextImage
-            src={Mail}
-            width={32}
-            height={32}
-            layout="fixed"
-            alt="PlayDapp"
-          />
-          <NextImage
-            src={Discord}
-            width={32}
-            height={32}
-            layout="fixed"
-            alt="PlayDapp"
-          />
+        <NextImage
+          src={FaceBook}
+          width={32}
+          height={32}
+          layout="fixed"
+          alt="PlayDapp"
+        />
+        <NextImage
+          src={Twitter}
+          width={32}
+          height={32}
+          layout="fixed"
+          alt="PlayDapp"
+        />
+        <NextImage
+          src={Telegram}
+          width={32}
+          height={32}
+          layout="fixed"
+          alt="PlayDapp"
+        />
+        <NextImage
+          src={Mail}
+          width={32}
+          height={32}
+          layout="fixed"
+          alt="PlayDapp"
+        />
+        <NextImage
+          src={Discord}
+          width={32}
+          height={32}
+          layout="fixed"
+          alt="PlayDapp"
+        />
 
-          <LinkContainer>
-            <Typography type="b3" color="gray700">
-              © 2022. PlayDapp Limited All rights reserved.
-            </Typography>
-          </LinkContainer>
-        </div>
+        <LinkContainer>
+          <Typography type="b3" color="gray700">
+            © 2022. PlayDapp Limited All rights reserved.
+          </Typography>
+        </LinkContainer>
       </FooterContentArea>
     </Container>
   );
