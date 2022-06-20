@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import type { GetServerSideProps } from 'next';
-import { dehydrate, QueryClient } from 'react-query';
+import { useEffect, useState } from 'react';
 import type { NextPageWithLayout } from 'types/next-page';
 import axios from 'axios';
 import Link from 'next/link';
@@ -12,7 +10,7 @@ import Header from '@/components/Layout/Header';
 import MainLayout from '@/components/Layout/MainLayout';
 import Table from '@/components/Table';
 import Footer from '@/components/Layout/Footer';
-import MetaTag from '@/components/Layout/MetaTag';
+import MetaTag from '@/components/MetaTag';
 
 type Props = {
   noticeId: number;
@@ -79,15 +77,25 @@ const IndexPage: NextPageWithLayout = () => {
     'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
 
   const [datas, setDatas] = useState<Props[]>([]);
-  const [tab, setTab] = useState('');
+  const [tab, setTab] = useState({
+    key: 'All',
+    value: 'all',
+  });
 
-  console.log('tab', tab);
+  const handleTab = (key: string, value: string) => () => {
+    if (key === tab.key) {
+      setTab({ key: 'all', value: 'All' });
+      return;
+    }
+    setTab({ key, value });
+  };
 
   useEffect(() => {
-    axios.get(`${apihost}/notice?type=all&page=1`).then((res) => {
+    axios.get(`${apihost}/notice/type=all&page=1`).then((res) => {
       try {
         if (res && res.status === 200) {
           const data = res.data.data.list;
+          console.log('data', data);
           return setDatas(data);
         }
       } catch (error) {
@@ -98,30 +106,43 @@ const IndexPage: NextPageWithLayout = () => {
 
   return (
     <>
+      <MetaTag title="Notice | PlayDapp Notice" />
       <Container>
         <Header />
 
         <MainLayout>
           <NoticeTitle>Notice</NoticeTitle>
           <TabBox>
-            <Tab onClick={() => setTab('all')} isSelect={tab === 'all'}>
+            <Tab
+              onClick={handleTab('All', 'all')}
+              isSelect={tab.value === 'all'}
+            >
               All
             </Tab>
-            <Tab onClick={() => setTab('service')} isSelect={tab === 'service'}>
+            <Tab
+              onClick={handleTab('Service', 'service')}
+              isSelect={tab.value === 'service'}
+            >
               Service
             </Tab>
-            <Tab onClick={() => setTab('event')} isSelect={tab === 'event'}>
+            <Tab
+              onClick={handleTab('Event', 'event')}
+              isSelect={tab.value === 'event'}
+            >
               Event
             </Tab>
-            <Tab onClick={() => setTab('tip')} isSelect={tab === 'tip'}>
+            <Tab
+              onClick={handleTab('Tip', 'tip')}
+              isSelect={tab.value === 'tip'}
+            >
               Tip
             </Tab>
           </TabBox>
-          <Link href={`/write`}>
-            <WriteButton>
+          <WriteButton>
+            <Link href={`/write`}>
               <Button>Write</Button>
-            </WriteButton>
-          </Link>
+            </Link>
+          </WriteButton>
 
           <Table title="main-table" headers={['No', 'Title', 'Date']}>
             {datas?.map((info, index) => {
@@ -132,7 +153,7 @@ const IndexPage: NextPageWithLayout = () => {
                   title={info.title}
                   type={info.type}
                   dateCreate={info.dateCreate}
-                  tab={tab}
+                  tab={tab.value}
                 />
               );
             })}

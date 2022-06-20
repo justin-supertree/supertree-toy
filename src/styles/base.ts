@@ -10,6 +10,7 @@ const base = css`
     font-family: hero-new, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
       Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
       sans-serif;
+    @import url('https://use.typekit.net/vng8sxo.css');
   }
 
   a {

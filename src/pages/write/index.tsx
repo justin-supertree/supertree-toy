@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -76,15 +76,19 @@ const ClickButton = styled(Button)`
 `;
 
 const WriteContent = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [select, setSelect] = useState('');
-  console.log('select', select);
-
   const apihost =
     'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
-
   const router = useRouter();
+
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [selected, setSelected] = useState('');
+
+  const selectList = ['service', 'tip', 'event'];
+
+  const handleSelectOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelected(e.target.value);
+  };
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -94,12 +98,20 @@ const WriteContent = () => {
     setContent(e.target.value);
   };
 
+  const cancelWrite = () => {
+    alert('cancel write contents!!');
+    router.push('/');
+  };
+
   const uploadNewData = () => {
+    if (selected === '') {
+      return;
+    }
     axios
       .post(`${apihost}/notice`, {
         title: title,
         content: content,
-        type: select,
+        type: selected,
         expireTime: '2050-10-04 23:50:11',
       })
       .then((res) => {
@@ -111,11 +123,6 @@ const WriteContent = () => {
           router.push('/');
         }
       });
-  };
-
-  const cancelWrite = () => {
-    alert('cancel write contents!!');
-    router.push('/');
   };
 
   return (
@@ -147,16 +154,16 @@ const WriteContent = () => {
         </Typography>
 
         <InsertItem type="type">
-          <ContentTypeSelect placeholder="타입을 선택해주세요.">
-            <option value="Service" onClick={() => setSelect('service')}>
-              Service
-            </option>
-            <option value="Tip" onClick={() => setSelect('tip')}>
-              Tip
-            </option>
-            <option value="Event" onClick={() => setSelect('event')}>
-              Event
-            </option>
+          <ContentTypeSelect
+            placeholder="타입을 선택해주세요."
+            onChange={handleSelectOption}
+            value={selected}
+          >
+            {selectList.map((item) => (
+              <option value={item} key={item}>
+                {item}
+              </option>
+            ))}
           </ContentTypeSelect>
         </InsertItem>
 
@@ -183,6 +190,7 @@ const WriteContent = () => {
             size="md"
             color="primary"
             variant="solid"
+            disabled={selected === '' ? true : false}
             onClick={uploadNewData}
           >
             <Typography type="b3" color="atlantic">

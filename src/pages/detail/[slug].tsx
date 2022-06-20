@@ -10,6 +10,7 @@ import useOpenControl from 'hooks/useOpenControl';
 
 import WriteLayout from '@/components/Layout/WriteLayout';
 import DeleteModal from '@/components/Modal/DeleteModal';
+import MetaTag from '@/components/MetaTag';
 
 const FlexMixin = styled.div`
   display: flex;
@@ -105,6 +106,7 @@ const DetailContent = ({ noticeId }: Props) => {
   const apihost =
     'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
   const id = Number(noticeId);
+  console.log(id);
   const router = useRouter();
   const [data, setData] = useState<Prop>({});
   const [isEdit, setIsEdit] = useOpenControl();
@@ -122,8 +124,9 @@ const DetailContent = ({ noticeId }: Props) => {
 
   const handleDelete = (isDelete: boolean) => () => {
     if (isDelete) {
-      axios.delete(`/notice?${id}`).then((response) => {
+      axios.delete(`/notice/${id}`).then((response) => {
         try {
+          console.log('hi im delete methods', id);
           if (response && response.status === 200) {
             const result = response.status;
             setIsRemove(result);
@@ -138,7 +141,7 @@ const DetailContent = ({ noticeId }: Props) => {
   };
 
   useEffect(() => {
-    axios.get(`${apihost}/notice?detail/${id}`).then((response) => {
+    axios.get(`${apihost}/notice/detail/${id}`).then((response) => {
       try {
         if (response && response.status === 200) {
           const req = response.data.data.list;
@@ -157,112 +160,112 @@ const DetailContent = ({ noticeId }: Props) => {
   }, [id]);
 
   return (
-    <WriteLayout>
-      <Typography type="h5" color="black">
-        {noticeId}
-      </Typography>
-      <ContentHeadArea>
-        {data && data !== undefined && (
-          <>
-            <TitleBlock className="title">
-              <Typography type="h5" color="black">
-                {data.title}
-              </Typography>
-
-              <div>
-                <Typography type="p4" color="dgray300">
-                  {data.dateCreate}
+    <>
+      <MetaTag title="Notice Detial Page" />
+      <WriteLayout>
+        <ContentHeadArea>
+          {data && data !== undefined && (
+            <>
+              <TitleBlock className="title">
+                <Typography type="h5" color="black">
+                  {data.title}
                 </Typography>
-              </div>
-            </TitleBlock>
 
-            <TitleBlock>
-              <EditButton size="sm" color="primary" variant="outline">
-                <Typography type="h6" color="primary700">
-                  Edit
+                <div>
+                  <Typography type="p4" color="dgray300">
+                    {data.dateCreate}
+                  </Typography>
+                </div>
+              </TitleBlock>
+
+              <TitleBlock>
+                <EditButton size="sm" color="primary" variant="outline">
+                  <Typography type="h6" color="primary700">
+                    Edit
+                  </Typography>
+                </EditButton>
+
+                <EditButton
+                  size="sm"
+                  color="primary"
+                  variant="outline"
+                  onClick={handleOpenModal(true)}
+                >
+                  <Typography type="h6" color="primary700">
+                    Delete
+                  </Typography>
+                </EditButton>
+              </TitleBlock>
+            </>
+          )}
+        </ContentHeadArea>
+
+        {isOpen && (
+          <Modal
+            isOpen={isOpen}
+            handleOpen={handleOpenModal(false)}
+            shouldCloseOnOverlayClick
+          >
+            <ModalTextBlock>
+              <ImageArea />
+
+              <TextArea>
+                <Typography type="h4" color="atlantic">
+                  Are you sure you want to delete the post?
                 </Typography>
-              </EditButton>
+              </TextArea>
 
-              <EditButton
+              <TextArea>
+                <Typography type="b3" color="gray900">
+                  Deleted posts will not be recovered.
+                </Typography>
+              </TextArea>
+            </ModalTextBlock>
+
+            <ModalButtonBlock>
+              <ClickButton
                 size="sm"
                 color="primary"
                 variant="outline"
-                onClick={handleOpenModal(true)}
+                onClick={handleOpenModal(false)}
               >
-                <Typography type="h6" color="primary700">
+                <Typography type="b3" color="primary700">
+                  Cancel
+                </Typography>
+              </ClickButton>
+
+              <ClickButton
+                size="sm"
+                color="primary"
+                variant="solid"
+                onClick={handleDelete(true)}
+              >
+                <Typography type="b3" color="atlantic">
                   Delete
                 </Typography>
-              </EditButton>
-            </TitleBlock>
-          </>
+              </ClickButton>
+            </ModalButtonBlock>
+          </Modal>
         )}
-      </ContentHeadArea>
 
-      {isOpen && (
-        <Modal
-          isOpen={isOpen}
-          handleOpen={handleOpenModal(false)}
-          shouldCloseOnOverlayClick
-        >
-          <ModalTextBlock>
-            <ImageArea />
+        <InsertArea>
+          <ContentDescBox>{data.content}</ContentDescBox>
 
-            <TextArea>
-              <Typography type="h4" color="atlantic">
-                Are you sure you want to delete the post?
-              </Typography>
-            </TextArea>
-
-            <TextArea>
-              <Typography type="b3" color="gray900">
-                Deleted posts will not be recovered.
-              </Typography>
-            </TextArea>
-          </ModalTextBlock>
-
-          <ModalButtonBlock>
-            <ClickButton
-              size="sm"
-              color="primary"
-              variant="outline"
-              onClick={handleOpenModal(false)}
-            >
-              <Typography type="b3" color="primary700">
-                Cancel
-              </Typography>
-            </ClickButton>
-
+          <ButtonArea>
             <ClickButton
               size="sm"
               color="primary"
               variant="solid"
-              onClick={handleDelete(true)}
+              onClick={viewlist}
             >
               <Typography type="b3" color="atlantic">
-                Delete
+                View list
               </Typography>
             </ClickButton>
-          </ModalButtonBlock>
-        </Modal>
-      )}
-
-      <InsertArea>
-        <ContentDescBox>{data.content}</ContentDescBox>
-
-        <ButtonArea>
-          <ClickButton
-            size="sm"
-            color="primary"
-            variant="solid"
-            onClick={viewlist}
-          >
-            <Typography type="b3" color="atlantic">
-              View list
-            </Typography>
-          </ClickButton>
-        </ButtonArea>
-      </InsertArea>
-    </WriteLayout>
+          </ButtonArea>
+        </InsertArea>
+      </WriteLayout>
+    </>
   );
 };
 
