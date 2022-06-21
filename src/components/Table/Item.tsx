@@ -45,7 +45,6 @@ const ColumnData = styled.div`
 
 const Item = ({ noticeId, title, dateCreate, type, tab }: Props) => {
   const date = new Date(dateCreate);
-  console.log('Tab:', tab);
 
   return (
     <>

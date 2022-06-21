@@ -14,6 +14,7 @@ import MainLayout from '@/components/Layout/MainLayout';
 import Table from '@/components/Table';
 import Footer from '@/components/Layout/Footer';
 import MetaTag from '@/components/MetaTag';
+import { result } from 'lodash';
 
 type Props = {
   noticeId: number;
@@ -76,16 +77,10 @@ const LoadMore = styled(Button)`
 `;
 
 const IndexPage: NextPageWithLayout = () => {
-  const apihost =
-    'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
-
-  const [datas, setDatas] = useState<Props[]>([]);
   const [tab, setTab] = useState({
-    key: 'All',
-    value: 'all',
+    key: 'all',
+    value: 'All',
   });
-
-  const [loadMore, setLoadMore] = useState(false);
 
   const handleTab = (key: string, value: string) => () => {
     if (key === tab.key) {
@@ -96,62 +91,50 @@ const IndexPage: NextPageWithLayout = () => {
   };
 
   const fetchDataList = async ({ pageParam = 1 }) => {
-    console.log('Data is Fetching!');
     const inject = [];
     const { data } = await getNotice({
-      type: 'all',
-      page: 0,
+      type: tab.key,
+      page: pageParam,
     });
     inject.push(data);
 
     return {
-      ...datas[0],
+      ...inject[0],
       from: pageParam * 10,
       nextPage: pageParam + 1,
     };
   };
 
-  // const {
-  //   isLoading,
-  //   data: requestData,
-  //   fetchNextPage,
-  //   refetch,
-  //   hasNextPage,
-  //   error,
-  // } = useInfiniteQuery(['notice', noticeId, loadMore], fetchDataList, {
-  //   getNextPageParam: (table) => {
-  //     console.log('table', table);
-  //     if (
-  //       Math.floor((table.total as number) / 10) >= table.nextPage &&
-  //       (table.total as number) > 10
-  //     ) {
-  //       return table.nextPage;
-  //     }
-  //   },
-  //   refetchOnWindowFocus: false,
-  //   cacheTime: 0,
-  // });
+  const {
+    isLoading,
+    data: requestData,
+    fetchNextPage,
+    refetch,
+    hasNextPage,
+    error,
+  } = useInfiniteQuery(['projects', tab.key], fetchDataList, {
+    getNextPageParam: (table) => {
+      if (
+        Math.floor(
+          (table.data.list.total as number) ||
+            (table.data.total as number) / 10,
+        ) >= table.nextPage &&
+        ((table.data.list.total as number) || (table.data.total as number)) > 10
+      ) {
+        return table.nextPage;
+      }
+    },
+    refetchOnWindowFocus: false,
+    cacheTime: 0,
+  });
+
+  const handleLoadMore = () => {
+    fetchNextPage();
+  };
 
   useEffect(() => {
-    // fetchDataList();
-    axios.get(`${apihost}/notice?type=${tab.value}&page=1`).then((res) => {
-      try {
-        if (res && res.status === 200) {
-          console.log('Get data', res);
-          const data = res.data.data.list;
-          return setDatas(data);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    });
-  }, []);
-
-  const handleLoadMore = (isLoadMore: boolean) => () => {
-    console.log('Click! handleLoadMore', isLoadMore);
-    setLoadMore(isLoadMore);
-    // fetchNextPage;
-  };
+    refetch();
+  }, [refetch]);
 
   return (
     <>
@@ -162,28 +145,22 @@ const IndexPage: NextPageWithLayout = () => {
         <MainLayout>
           <NoticeTitle>Notice</NoticeTitle>
           <TabBox>
-            <Tab
-              onClick={handleTab('All', 'all')}
-              isSelect={tab.value === 'all'}
-            >
+            <Tab onClick={handleTab('all', 'All')} isSelect={tab.key === 'all'}>
               All
             </Tab>
             <Tab
-              onClick={handleTab('Service', 'service')}
-              isSelect={tab.value === 'service'}
+              onClick={handleTab('service', 'Service')}
+              isSelect={tab.key === 'service'}
             >
               Service
             </Tab>
             <Tab
-              onClick={handleTab('Event', 'event')}
-              isSelect={tab.value === 'event'}
+              onClick={handleTab('event', 'Event')}
+              isSelect={tab.key === 'event'}
             >
               Event
             </Tab>
-            <Tab
-              onClick={handleTab('Tip', 'tip')}
-              isSelect={tab.value === 'tip'}
-            >
+            <Tab onClick={handleTab('tip', 'Tip')} isSelect={tab.key === 'tip'}>
               Tip
             </Tab>
           </TabBox>
@@ -193,33 +170,36 @@ const IndexPage: NextPageWithLayout = () => {
             </Link>
           </WriteButton>
 
-          <Table title="main-table" headers={['No', 'Title', 'Date']}>
-            {datas?.map((info, index) => {
-              console.log(info);
-              return (
-                <Table.Item
-                  key={index}
-                  noticeId={info.noticeId}
-                  title={info.title}
-                  type={info.type}
-                  dateCreate={info.dateCreate}
-                  tab={tab.value}
-                />
-              );
-            })}
-          </Table>
+          {requestData?.pages[0].data.list?.length !== 0 && (
+            <>
+              <Table title="main-table" headers={['No', 'Title', 'Date']}>
+                {requestData?.pages.map((noticeData) => {
+                  return noticeData.data?.list?.map((info: Props) => (
+                    <Table.Item
+                      key={info.noticeId}
+                      noticeId={info.noticeId}
+                      title={info.title}
+                      type={info.type}
+                      dateCreate={info.dateCreate}
+                      tab={tab.key}
+                    />
+                  ));
+                })}
+              </Table>
 
-          {datas && datas.length >= 10 && (
-            <LoadMore
-              size="md"
-              color="primary"
-              variant="outline"
-              onClick={handleLoadMore(true)}
-            >
-              <Typography type="b3" color="primary700">
-                LoadMore
-              </Typography>
-            </LoadMore>
+              {hasNextPage && (
+                <LoadMore
+                  size="md"
+                  color="primary"
+                  variant="outline"
+                  onClick={handleLoadMore}
+                >
+                  <Typography type="b3" color="primary700">
+                    LoadMore
+                  </Typography>
+                </LoadMore>
+              )}
+            </>
           )}
         </MainLayout>
 

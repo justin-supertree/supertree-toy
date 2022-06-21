@@ -155,7 +155,6 @@ const DetailContent = ({ noticeId }: Props) => {
   };
 
   const handleUploadOpenModal = (isUploadOpen: boolean) => () => {
-    console.log('isUploadOpen', isUploadOpen);
     setUploadOpen(isUploadOpen);
   };
 
@@ -170,7 +169,6 @@ const DetailContent = ({ noticeId }: Props) => {
       setTitle('');
       setContent('');
     }
-    console.log('click Edit!', isEdit);
   };
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
