@@ -11,12 +11,6 @@ import Telegram from '../../../public/assets/icons/telegram.png';
 import Mail from '../../../public/assets/icons/mail.png';
 import Discord from '../../../public/assets/icons/discord.png';
 
-const FlexMixin = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-`;
-
 const Container = styled.div`
   position: absolute;
   display: flex;

@@ -1,9 +1,16 @@
 import { useEffect, useState } from 'react';
 import type { NextPageWithLayout } from 'types/next-page';
 import Link from 'next/link';
+import NextImage from 'next/image';
 import { useInfiniteQuery } from 'react-query';
 import styled from '@emotion/styled';
-import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
+import {
+  breakpoints,
+  spacing,
+  palette,
+  Button,
+  Typography,
+} from '@playdapp/ui';
 
 import { getNotice } from 'api/notice';
 
@@ -12,6 +19,7 @@ import MainLayout from '@/components/Layout/MainLayout';
 import Table from '@/components/Table';
 import Footer from '@/components/Layout/Footer';
 import MetaTag from '@/components/MetaTag';
+import Error from '../../public/assets/icons/error.png';
 
 type Props = {
   noticeId: number;
@@ -71,6 +79,21 @@ const Tab = styled(FlexMixin)<{ isSelect: boolean }>`
 const LoadMore = styled(Button)`
   width: 121px;
   margin-top: 20px;
+`;
+
+const EmptyItemBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10rem;
+
+  gap: ${spacing.xl};
+
+  button {
+    color: ${palette.white};
+    font-weight: 600;
+    border-radius: 1.5rem;
+  }
 `;
 
 const IndexPage: NextPageWithLayout = () => {
@@ -140,64 +163,88 @@ const IndexPage: NextPageWithLayout = () => {
         <Header />
 
         <MainLayout>
-          <NoticeTitle>Notice</NoticeTitle>
-          <TabBox>
-            <Tab onClick={handleTab('all', 'All')} isSelect={tab.key === 'all'}>
-              All
-            </Tab>
-            <Tab
-              onClick={handleTab('service', 'Service')}
-              isSelect={tab.key === 'service'}
-            >
-              Service
-            </Tab>
-            <Tab
-              onClick={handleTab('event', 'Event')}
-              isSelect={tab.key === 'event'}
-            >
-              Event
-            </Tab>
-            <Tab onClick={handleTab('tip', 'Tip')} isSelect={tab.key === 'tip'}>
-              Tip
-            </Tab>
-          </TabBox>
-          <WriteButton>
-            <Link href={`/write`}>
-              <Button>Write</Button>
-            </Link>
-          </WriteButton>
+          <>
+            <NoticeTitle>Notice</NoticeTitle>
+            <TabBox>
+              <Tab
+                onClick={handleTab('all', 'All')}
+                isSelect={tab.key === 'all'}
+              >
+                All
+              </Tab>
+              <Tab
+                onClick={handleTab('service', 'Service')}
+                isSelect={tab.key === 'service'}
+              >
+                Service
+              </Tab>
+              <Tab
+                onClick={handleTab('event', 'Event')}
+                isSelect={tab.key === 'event'}
+              >
+                Event
+              </Tab>
+              <Tab
+                onClick={handleTab('tip', 'Tip')}
+                isSelect={tab.key === 'tip'}
+              >
+                Tip
+              </Tab>
+            </TabBox>
+            <WriteButton>
+              <Link href={`/write`}>
+                <Button>Write</Button>
+              </Link>
+            </WriteButton>
 
-          {requestData?.pages[0].data.list?.length !== 0 && (
-            <>
-              <Table title="main-table" headers={['No', 'Title', 'Date']}>
-                {requestData?.pages.map((noticeData) => {
-                  return noticeData.data?.list?.map((info: Props) => (
-                    <Table.Item
-                      key={info.noticeId}
-                      noticeId={info.noticeId}
-                      title={info.title}
-                      type={info.type}
-                      dateCreate={info.dateCreate}
-                      tab={tab.key}
-                    />
-                  ));
-                })}
-              </Table>
+            {requestData?.pages[0].data.list?.length !== 0 && (
+              <>
+                <Table title="main-table" headers={['No', 'Title', 'Date']}>
+                  {requestData?.pages.map((noticeData) => {
+                    return noticeData.data?.list?.map((info: Props) => (
+                      <Table.Item
+                        key={info.noticeId}
+                        noticeId={info.noticeId}
+                        title={info.title}
+                        type={info.type}
+                        dateCreate={info.dateCreate}
+                        tab={tab.key}
+                      />
+                    ));
+                  })}
+                </Table>
 
-              {hasNextPage && (
-                <LoadMore
-                  size="md"
-                  color="primary"
-                  variant="outline"
-                  onClick={handleLoadMore}
-                >
-                  <Typography type="b3" color="primary700">
-                    LoadMore
-                  </Typography>
-                </LoadMore>
-              )}
-            </>
-          )}
+                {hasNextPage && (
+                  <LoadMore
+                    size="md"
+                    color="primary"
+                    variant="outline"
+                    onClick={handleLoadMore}
+                  >
+                    <Typography type="b3" color="primary700">
+                      LoadMore
+                    </Typography>
+                  </LoadMore>
+                )}
+              </>
+            )}
+
+            {!isLoading && error && (
+              <EmptyItemBlock>
+                <NextImage
+                  src={Error}
+                  width={120}
+                  height={120}
+                  layout="fixed"
+                  alt="notice Alert"
+                />
+
+                <Typography type="h4" color="atlantic">
+                  No Data in Notice.
+                </Typography>
+              </EmptyItemBlock>
+            )}
+          </>
         </MainLayout>
 
         <Footer />

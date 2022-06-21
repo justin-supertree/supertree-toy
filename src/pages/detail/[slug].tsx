@@ -20,9 +20,6 @@ const FlexMixin = styled.div`
 `;
 
 const ContentHeadArea = styled.div`
-  /* display: flex;
-  align-items: flex-end;
-  justify-content: space-between; */
   padding-bottom: 16px;
   border-bottom: 1px solid ${palette.gray400};
 `;
@@ -145,7 +142,6 @@ const DetailContent = ({ noticeId }: Props) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [selected, setSelected] = useState('');
-  const [isSubmit, setIsSubmit] = useState(false);
 
   const selectList = ['service', 'tip', 'event'];
 
@@ -158,12 +154,12 @@ const DetailContent = ({ noticeId }: Props) => {
   };
 
   const viewlist = () => {
-    alert('cancel write contents!!');
     router.push('/');
   };
 
   const handleEdit = (isEdit: boolean) => () => {
     setIsEdit(isEdit);
+
     if (isEdit === false) {
       setTitle('');
       setContent('');

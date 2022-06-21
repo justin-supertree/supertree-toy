@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { MainContainer } from 'styles/pages/home';
+import { ErrorContainer } from 'styles/error';
 
 const Container = styled.div`
+  justify-content: center;
   width: 100%;
+  height: 100%;
   padding: 32px 0 5rem 0;
   z-index: 0;
   text-align: center;
@@ -16,12 +18,12 @@ type Props = {
   children: React.ReactNode;
 };
 
-const MainLayout = ({ children }: Props) => {
+const ErrorLayout = ({ children }: Props) => {
   return (
-    <MainContainer>
+    <ErrorContainer>
       <Container>{children} </Container>
-    </MainContainer>
+    </ErrorContainer>
   );
 };
 
-export default MainLayout;
+export default ErrorLayout;
