@@ -20,7 +20,7 @@ const Container = styled.div`
   height: 100%;
   min-height: 61rem;
   margin-top: 8rem;
-  padding: 112px 0 5rem 0;
+  padding: 112px 3rem 5rem 3rem;
   margin: auto;
   z-index: 0;
   text-align: center;

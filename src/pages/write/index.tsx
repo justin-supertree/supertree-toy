@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import styled from '@emotion/styled';
 import { breakpoints, Button, Typography } from '@playdapp/ui';
 import { Input, Select, Textarea } from '@chakra-ui/react';
@@ -66,6 +65,10 @@ const ButtonArea = styled(FlexMixin)`
   justify-content: center;
   margin-top: 40px;
   text-align: center;
+
+  ${breakpoints.down('md')} {
+    display: block;
+  }
 `;
 
 const ClickButton = styled(Button)`
@@ -73,6 +76,18 @@ const ClickButton = styled(Button)`
   max-width: 240px;
   margin: 0 4px;
   color: #ffff;
+
+  ${breakpoints.down('md')} {
+    max-width: 100%;
+    margin: 4px 0;
+
+    &.cancel {
+      order: 0;
+    }
+    &.write {
+      order: 1;
+    }
+  }
 `;
 
 const WriteContent = () => {
@@ -117,7 +132,6 @@ const WriteContent = () => {
         if (res && res.status === 200 && res.data.message === 'Success') {
           setTitle('');
           setContent('');
-          alert('Post response success!!');
           router.push('/');
         }
       });
@@ -170,6 +184,7 @@ const WriteContent = () => {
 
         <ButtonArea>
           <ClickButton
+            className="cancel"
             size="md"
             color="primary"
             variant="outline"
@@ -181,6 +196,7 @@ const WriteContent = () => {
           </ClickButton>
 
           <ClickButton
+            className="write"
             size="md"
             color="primary"
             variant="solid"
