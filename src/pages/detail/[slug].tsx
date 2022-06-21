@@ -248,9 +248,13 @@ const DetailContent = ({ noticeId }: Props) => {
               <TitleBlock>
                 {!isEdit ? (
                   <>
+                    <Typography type="h4" color="black">
+                      {data.title}
+                    </Typography>
+
                     <BeforeEditTitle>
-                      <Typography type="h4" color="black">
-                        {data.title}
+                      <Typography type="b3" color="gray700">
+                        {data.dateCreate}
                       </Typography>
 
                       <div>

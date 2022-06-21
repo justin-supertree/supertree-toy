@@ -45,10 +45,11 @@ const ColumnData = styled.div`
 
 const Item = ({ noticeId, title, dateCreate, type, tab }: Props) => {
   const date = new Date(dateCreate);
+  console.log('Tab:', tab);
 
   return (
     <>
-      {tab && type !== '' && (
+      {tab === type && type !== '' && (
         <Link href={`/detail/${noticeId}`} passHref>
           <a>
             <ItemContainer>

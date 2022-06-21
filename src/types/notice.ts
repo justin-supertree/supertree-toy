@@ -11,3 +11,8 @@ export type NoticeGetData = {
   title: string;
   page: number;
 };
+
+export type NoticeRequest = {
+  type: string;
+  page: number;
+};

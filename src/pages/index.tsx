@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react';
 import type { NextPageWithLayout } from 'types/next-page';
 import axios from 'axios';
 import Link from 'next/link';
-
+import { useInfiniteQuery, useQuery } from 'react-query';
 import styled from '@emotion/styled';
 import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
+import { format } from 'date-fns';
+
+import { getNotice } from 'api/notice';
 
 import Header from '@/components/Layout/Header';
 import MainLayout from '@/components/Layout/MainLayout';
@@ -82,6 +85,8 @@ const IndexPage: NextPageWithLayout = () => {
     value: 'all',
   });
 
+  const [loadMore, setLoadMore] = useState(false);
+
   const handleTab = (key: string, value: string) => () => {
     if (key === tab.key) {
       setTab({ key: 'all', value: 'All' });
@@ -90,10 +95,49 @@ const IndexPage: NextPageWithLayout = () => {
     setTab({ key, value });
   };
 
+  const fetchDataList = async ({ pageParam = 1 }) => {
+    console.log('Data is Fetching!');
+    const inject = [];
+    const { data } = await getNotice({
+      type: 'all',
+      page: 0,
+    });
+    inject.push(data);
+
+    return {
+      ...datas[0],
+      from: pageParam * 10,
+      nextPage: pageParam + 1,
+    };
+  };
+
+  // const {
+  //   isLoading,
+  //   data: requestData,
+  //   fetchNextPage,
+  //   refetch,
+  //   hasNextPage,
+  //   error,
+  // } = useInfiniteQuery(['notice', noticeId, loadMore], fetchDataList, {
+  //   getNextPageParam: (table) => {
+  //     console.log('table', table);
+  //     if (
+  //       Math.floor((table.total as number) / 10) >= table.nextPage &&
+  //       (table.total as number) > 10
+  //     ) {
+  //       return table.nextPage;
+  //     }
+  //   },
+  //   refetchOnWindowFocus: false,
+  //   cacheTime: 0,
+  // });
+
   useEffect(() => {
-    axios.get(`${apihost}/notice?type=all&page=1`).then((res) => {
+    // fetchDataList();
+    axios.get(`${apihost}/notice?type=${tab.value}&page=1`).then((res) => {
       try {
         if (res && res.status === 200) {
+          console.log('Get data', res);
           const data = res.data.data.list;
           return setDatas(data);
         }
@@ -102,6 +146,12 @@ const IndexPage: NextPageWithLayout = () => {
       }
     });
   }, []);
+
+  const handleLoadMore = (isLoadMore: boolean) => () => {
+    console.log('Click! handleLoadMore', isLoadMore);
+    setLoadMore(isLoadMore);
+    // fetchNextPage;
+  };
 
   return (
     <>
@@ -145,6 +195,7 @@ const IndexPage: NextPageWithLayout = () => {
 
           <Table title="main-table" headers={['No', 'Title', 'Date']}>
             {datas?.map((info, index) => {
+              console.log(info);
               return (
                 <Table.Item
                   key={index}
@@ -158,11 +209,18 @@ const IndexPage: NextPageWithLayout = () => {
             })}
           </Table>
 
-          <LoadMore size="md" color="primary" variant="outline">
-            <Typography type="b3" color="primary700">
-              LoadMore
-            </Typography>
-          </LoadMore>
+          {datas && datas.length >= 10 && (
+            <LoadMore
+              size="md"
+              color="primary"
+              variant="outline"
+              onClick={handleLoadMore(true)}
+            >
+              <Typography type="b3" color="primary700">
+                LoadMore
+              </Typography>
+            </LoadMore>
+          )}
         </MainLayout>
 
         <Footer />
