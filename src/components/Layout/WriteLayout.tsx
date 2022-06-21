@@ -1,19 +1,24 @@
 import React from 'react';
 
 import styled from '@emotion/styled';
+import {
+  breakpoints,
+  spacing,
+  palette,
+  Button,
+  Typography,
+} from '@playdapp/ui';
 
 import Header from '@/components/Layout/Header';
 import Footer from '@/components/Layout/Footer';
 
-const WriteContainer = styled.div`
-  width: auto;
-`;
+import { WriteContainer } from 'styles/pages/home';
 
 const Container = styled.div`
   width: 100%;
   max-width: 838px;
-  min-height: 61rem;
   height: 100%;
+  min-height: 61rem;
   margin-top: 8rem;
   padding: 112px 0 5rem 0;
   margin: auto;
@@ -21,6 +26,10 @@ const Container = styled.div`
   text-align: center;
   font-size: 16px;
   font-weight: 600;
+
+  ${breakpoints.down('md')} {
+    padding: 20px 1rem;
+  }
 `;
 
 type Props = {

@@ -12,6 +12,7 @@ import useOpenControl from 'hooks/useOpenControl';
 import WriteLayout from '@/components/Layout/WriteLayout';
 import MetaTag from '@/components/MetaTag';
 import Error from '../../../public/assets/icons/error.png';
+import DetailLayout from '@/components/Layout/DetailLayout';
 
 const FlexMixin = styled.div`
   display: flex;
@@ -234,7 +235,8 @@ const DetailContent = ({ noticeId }: Props) => {
   return (
     <>
       <MetaTag title="Notice Detial Page" />
-      <WriteLayout>
+
+      <DetailLayout>
         <ContentHeadArea>
           {data && data !== undefined && (
             <>
@@ -386,7 +388,7 @@ const DetailContent = ({ noticeId }: Props) => {
             />
           )}
         </InsertArea>
-      </WriteLayout>
+      </DetailLayout>
 
       {isOpen && (
         <Modal

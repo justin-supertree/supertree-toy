@@ -1,5 +1,12 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import {
+  breakpoints,
+  spacing,
+  palette,
+  Button,
+  Typography,
+} from '@playdapp/ui';
 
 import { MainContainer } from 'styles/pages/home';
 
@@ -10,6 +17,10 @@ const Container = styled.div`
   text-align: center;
   font-size: 16px;
   font-weight: 600;
+
+  ${breakpoints.down('md')} {
+    padding: 20px 0 46px 0;
+  }
 `;
 
 type Props = {

@@ -11,6 +11,7 @@ import {
   Button,
   Typography,
 } from '@playdapp/ui';
+import { useMedia } from 'react-use';
 
 import { getNotice } from 'api/notice';
 
@@ -42,6 +43,11 @@ const Container = styled.div`
 const NoticeTitle = styled.div`
   font-size: 2rem;
   margin-bottom: 40px;
+
+  ${breakpoints.down('md')} {
+    font-size: 24px;
+    margin-bottom: 1rem;
+  }
 `;
 
 const WriteButton = styled.div`
@@ -59,6 +65,10 @@ const TabBox = styled.div`
   margin-bottom: 40px;
   border-radius: 12px;
   background-color: #efeff1;
+
+  ${breakpoints.down('md')} {
+    margin-bottom: 1rem;
+  }
 `;
 
 const Tab = styled(FlexMixin)<{ isSelect: boolean }>`
@@ -73,6 +83,12 @@ const Tab = styled(FlexMixin)<{ isSelect: boolean }>`
 
   &:hover {
     background-color: #d0d1d7;
+  }
+
+  ${breakpoints.down('md')} {
+    width: 91px;
+    height: 32px;
+    background-color: ${({ isSelect }) => (isSelect ? '#36383F' : '')};
   }
 `;
 
@@ -97,6 +113,8 @@ const EmptyItemBlock = styled.div`
 `;
 
 const IndexPage: NextPageWithLayout = () => {
+  const isMobile = useMedia('(max-width: 752px)', true);
+
   const [tab, setTab] = useState({
     key: 'all',
     value: 'All',
@@ -191,9 +209,14 @@ const IndexPage: NextPageWithLayout = () => {
                 Tip
               </Tab>
             </TabBox>
+
             <WriteButton>
               <Link href={`/write`}>
-                <Button>Write</Button>
+                <Button size={isMobile ? 'sm' : 'sm'}>
+                  <Typography type={isMobile ? 'b2' : 'h5'} color="atlantic">
+                    Write
+                  </Typography>
+                </Button>
               </Link>
             </WriteButton>
 

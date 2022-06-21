@@ -1,6 +1,13 @@
 import NextImage from 'next/image';
-import styled from '@emotion/styled';
 import Link from 'next/link';
+import styled from '@emotion/styled';
+import {
+  breakpoints,
+  spacing,
+  palette,
+  Button,
+  Typography,
+} from '@playdapp/ui';
 
 import Logo from '../../../public/assets/icons/header-logo.svg';
 import User from '../../../public/assets/icons/user.png';
@@ -17,6 +24,11 @@ const Container = styled.div`
   background-color: white;
   box-shadow: 0px 4px 8px 0px #1516190d;
   z-index: 1;
+
+  ${breakpoints.down('md')} {
+    min-height: 64px;
+    padding: 0 24px;
+  }
 `;
 
 const Header = () => {

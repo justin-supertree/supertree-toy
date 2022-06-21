@@ -1,5 +1,13 @@
 import styled from '@emotion/styled';
 
+import {
+  breakpoints,
+  spacing,
+  palette,
+  Button,
+  Typography,
+} from '@playdapp/ui';
+
 import Item from './Item';
 
 type Props = {
@@ -15,12 +23,20 @@ const TableBox = styled.div`
   border-bottom: 1px solid #efeff1;
   width: 100%;
   margin: auto;
+
+  ${breakpoints.down('md')} {
+    margin-top: 1rem;
+  }
 `;
 
 const TableHeader = styled.div`
   display: flex;
   align-items: center;
   border-bottom: 1px solid #efeff1;
+
+  ${breakpoints.down('md')} {
+    display: none;
+  }
 `;
 
 const TableTitle = styled.div`
