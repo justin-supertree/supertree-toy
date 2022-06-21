@@ -10,10 +10,8 @@ import { Input, Select, Textarea } from '@chakra-ui/react';
 import useOpenControl from 'hooks/useOpenControl';
 
 import WriteLayout from '@/components/Layout/WriteLayout';
-import DeleteModal from '@/components/Modal/DeleteModal';
 import MetaTag from '@/components/MetaTag';
 import Error from '../../../public/assets/icons/error.png';
-import { type } from 'os';
 
 const FlexMixin = styled.div`
   display: flex;
@@ -291,7 +289,6 @@ const DetailContent = ({ noticeId }: Props) => {
                       <ContentTitleInput
                         value={title}
                         onChange={handleTitle}
-                        // placeholder={data.title}
                         size="lg"
                         width="100%"
                       />
@@ -303,7 +300,6 @@ const DetailContent = ({ noticeId }: Props) => {
 
                     <InsertItem type="type">
                       <ContentTypeSelect
-                        // placeholder="타입을 선택해주세요."
                         onChange={handleSelectOption}
                         value={selected}
                       >

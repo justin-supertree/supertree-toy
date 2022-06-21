@@ -25,6 +25,12 @@ const ItemContainer = styled.div`
   }
 `;
 
+const OverflowColumn = styled.div`
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
 const ColumnData = styled.div`
   display: flex;
   align-items: center;
@@ -53,11 +59,15 @@ const Item = ({ noticeId, title, dateCreate, type, tab }: Props) => {
           <a>
             <ItemContainer>
               <ColumnData>{noticeId}</ColumnData>
-              <ColumnData>{title}</ColumnData>
               <ColumnData>
-                <Typography color="dgray100">
-                  {format(date, 'MMM-dd-yyyy h:mm:ss a')}
-                </Typography>
+                <OverflowColumn>{title}</OverflowColumn>
+              </ColumnData>
+              <ColumnData>
+                <OverflowColumn>
+                  <Typography color="dgray100">
+                    {format(date, 'MMM-dd-yyyy h:mm:ss a')}
+                  </Typography>
+                </OverflowColumn>
               </ColumnData>
             </ItemContainer>
           </a>

@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
 import type { NextPageWithLayout } from 'types/next-page';
-import axios from 'axios';
 import Link from 'next/link';
-import { useInfiniteQuery, useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import styled from '@emotion/styled';
 import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
-import { format } from 'date-fns';
 
 import { getNotice } from 'api/notice';
 
@@ -14,7 +12,6 @@ import MainLayout from '@/components/Layout/MainLayout';
 import Table from '@/components/Table';
 import Footer from '@/components/Layout/Footer';
 import MetaTag from '@/components/MetaTag';
-import { result } from 'lodash';
 
 type Props = {
   noticeId: number;

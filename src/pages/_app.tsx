@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import type { AppProps } from 'next/app';
 import { Global } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { Provider } from 'react-redux';
 import { ChakraProvider } from '@chakra-ui/react';
+import type { AppProps } from 'next/app';
 
-import { store } from '../store';
 import styles from '../styles';
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -13,14 +11,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Provider store={store}>
-        <Global styles={styles} />
-        <ChakraProvider>
-          <QueryClientProvider client={queryClient}>
-            <Component {...pageProps} />
-          </QueryClientProvider>
-        </ChakraProvider>
-      </Provider>
+      <Global styles={styles} />
+      <ChakraProvider>
+        <QueryClientProvider client={queryClient}>
+          <Component {...pageProps} />
+        </QueryClientProvider>
+      </ChakraProvider>
     </>
   );
 }
