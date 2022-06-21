@@ -13,6 +13,7 @@ import WriteLayout from '@/components/Layout/WriteLayout';
 import DeleteModal from '@/components/Modal/DeleteModal';
 import MetaTag from '@/components/MetaTag';
 import Error from '../../../public/assets/icons/error.png';
+import { type } from 'os';
 
 const FlexMixin = styled.div`
   display: flex;
@@ -290,7 +291,7 @@ const DetailContent = ({ noticeId }: Props) => {
                       <ContentTitleInput
                         value={title}
                         onChange={handleTitle}
-                        placeholder={data.title}
+                        // placeholder={data.title}
                         size="lg"
                         width="100%"
                       />
@@ -302,7 +303,7 @@ const DetailContent = ({ noticeId }: Props) => {
 
                     <InsertItem type="type">
                       <ContentTypeSelect
-                        placeholder="타입을 선택해주세요."
+                        // placeholder="타입을 선택해주세요."
                         onChange={handleSelectOption}
                         value={selected}
                       >
@@ -331,8 +332,19 @@ const DetailContent = ({ noticeId }: Props) => {
                           color="primary"
                           variant="outline"
                           onClick={handleUploadOpenModal(true)}
+                          disabled={
+                            (title === '' || content === '' || !selected) &&
+                            true
+                          }
                         >
-                          <Typography type="h6" color="primary700">
+                          <Typography
+                            type="h6"
+                            color={
+                              title === '' || content === '' || !selected
+                                ? 'gray700'
+                                : 'primary700'
+                            }
+                          >
                             Upload
                           </Typography>
                         </EditButton>
@@ -378,7 +390,7 @@ const DetailContent = ({ noticeId }: Props) => {
               type="text"
               value={content}
               onChange={handleContent}
-              placeholder={data.content}
+              // placeholder={data.content}
             />
           )}
         </InsertArea>

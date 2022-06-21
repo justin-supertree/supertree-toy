@@ -48,7 +48,7 @@ const Item = ({ noticeId, title, dateCreate, type, tab }: Props) => {
 
   return (
     <>
-      {tab === type && type !== '' && (
+      {type !== '' && (
         <Link href={`/detail/${noticeId}`} passHref>
           <a>
             <ItemContainer>
