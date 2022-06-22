@@ -27,7 +27,9 @@ const NotFoundPage: NextPage = () => {
         />
 
         <TextArea>
-          <Typography type="h3">Welcome to 404 Page.</Typography>
+          <Typography type="h3">
+            You have something wrong.. (404 Error)
+          </Typography>
         </TextArea>
 
         <Link href="/">

@@ -11,6 +11,11 @@ const nextConfig = {
         destination: '/detail/:index*',
         permanent: true,
       },
+      {
+        source: '/404',
+        destination: '/404',
+        permanent: true,
+      },
     ];
   },
 };

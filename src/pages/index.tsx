@@ -20,7 +20,7 @@ import MainLayout from '@/components/Layout/MainLayout';
 import Table from '@/components/Table';
 import Footer from '@/components/Layout/Footer';
 import MetaTag from '@/components/MetaTag';
-import Error from '../../public/assets/icons/error.png';
+import Empty from '@/components/Empty';
 
 type Props = {
   noticeId: number;
@@ -100,21 +100,6 @@ const LoadMore = styled(Button)`
   margin-top: 20px;
 `;
 
-const EmptyItemBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 10rem;
-
-  gap: ${spacing.xl};
-
-  button {
-    color: ${palette.white};
-    font-weight: 600;
-    border-radius: 1.5rem;
-  }
-`;
-
 const IndexPage: NextPageWithLayout = () => {
   const isMobile = useMedia('(max-width: 752px)', true);
 
@@ -188,6 +173,7 @@ const IndexPage: NextPageWithLayout = () => {
             <NoticeTitle>
               <Typography type={isMobile ? 'h4' : 'h3'}>Notice</Typography>
             </NoticeTitle>
+
             <TabBox>
               <Tab
                 onClick={handleTab('all', 'All')}
@@ -225,7 +211,7 @@ const IndexPage: NextPageWithLayout = () => {
               </Link>
             </WritePosition>
 
-            {requestData?.pages[0].data.list?.length !== 0 && (
+            {requestData?.pages[0].data.list?.length !== 0 && !error && (
               <>
                 <Table title="main-table" headers={['No', 'Title', 'Date']}>
                   {requestData?.pages.map((noticeData) => {
@@ -257,21 +243,7 @@ const IndexPage: NextPageWithLayout = () => {
               </>
             )}
 
-            {!isLoading && error && (
-              <EmptyItemBlock>
-                <NextImage
-                  src={Error}
-                  width={120}
-                  height={120}
-                  layout="fixed"
-                  alt="notice Alert"
-                />
-
-                <Typography type="h4" color="atlantic">
-                  No Data in Notice.
-                </Typography>
-              </EmptyItemBlock>
-            )}
+            {!isLoading && error && <Empty tab={tab.value} />}
           </>
         </MainLayout>
 

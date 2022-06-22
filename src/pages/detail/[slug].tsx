@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
 import { Input, Select, Textarea } from '@chakra-ui/react';
 
+import { baseURL } from 'api/notice';
 import useOpenControl from 'hooks/useOpenControl';
 
 import MetaTag from '@/components/MetaTag';
@@ -121,8 +122,6 @@ const UploadEditBlock = styled.div`
 `;
 
 const DetailContent = ({ noticeId }: Props) => {
-  const apihost =
-    'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
   const id = Number(noticeId);
   const router = useRouter();
 
@@ -169,7 +168,7 @@ const DetailContent = ({ noticeId }: Props) => {
   const handleSubmitEdit = async () => {
     try {
       await axios
-        .patch(`${apihost}/notice/${id}`, {
+        .patch(`${baseURL}/notice/${id}`, {
           title: title,
           content: content,
           type: selected,
@@ -193,7 +192,7 @@ const DetailContent = ({ noticeId }: Props) => {
 
   const handleDelete = (isDelete: boolean, id: number) => () => {
     if (isDelete) {
-      axios.delete(`${apihost}/notice/${id}`).then((response) => {
+      axios.delete(`${baseURL}/notice/${id}`).then((response) => {
         try {
           if (response && response.status === 200) {
             const result = response.status;
@@ -209,7 +208,7 @@ const DetailContent = ({ noticeId }: Props) => {
   };
 
   useEffect(() => {
-    axios.get(`${apihost}/notice/detail/${id}`).then((response) => {
+    axios.get(`${baseURL}/notice/detail/${id}`).then((response) => {
       try {
         if (response && response.status === 200) {
           const req = response.data.data.info;

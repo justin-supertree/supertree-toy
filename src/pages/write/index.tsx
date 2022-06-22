@@ -6,6 +6,7 @@ import { breakpoints, Button, Typography } from '@playdapp/ui';
 import { Input, Select, Textarea } from '@chakra-ui/react';
 
 import WriteLayout from '@/components/Layout/WriteLayout';
+import { baseURL } from 'api/notice';
 
 type Props = {
   noticeId?: number;
@@ -91,8 +92,6 @@ const ClickButton = styled(Button)`
 `;
 
 const WriteContent = () => {
-  const apihost =
-    'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
   const router = useRouter();
 
   const [title, setTitle] = useState('');
@@ -122,7 +121,7 @@ const WriteContent = () => {
       return;
     }
     axios
-      .post(`${apihost}/notice`, {
+      .post(`${baseURL}/notice`, {
         title: title,
         content: content,
         type: selected,

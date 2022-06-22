@@ -2,10 +2,11 @@ import axios from 'axios';
 
 import type { NoticeItemRequest, NoticeRequest } from 'types/notice';
 
-const apihost = 'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
+export const baseURL =
+  'http://marketplace-test-1.ap-northeast-2.elasticbeanstalk.com';
 
 export const getNotice = ({ type, page }: NoticeRequest) => {
-  return axios.get(`${apihost}/notice?type=${type}&page=${page}`);
+  return axios.get(`${baseURL}/notice?type=${type}&page=${page}`);
 };
 
 export const postNoticeInfo = ({
