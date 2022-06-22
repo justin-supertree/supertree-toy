@@ -1,20 +1,12 @@
-import NextImage from 'next/image';
+import React from 'react';
 import styled from '@emotion/styled';
 import { breakpoints, palette, Button, Typography, Modal } from '@playdapp/ui';
 
-import Error from '../../../public/assets/icons/error.png';
-
-const ClickButton = styled(Button)`
-  width: 100%;
-  max-width: 240px;
-  margin: 0 4px;
-  color: #ffff;
-`;
-
-const ImageArea = styled.div`
-  margin: auto;
-  margin-bottom: 32px;
-`;
+type Props = {
+  isUploadOpen: boolean;
+  handleUploadOpenModal: (isUploadOpen: boolean) => () => void;
+  handleSubmitEdit: () => void;
+};
 
 const ModalTextBlock = styled.div`
   display: block;
@@ -32,39 +24,33 @@ const ModalButtonBlock = styled.div`
   text-align: center;
 `;
 
-type Props = {
-  id: number;
-  isOpen: boolean;
-  handleOpenModal: (isOpen: boolean) => () => void;
-  handleDelete: (isDelete: boolean, id: number) => () => void;
-};
+const ClickButton = styled(Button)`
+  width: 100%;
+  max-width: 240px;
+  margin: 0 4px;
+  color: #ffff;
+`;
 
-const DeleteModal = ({ id, isOpen, handleOpenModal, handleDelete }: Props) => (
+const UploadModal = ({
+  isUploadOpen,
+  handleUploadOpenModal,
+  handleSubmitEdit,
+}: Props) => (
   <Modal
-    isOpen={isOpen}
-    handleOpen={handleOpenModal(false)}
+    isOpen={isUploadOpen}
+    handleOpen={handleUploadOpenModal(false)}
     shouldCloseOnOverlayClick
   >
     <ModalTextBlock>
-      <ImageArea>
-        <NextImage
-          src={Error}
-          width={120}
-          height={120}
-          layout="fixed"
-          alt="PlayDapp"
-        />
-      </ImageArea>
-
       <TextArea>
         <Typography type="h4" color="atlantic">
-          Are you sure you want to delete the post?
+          Are you sure you want to Edit the post?
         </Typography>
       </TextArea>
 
       <TextArea>
         <Typography type="b3" color="gray900">
-          Deleted posts will not be recovered.
+          You can Change again, if you wont!
         </Typography>
       </TextArea>
     </ModalTextBlock>
@@ -74,10 +60,10 @@ const DeleteModal = ({ id, isOpen, handleOpenModal, handleDelete }: Props) => (
         size="sm"
         color="primary"
         variant="outline"
-        onClick={handleOpenModal(false)}
+        onClick={handleSubmitEdit}
       >
         <Typography type="b3" color="primary700">
-          Cancel
+          Edit
         </Typography>
       </ClickButton>
 
@@ -85,14 +71,14 @@ const DeleteModal = ({ id, isOpen, handleOpenModal, handleDelete }: Props) => (
         size="sm"
         color="primary"
         variant="solid"
-        onClick={handleDelete(true, id)}
+        onClick={handleUploadOpenModal(false)}
       >
         <Typography type="b3" color="atlantic">
-          Delete
+          Cancle
         </Typography>
       </ClickButton>
     </ModalButtonBlock>
   </Modal>
 );
 
-export default DeleteModal;
+export default UploadModal;

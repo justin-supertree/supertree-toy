@@ -1,18 +1,29 @@
 import { useState, useEffect } from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import NextImage from 'next/image';
 import axios from 'axios';
 import styled from '@emotion/styled';
-import { breakpoints, palette, Button, Typography, Modal } from '@playdapp/ui';
+import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
 import { Input, Select, Textarea } from '@chakra-ui/react';
 
 import useOpenControl from 'hooks/useOpenControl';
 
-import WriteLayout from '@/components/Layout/WriteLayout';
 import MetaTag from '@/components/MetaTag';
-import Error from '../../../public/assets/icons/error.png';
 import DetailLayout from '@/components/Layout/DetailLayout';
+import DeleteModal from '@/components/Modal/DeleteModal';
+import UploadModal from '@/components/Modal/UploadModal';
+
+type Prop = {
+  noticeId?: number;
+  title?: string;
+  type?: string;
+  content?: string;
+  dateCreate?: string;
+};
+
+type Props = {
+  noticeId?: number;
+};
 
 const FlexMixin = styled.div`
   display: flex;
@@ -28,9 +39,6 @@ const ContentHeadArea = styled.div`
 const InsertArea = styled.div`
   width: 100%;
   text-align: left;
-
-  /* ${breakpoints.down('md')} {
-  } */
 `;
 
 const ContentDescBox = styled.div`
@@ -72,31 +80,10 @@ const EditButton = styled(Button)`
   margin: 0 4px;
 `;
 
-const ImageArea = styled.div`
-  margin: auto;
-  margin-bottom: 32px;
-`;
-
-const ModalTextBlock = styled.div`
-  display: block;
-  text-align: center;
-`;
-
-const TextArea = styled.div`
-  margin-bottom: 12px;
-`;
-
 const ContentTypeSelect = styled(Select)`
   width: 100%;
   min-height: 3rem;
   margin: 0;
-`;
-
-const ModalButtonBlock = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  text-align: center;
 `;
 
 const InsertItem = styled(FlexMixin)<{ type: string }>`
@@ -132,18 +119,6 @@ const UploadEditBlock = styled.div`
   align-items: center;
   margin-top: 8px;
 `;
-
-type Prop = {
-  noticeId?: number;
-  title?: string;
-  type?: string;
-  content?: string;
-  dateCreate?: string;
-};
-
-type Props = {
-  noticeId?: number;
-};
 
 const DetailContent = ({ noticeId }: Props) => {
   const apihost =
@@ -191,25 +166,25 @@ const DetailContent = ({ noticeId }: Props) => {
     setSelected(e.target.value);
   };
 
-  const handleSubmitEdit = () => {
-    axios
-      .patch(`${apihost}/notice/${id}`, {
-        title: title,
-        content: content,
-        type: selected,
-        expireTime: '2050-10-04 23:50:11',
-      })
-      .then((response) => {
-        try {
+  const handleSubmitEdit = async () => {
+    try {
+      await axios
+        .patch(`${apihost}/notice/${id}`, {
+          title: title,
+          content: content,
+          type: selected,
+          expireTime: '2050-10-04 23:50:11',
+        })
+        .then((response) => {
           if (response && response.status === 200) {
             handleUploadOpenModal(false);
             handleEdit(false);
             router.push('/');
           }
-        } catch (error) {
-          console.log(error);
-        }
-      });
+        });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -397,112 +372,26 @@ const DetailContent = ({ noticeId }: Props) => {
               type="text"
               value={content}
               onChange={handleContent}
-              // placeholder={data.content}
             />
           )}
         </InsertArea>
       </DetailLayout>
 
       {isOpen && (
-        <Modal
+        <DeleteModal
+          id={id}
           isOpen={isOpen}
-          handleOpen={handleOpenModal(false)}
-          shouldCloseOnOverlayClick
-        >
-          <ModalTextBlock>
-            <ImageArea>
-              <NextImage
-                src={Error}
-                width={120}
-                height={120}
-                layout="fixed"
-                alt="PlayDapp"
-              />
-            </ImageArea>
-
-            <TextArea>
-              <Typography type="h4" color="atlantic">
-                Are you sure you want to delete the post?
-              </Typography>
-            </TextArea>
-
-            <TextArea>
-              <Typography type="b3" color="gray900">
-                Deleted posts will not be recovered.
-              </Typography>
-            </TextArea>
-          </ModalTextBlock>
-
-          <ModalButtonBlock>
-            <ClickButton
-              size="sm"
-              color="primary"
-              variant="outline"
-              onClick={handleOpenModal(false)}
-            >
-              <Typography type="b3" color="primary700">
-                Cancel
-              </Typography>
-            </ClickButton>
-
-            <ClickButton
-              size="sm"
-              color="primary"
-              variant="solid"
-              onClick={handleDelete(true, id)}
-            >
-              <Typography type="b3" color="atlantic">
-                Delete
-              </Typography>
-            </ClickButton>
-          </ModalButtonBlock>
-        </Modal>
+          handleOpenModal={handleOpenModal}
+          handleDelete={() => handleDelete(true, id)}
+        />
       )}
 
       {isUploadOpen && (
-        <Modal
-          isOpen={isUploadOpen}
-          handleOpen={handleUploadOpenModal(false)}
-          shouldCloseOnOverlayClick
-        >
-          <ModalTextBlock>
-            <TextArea>
-              <Typography type="h4" color="atlantic">
-                Are you sure you want to Edit the post?
-              </Typography>
-            </TextArea>
-
-            <TextArea>
-              <Typography type="b3" color="gray900">
-                You can Change again, if you wont!
-              </Typography>
-            </TextArea>
-          </ModalTextBlock>
-
-          <ModalButtonBlock>
-            <ClickButton
-              size="sm"
-              color="primary"
-              variant="outline"
-              onClick={handleSubmitEdit}
-            >
-              <Typography type="b3" color="primary700">
-                Edit
-              </Typography>
-            </ClickButton>
-
-            <ClickButton
-              size="sm"
-              color="primary"
-              variant="solid"
-              onClick={handleUploadOpenModal(false)}
-            >
-              <Typography type="b3" color="atlantic">
-                Cancle
-              </Typography>
-            </ClickButton>
-          </ModalButtonBlock>
-        </Modal>
+        <UploadModal
+          isUploadOpen={isUploadOpen}
+          handleUploadOpenModal={handleUploadOpenModal}
+          handleSubmitEdit={handleSubmitEdit}
+        />
       )}
     </>
   );
