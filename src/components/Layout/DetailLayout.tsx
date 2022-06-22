@@ -18,7 +18,6 @@ const Container = styled.div`
   width: 100%;
   max-width: 838px;
   min-height: 61rem;
-  height: 100%;
   margin-top: 8rem;
   padding: 112px 3rem 5rem 3rem;
   margin: auto;
@@ -28,8 +27,8 @@ const Container = styled.div`
   font-weight: 600;
 
   ${breakpoints.down('md')} {
-    min-height: 59rem;
-    padding: 0 1rem;
+    min-height: 46rem;
+    padding: 20px 1rem;
   }
 `;
 
@@ -39,11 +38,13 @@ type Props = {
 
 const DetailLayout = ({ children }: Props) => {
   return (
-    <DetailContainer>
+    <>
       <Header />
-      <Container>{children}</Container>
+      <DetailContainer>
+        <Container>{children}</Container>
+      </DetailContainer>
       <Footer />
-    </DetailContainer>
+    </>
   );
 };
 

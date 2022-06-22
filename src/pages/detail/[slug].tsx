@@ -60,6 +60,11 @@ const TitleBlock = styled.div`
 
 const BeforeEditTitle = styled(FlexMixin)`
   justify-content: space-between;
+
+  ${breakpoints.down('md')} {
+    display: block;
+    margin-top: 8px;
+  }
 `;
 
 const EditButton = styled(Button)`
@@ -115,6 +120,17 @@ const InsertBottomArea = styled(FlexMixin)`
   justify-content: space-between;
   align-items: flex-end;
   margin-top: 16px;
+
+  ${breakpoints.down('md')} {
+    display: block;
+  }
+`;
+
+const UploadEditBlock = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 8px;
 `;
 
 type Prop = {
@@ -252,7 +268,7 @@ const DetailContent = ({ noticeId }: Props) => {
                         {data.dateCreate}
                       </Typography>
 
-                      <div>
+                      <UploadEditBlock>
                         <EditButton
                           size="sm"
                           color="primary"
@@ -274,7 +290,7 @@ const DetailContent = ({ noticeId }: Props) => {
                             Delete
                           </Typography>
                         </EditButton>
-                      </div>
+                      </UploadEditBlock>
                     </BeforeEditTitle>
                   </>
                 ) : (
@@ -320,21 +336,18 @@ const DetailContent = ({ noticeId }: Props) => {
                         {data.dateCreate}
                       </Typography>
 
-                      <div>
+                      <UploadEditBlock>
                         <EditButton
                           size="sm"
                           color="primary"
                           variant="outline"
                           onClick={handleUploadOpenModal(true)}
-                          disabled={
-                            (title === '' || content === '' || !selected) &&
-                            true
-                          }
+                          disabled={(title === '' || content === '') && true}
                         >
                           <Typography
                             type="h6"
                             color={
-                              title === '' || content === '' || !selected
+                              title === '' || content === ''
                                 ? 'gray700'
                                 : 'primary700'
                             }
@@ -353,7 +366,7 @@ const DetailContent = ({ noticeId }: Props) => {
                             Cancel
                           </Typography>
                         </EditButton>
-                      </div>
+                      </UploadEditBlock>
                     </InsertBottomArea>
                   </>
                 )}

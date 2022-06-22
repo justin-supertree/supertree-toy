@@ -1,6 +1,7 @@
 import NextImage from 'next/image';
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { useMedia } from 'react-use';
 
 import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
 
@@ -17,79 +18,120 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-height: 117px;
-  height: 100%;
-  padding: 0 80px;
+  padding: 24px 80px;
   background-color: ${palette.gray200};
+
+  ${breakpoints.down('md')} {
+    display: block;
+    padding: 1rem 0;
+    text-align: center;
+  }
 `;
 
 const FooterContentArea = styled.div`
   text-align: right;
+  text-align: -webkit-right;
 
   & > span {
     margin: 0 8px;
   }
+
+  ${breakpoints.down('md')} {
+    max-width: 228px;
+    margin: auto;
+    margin-top: 12px;
+    text-align: center;
+  }
 `;
 
-const LinkContainer = styled.div``;
+const FooterImageBlock = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 224px;
+
+  ${breakpoints.down('md')} {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+
+const FooterInfoText = styled.div`
+  margin-top: 1rem;
+
+  ${breakpoints.down('md')} {
+    margin-top: 12px;
+  }
+`;
+
+const LinkContainer = styled.div`
+  margin-top: 24px;
+
+  ${breakpoints.down('md')} {
+    margin-top: 16px;
+  }
+`;
 
 const Footer = () => {
+  const isMobile = useMedia('(max-width: 752px)', true);
+
   return (
     <Container>
       <div>
         <NextImage
           src={Logo}
-          width={142}
-          height={32}
+          width={isMobile ? 106 : 142}
+          height={isMobile ? 24 : 32}
           layout="fixed"
           alt="PlayDapp"
         />
-        <div>
-          <Typography type="b3" color="black">
+        <FooterInfoText>
+          <Typography type={isMobile ? 'p5' : 'b3'} color="black">
             The Premier Marketplace for NFTs
           </Typography>
-        </div>
+        </FooterInfoText>
       </div>
 
       <FooterContentArea>
-        <NextImage
-          src={FaceBook}
-          width={32}
-          height={32}
-          layout="fixed"
-          alt="PlayDapp"
-        />
-        <NextImage
-          src={Twitter}
-          width={32}
-          height={32}
-          layout="fixed"
-          alt="PlayDapp"
-        />
-        <NextImage
-          src={Telegram}
-          width={32}
-          height={32}
-          layout="fixed"
-          alt="PlayDapp"
-        />
-        <NextImage
-          src={Mail}
-          width={32}
-          height={32}
-          layout="fixed"
-          alt="PlayDapp"
-        />
-        <NextImage
-          src={Discord}
-          width={32}
-          height={32}
-          layout="fixed"
-          alt="PlayDapp"
-        />
+        <FooterImageBlock>
+          <NextImage
+            src={FaceBook}
+            width={32}
+            height={32}
+            layout="fixed"
+            alt="PlayDapp"
+          />
+          <NextImage
+            src={Twitter}
+            width={32}
+            height={32}
+            layout="fixed"
+            alt="PlayDapp"
+          />
+          <NextImage
+            src={Telegram}
+            width={32}
+            height={32}
+            layout="fixed"
+            alt="PlayDapp"
+          />
+          <NextImage
+            src={Mail}
+            width={32}
+            height={32}
+            layout="fixed"
+            alt="PlayDapp"
+          />
+          <NextImage
+            src={Discord}
+            width={32}
+            height={32}
+            layout="fixed"
+            alt="PlayDapp"
+          />
+        </FooterImageBlock>
 
         <LinkContainer>
-          <Typography type="b3" color="gray700">
+          <Typography type={isMobile ? 'p6' : 'b3'} color="gray700">
             © 2022. PlayDapp Limited All rights reserved.
           </Typography>
         </LinkContainer>

@@ -50,12 +50,6 @@ const NoticeTitle = styled.div`
   }
 `;
 
-const WriteButton = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
-`;
-
 const TabBox = styled.div`
   display: flex;
   align-items: center;
@@ -92,8 +86,17 @@ const Tab = styled(FlexMixin)<{ isSelect: boolean }>`
   }
 `;
 
+const WritePosition = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const WrtieButton = styled(Button)`
+  width: auto;
+`;
+
 const LoadMore = styled(Button)`
-  width: 121px;
   margin-top: 20px;
 `;
 
@@ -182,7 +185,9 @@ const IndexPage: NextPageWithLayout = () => {
 
         <MainLayout>
           <>
-            <NoticeTitle>Notice</NoticeTitle>
+            <NoticeTitle>
+              <Typography type={isMobile ? 'h4' : 'h3'}>Notice</Typography>
+            </NoticeTitle>
             <TabBox>
               <Tab
                 onClick={handleTab('all', 'All')}
@@ -210,15 +215,15 @@ const IndexPage: NextPageWithLayout = () => {
               </Tab>
             </TabBox>
 
-            <WriteButton>
+            <WritePosition>
               <Link href={`/write`}>
-                <Button size={isMobile ? 'sm' : 'sm'}>
-                  <Typography type={isMobile ? 'b2' : 'h5'} color="atlantic">
+                <WrtieButton size={isMobile ? 'sm' : 'sm'}>
+                  <Typography type={isMobile ? 'b5' : 'b2'} color="atlantic">
                     Write
                   </Typography>
-                </Button>
+                </WrtieButton>
               </Link>
-            </WriteButton>
+            </WritePosition>
 
             {requestData?.pages[0].data.list?.length !== 0 && (
               <>
@@ -245,7 +250,7 @@ const IndexPage: NextPageWithLayout = () => {
                     onClick={handleLoadMore}
                   >
                     <Typography type="b3" color="primary700">
-                      LoadMore
+                      LoadMore +
                     </Typography>
                   </LoadMore>
                 )}

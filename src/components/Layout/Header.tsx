@@ -8,8 +8,10 @@ import {
   Button,
   Typography,
 } from '@playdapp/ui';
+import { useMedia } from 'react-use';
 
 import Logo from '../../../public/assets/icons/header-logo.svg';
+import LogoM from '../../../public/assets/icons/header-logo-m.png';
 import User from '../../../public/assets/icons/user.png';
 
 const Container = styled.div`
@@ -32,16 +34,28 @@ const Container = styled.div`
 `;
 
 const Header = () => {
+  const isMobile = useMedia('(max-width: 752px)', true);
+
   return (
     <Container>
       <Link href="/">
-        <NextImage
-          src={Logo}
-          width={213}
-          height={48}
-          layout="fixed"
-          alt="PlayDapp"
-        />
+        {isMobile ? (
+          <NextImage
+            src={LogoM}
+            width={58}
+            height={46}
+            layout="fixed"
+            alt="PlayDapp"
+          />
+        ) : (
+          <NextImage
+            src={Logo}
+            width={213}
+            height={48}
+            layout="fixed"
+            alt="PlayDapp"
+          />
+        )}
       </Link>
 
       <NextImage src={User} width={40} height={40} layout="fixed" alt="user" />

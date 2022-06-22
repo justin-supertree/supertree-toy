@@ -38,6 +38,6 @@ export const DetailContainer = styled.div`
   padding: 5rem 0 0 0;
 
   ${breakpoints.down('lg')} {
-    padding: 5rem 0 0 0;
+    padding: 64px 0 0 0;
   }
 `;
