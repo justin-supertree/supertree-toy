@@ -5,8 +5,10 @@ import styled from '@emotion/styled';
 import { breakpoints, Button, Typography } from '@playdapp/ui';
 import { Input, Select, Textarea } from '@chakra-ui/react';
 
-import WriteLayout from '@/components/Layout/WriteLayout';
 import { baseURL } from 'api/notice';
+
+import WriteLayout from '@/components/Layout/WriteLayout';
+import Wysiwyg from '@/components/Wysiwyg';
 
 type Props = {
   noticeId?: number;
@@ -32,9 +34,6 @@ const WriteTitle = styled.div`
 const InsertArea = styled.div`
   width: 100%;
   text-align: left;
-
-  /* ${breakpoints.down('md')} {
-  } */
 `;
 
 const InsertItem = styled(FlexMixin)<{ type: string }>`
@@ -60,6 +59,14 @@ const ContentInputBox = styled(Textarea)`
   width: 100%;
   min-height: 392px;
   margin-top: 1rem;
+`;
+
+const EditorBox = styled.div`
+  margin-top: 16px;
+`;
+
+const Editors = styled(Button)`
+  margin-right: 8px;
 `;
 
 const ButtonArea = styled(FlexMixin)`
@@ -135,6 +142,16 @@ const WriteContent = () => {
         }
       });
   };
+  const editorList = ['base', 'quill', 'wysiwyg', 'tui'];
+  const [editorName, setEditorName] = useState('base');
+
+  const handleEditor = (edit: string) => () => {
+    editorList.map((info) => {
+      if (edit === info) {
+        return setEditorName(edit);
+      }
+    });
+  };
 
   return (
     <WriteLayout>
@@ -155,11 +172,9 @@ const WriteContent = () => {
             placeholder="Notice Title"
           />
         </InsertItem>
-
         <Typography type="b4" color="gray900">
           Type :
         </Typography>
-
         <InsertItem type="type">
           <ContentTypeSelect
             placeholder="타입을 선택해주세요."
@@ -174,12 +189,44 @@ const WriteContent = () => {
           </ContentTypeSelect>
         </InsertItem>
 
-        <ContentInputBox
-          type="text"
-          value={content}
-          onChange={handleContent}
-          placeholder="Please Write your contents in here"
-        />
+        <EditorBox>
+          <Editors
+            color={editorName === 'base' ? 'primary' : 'secondary'}
+            onClick={handleEditor('base')}
+          >
+            base
+          </Editors>
+          <Editors
+            color={editorName === 'quill' ? 'primary' : 'secondary'}
+            onClick={handleEditor('quill')}
+          >
+            Q
+          </Editors>
+          <Editors
+            color={editorName === 'wysiwyg' ? 'primary' : 'secondary'}
+            onClick={handleEditor('wysiwyg')}
+          >
+            W
+          </Editors>
+          <Editors
+            color={editorName === 'tui' ? 'primary' : 'secondary'}
+            onClick={handleEditor('tui')}
+          >
+            TUI
+          </Editors>
+        </EditorBox>
+
+        {editorName === 'base' && (
+          <ContentInputBox
+            type="text"
+            value={content}
+            onChange={handleContent}
+            placeholder="Please Write your contents in here"
+          />
+        )}
+        {editorName === 'quill' && <div>quill</div>}
+        {/* {editorName === 'wysiwyg' && <Wysiwyg>wysiwyg</Wysiwyg>} */}
+        {editorName === 'tui' && <div>tui</div>}
 
         <ButtonArea>
           <ClickButton
