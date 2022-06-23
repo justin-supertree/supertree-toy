@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
@@ -62,7 +62,7 @@ const ContentInputBox = styled(Textarea)`
 `;
 
 const EditorBox = styled.div`
-  margin-top: 16px;
+  margin: 16px 0;
 `;
 
 const Editors = styled(Button)`
@@ -103,9 +103,17 @@ const WriteContent = () => {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [selected, setSelected] = useState('');
+  const [htmlStr, setHtmlStr] = React.useState<string>('');
 
+  const [selected, setSelected] = useState('');
+  const [editorName, setEditorName] = useState('base');
+
+  const reg = /<[^>]*>?/g;
   const selectList = ['service', 'tip', 'event'];
+  const editorList = ['base', 'quill', 'wysiwyg', 'tui'];
+
+  // ref
+  const viewContainerRef = React.useRef<HTMLDivElement>(null);
 
   const handleSelectOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelected(e.target.value);
@@ -130,23 +138,19 @@ const WriteContent = () => {
     axios
       .post(`${baseURL}/notice`, {
         title: title,
-        content: content,
+        content: htmlStr,
+        // content: htmlStr.replace(reg, ''),
         type: selected,
         expireTime: '2050-10-04 23:50:11',
       })
       .then((res) => {
         if (res && res.status === 200 && res.data.message === 'Success') {
           setTitle('');
-          setContent('');
+          setHtmlStr('');
           router.push('/');
         }
       });
   };
-  const editorList = ['base', 'quill', 'wysiwyg', 'tui'];
-  const [editorName, setEditorName] = useState('base');
-
-  // state
-  const [htmlStr, setHtmlStr] = React.useState<string>('');
 
   const handleEditor = (edit: string) => () => {
     editorList.map((info) => {
@@ -199,12 +203,14 @@ const WriteContent = () => {
           >
             base
           </Editors>
-          <Editors
+
+          {/* <Editors
             color={editorName === 'quill' ? 'primary' : 'secondary'}
             onClick={handleEditor('quill')}
           >
             Q
-          </Editors>
+          </Editors> */}
+
           <Editors
             color={editorName === 'wysiwyg' ? 'primary' : 'secondary'}
             onClick={handleEditor('wysiwyg')}
@@ -227,13 +233,16 @@ const WriteContent = () => {
             placeholder="Please Write your contents in here"
           />
         )}
-        {editorName === 'quill' && <div>quill</div>}
+
+        {/* {editorName === 'quill' && <div>quill</div>} */}
+
         {editorName === 'wysiwyg' && (
-          <Wysiwyg htmlStr={htmlStr} setHtmlStr={setHtmlStr}>
-            wysiwyg
-          </Wysiwyg>
+          <Wysiwyg htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
         )}
-        {editorName === 'tui' && <div>tui</div>}
+
+        {editorName === 'tui' && (
+          <TUI htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
+        )}
 
         <ButtonArea>
           <ClickButton
@@ -254,7 +263,7 @@ const WriteContent = () => {
             color="primary"
             variant="solid"
             disabled={
-              selected === '' || title === '' || content === '' ? true : false
+              selected === '' || title === '' || htmlStr === '' ? true : false
             }
             onClick={uploadNewData}
           >
@@ -270,6 +279,10 @@ const WriteContent = () => {
 
 const Wysiwyg = dynamic(() => import('../../components/Wysiwyg'), {
   ssr: false,
-}); // client 사이드에서만 동작되기 때문에 ssr false로 설정
+});
+
+const TUI = dynamic(() => import('../../components/TUI'), {
+  ssr: false,
+});
 
 export default WriteContent;

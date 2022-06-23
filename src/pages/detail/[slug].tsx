@@ -18,7 +18,7 @@ type Prop = {
   noticeId?: number;
   title?: string;
   type?: string;
-  content?: string;
+  content: string;
   dateCreate?: string;
 };
 
@@ -125,9 +125,10 @@ const DetailContent = ({ noticeId }: Props) => {
   const id = Number(noticeId);
   const router = useRouter();
 
-  const [data, setData] = useState<Prop>({});
   const [isOpen, setIsOpen] = useOpenControl();
   const [isUploadOpen, setUploadOpen] = useOpenControl();
+
+  const [data, setData] = useState<Prop>(Object);
   const [isEdit, setIsEdit] = useState(false);
   const [isRemove, setIsRemove] = useState(0);
   const [title, setTitle] = useState('');
@@ -136,16 +137,16 @@ const DetailContent = ({ noticeId }: Props) => {
 
   const selectList = ['service', 'tip', 'event'];
 
+  const viewlist = () => {
+    router.push('/');
+  };
+
   const handleOpenModal = (isOpen: boolean) => () => {
     setIsOpen(isOpen);
   };
 
   const handleUploadOpenModal = (isUploadOpen: boolean) => () => {
     setUploadOpen(isUploadOpen);
-  };
-
-  const viewlist = () => {
-    router.push('/');
   };
 
   const handleEdit = (isEdit: boolean) => () => {
@@ -352,7 +353,9 @@ const DetailContent = ({ noticeId }: Props) => {
         <InsertArea>
           {!isEdit ? (
             <>
-              <ContentDescBox>{data.content}</ContentDescBox>
+              <ContentDescBox>
+                <p dangerouslySetInnerHTML={{ __html: data.content }}></p>
+              </ContentDescBox>
               <ButtonArea>
                 <ClickButton
                   size="sm"

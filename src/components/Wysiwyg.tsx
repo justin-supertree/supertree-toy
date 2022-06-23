@@ -21,7 +21,6 @@ interface IEditor {
 }
 
 const Wysiwyg: NextPage<IEditor> = ({ htmlStr, setHtmlStr }) => {
-  const [content, setContent] = useState('');
   const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty(),
   );
