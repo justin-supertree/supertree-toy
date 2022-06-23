@@ -6,6 +6,7 @@ const nextConfig = {
 
   async redirects() {
     return [
+      { source: '/notice', destination: '/', permanent: true },
       {
         source: '/detail/:index*',
         destination: '/detail/:index*',

@@ -108,12 +108,8 @@ const WriteContent = () => {
   const [selected, setSelected] = useState('');
   const [editorName, setEditorName] = useState('base');
 
-  const reg = /<[^>]*>?/g;
   const selectList = ['service', 'tip', 'event'];
   const editorList = ['base', 'quill', 'wysiwyg', 'tui'];
-
-  // ref
-  const viewContainerRef = React.useRef<HTMLDivElement>(null);
 
   const handleSelectOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelected(e.target.value);
