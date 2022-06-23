@@ -9,6 +9,7 @@ import { Input, Select, Textarea } from '@chakra-ui/react';
 import { baseURL } from 'api/notice';
 
 import WriteLayout from '@/components/Layout/WriteLayout';
+import MetaTag from '@/components/MetaTag';
 
 type Props = {
   noticeId?: number;
@@ -157,119 +158,123 @@ const WriteContent = () => {
   };
 
   return (
-    <WriteLayout>
-      <WriteTitle>
-        <Typography type="h5" color="black">
-          Write Notice / Edit Notice
-        </Typography>
-      </WriteTitle>
+    <>
+      <MetaTag title="Notice | Write Page" />
 
-      <InsertArea>
-        <Typography type="b4" color="gray900">
-          Title :
-        </Typography>
-        <InsertItem type="title">
-          <ContentTitleInput
-            value={title}
-            onChange={handleTitle}
-            placeholder="Notice Title"
-          />
-        </InsertItem>
-        <Typography type="b4" color="gray900">
-          Type :
-        </Typography>
-        <InsertItem type="type">
-          <ContentTypeSelect
-            placeholder="타입을 선택해주세요."
-            onChange={handleSelectOption}
-            value={selected}
-          >
-            {selectList.map((item) => (
-              <option value={item} key={item}>
-                {item}
-              </option>
-            ))}
-          </ContentTypeSelect>
-        </InsertItem>
+      <WriteLayout>
+        <WriteTitle>
+          <Typography type="h5" color="black">
+            Write Notice / Edit Notice
+          </Typography>
+        </WriteTitle>
 
-        <EditorBox>
-          <Editors
-            color={editorName === 'base' ? 'primary' : 'secondary'}
-            onClick={handleEditor('base')}
-          >
-            base
-          </Editors>
+        <InsertArea>
+          <Typography type="b4" color="gray900">
+            Title :
+          </Typography>
+          <InsertItem type="title">
+            <ContentTitleInput
+              value={title}
+              onChange={handleTitle}
+              placeholder="Notice Title"
+            />
+          </InsertItem>
+          <Typography type="b4" color="gray900">
+            Type :
+          </Typography>
+          <InsertItem type="type">
+            <ContentTypeSelect
+              placeholder="타입을 선택해주세요."
+              onChange={handleSelectOption}
+              value={selected}
+            >
+              {selectList.map((item) => (
+                <option value={item} key={item}>
+                  {item}
+                </option>
+              ))}
+            </ContentTypeSelect>
+          </InsertItem>
 
-          {/* <Editors
+          <EditorBox>
+            <Editors
+              color={editorName === 'base' ? 'primary' : 'secondary'}
+              onClick={handleEditor('base')}
+            >
+              base
+            </Editors>
+
+            {/* <Editors
             color={editorName === 'quill' ? 'primary' : 'secondary'}
             onClick={handleEditor('quill')}
           >
             Q
           </Editors> */}
 
-          <Editors
-            color={editorName === 'wysiwyg' ? 'primary' : 'secondary'}
-            onClick={handleEditor('wysiwyg')}
-          >
-            W
-          </Editors>
-          <Editors
-            color={editorName === 'tui' ? 'primary' : 'secondary'}
-            onClick={handleEditor('tui')}
-          >
-            TUI
-          </Editors>
-        </EditorBox>
+            <Editors
+              color={editorName === 'wysiwyg' ? 'primary' : 'secondary'}
+              onClick={handleEditor('wysiwyg')}
+            >
+              W
+            </Editors>
+            <Editors
+              color={editorName === 'tui' ? 'primary' : 'secondary'}
+              onClick={handleEditor('tui')}
+            >
+              TUI
+            </Editors>
+          </EditorBox>
 
-        {editorName === 'base' && (
-          <ContentInputBox
-            type="text"
-            value={content}
-            onChange={handleContent}
-            placeholder="Please Write your contents in here"
-          />
-        )}
+          {editorName === 'base' && (
+            <ContentInputBox
+              type="text"
+              value={content}
+              onChange={handleContent}
+              placeholder="Please Write your contents in here"
+            />
+          )}
 
-        {/* {editorName === 'quill' && <div>quill</div>} */}
+          {/* {editorName === 'quill' && <div>quill</div>} */}
 
-        {editorName === 'wysiwyg' && (
-          <Wysiwyg htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
-        )}
+          {editorName === 'wysiwyg' && (
+            <Wysiwyg htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
+          )}
 
-        {editorName === 'tui' && (
-          <TUI htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
-        )}
+          {editorName === 'tui' && (
+            <TUI htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
+          )}
 
-        <ButtonArea>
-          <ClickButton
-            className="cancel"
-            size="md"
-            color="primary"
-            variant="outline"
-            onClick={cancelWrite}
-          >
-            <Typography type="b3" color="primary700">
-              Cancel
-            </Typography>
-          </ClickButton>
+          <ButtonArea>
+            <ClickButton
+              className="cancel"
+              size="md"
+              color="primary"
+              variant="outline"
+              onClick={cancelWrite}
+            >
+              <Typography type="b3" color="primary700">
+                Cancel
+              </Typography>
+            </ClickButton>
 
-          <ClickButton
-            className="write"
-            size="md"
-            color="primary"
-            variant="solid"
-            disabled={
-              selected === '' || title === '' || htmlStr === '' ? true : false
-            }
-            onClick={uploadNewData}
-          >
-            <Typography type="b3" color="atlantic">
-              Write
-            </Typography>
-          </ClickButton>
-        </ButtonArea>
-      </InsertArea>
-    </WriteLayout>
+            <ClickButton
+              className="write"
+              size="md"
+              color="primary"
+              variant="solid"
+              disabled={
+                selected === '' || title === '' || htmlStr === '' ? true : false
+              }
+              onClick={uploadNewData}
+            >
+              <Typography type="b3" color="atlantic">
+                Write
+              </Typography>
+            </ClickButton>
+          </ButtonArea>
+        </InsertArea>
+      </WriteLayout>
+    </>
   );
 };
 

@@ -225,7 +225,7 @@ const DetailContent = ({ noticeId }: Props) => {
 
   return (
     <>
-      <MetaTag title="Notice Detial Page" />
+      <MetaTag title="Notice | Detial Page" />
 
       <DetailLayout>
         <ContentHeadArea>
