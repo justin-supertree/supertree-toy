@@ -38,11 +38,13 @@ type Props = {
 
 const WriteLayout = ({ children }: Props) => {
   return (
-    <WriteContainer>
+    <>
       <Header />
-      <Container>{children}</Container>
+      <WriteContainer>
+        <Container>{children}</Container>
+      </WriteContainer>
       <Footer />
-    </WriteContainer>
+    </>
   );
 };
 
