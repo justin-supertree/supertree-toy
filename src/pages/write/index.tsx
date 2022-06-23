@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
+import axios from 'axios';
 import styled from '@emotion/styled';
 import { breakpoints, Button, Typography } from '@playdapp/ui';
 import { Input, Select, Textarea } from '@chakra-ui/react';
@@ -8,7 +9,6 @@ import { Input, Select, Textarea } from '@chakra-ui/react';
 import { baseURL } from 'api/notice';
 
 import WriteLayout from '@/components/Layout/WriteLayout';
-import Wysiwyg from '@/components/Wysiwyg';
 
 type Props = {
   noticeId?: number;
@@ -145,6 +145,9 @@ const WriteContent = () => {
   const editorList = ['base', 'quill', 'wysiwyg', 'tui'];
   const [editorName, setEditorName] = useState('base');
 
+  // state
+  const [htmlStr, setHtmlStr] = React.useState<string>('');
+
   const handleEditor = (edit: string) => () => {
     editorList.map((info) => {
       if (edit === info) {
@@ -225,7 +228,11 @@ const WriteContent = () => {
           />
         )}
         {editorName === 'quill' && <div>quill</div>}
-        {/* {editorName === 'wysiwyg' && <Wysiwyg>wysiwyg</Wysiwyg>} */}
+        {editorName === 'wysiwyg' && (
+          <Wysiwyg htmlStr={htmlStr} setHtmlStr={setHtmlStr}>
+            wysiwyg
+          </Wysiwyg>
+        )}
         {editorName === 'tui' && <div>tui</div>}
 
         <ButtonArea>
@@ -260,5 +267,9 @@ const WriteContent = () => {
     </WriteLayout>
   );
 };
+
+const Wysiwyg = dynamic(() => import('../../components/Wysiwyg'), {
+  ssr: false,
+}); // client 사이드에서만 동작되기 때문에 ssr false로 설정
 
 export default WriteContent;
