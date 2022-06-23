@@ -1,17 +1,10 @@
 import { useEffect, useState } from 'react';
-import type { NextPageWithLayout } from 'types/next-page';
-import Link from 'next/link';
-import NextImage from 'next/image';
 import { useInfiniteQuery } from 'react-query';
-import styled from '@emotion/styled';
-import {
-  breakpoints,
-  spacing,
-  palette,
-  Button,
-  Typography,
-} from '@playdapp/ui';
 import { useMedia } from 'react-use';
+import Link from 'next/link';
+import styled from '@emotion/styled';
+import { breakpoints, Button, Typography } from '@playdapp/ui';
+import type { NextPageWithLayout } from 'types/next-page';
 
 import { getNotice } from 'api/notice';
 
@@ -165,6 +158,7 @@ const IndexPage: NextPageWithLayout = () => {
   return (
     <>
       <MetaTag title="Notice | PlayDapp Notice" />
+
       <Container>
         <Header />
 

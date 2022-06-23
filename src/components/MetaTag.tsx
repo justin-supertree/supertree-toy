@@ -13,12 +13,14 @@ const MetaTag = ({
   image = 'https://images.playdapp.com/marketplace/meta/og-image.png',
   keywords = 'NFT, Marketplace',
 }: Props) => {
+  console.log('title', title);
   return (
     <Head>
       <meta name="title" content={title} />
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       <meta name="author" content="PlayDapp" />
+      <title>{title}</title>
     </Head>
   );
 };
