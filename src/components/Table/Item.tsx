@@ -1,11 +1,5 @@
 import Link from 'next/link';
-import {
-  breakpoints,
-  spacing,
-  palette,
-  Button,
-  Typography,
-} from '@playdapp/ui';
+import { breakpoints, Typography } from '@playdapp/ui';
 import { format } from 'date-fns';
 import styled from '@emotion/styled';
 import { useMedia } from 'react-use';

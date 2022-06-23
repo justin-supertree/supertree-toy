@@ -5,6 +5,7 @@ import axios from 'axios';
 import styled from '@emotion/styled';
 import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
 import { Input, Select, Textarea } from '@chakra-ui/react';
+import { format } from 'date-fns';
 
 import { baseURL } from 'api/notice';
 import useOpenControl from 'hooks/useOpenControl';
@@ -135,6 +136,8 @@ const DetailContent = ({ noticeId }: Props) => {
   const [content, setContent] = useState('');
   const [selected, setSelected] = useState('');
 
+  // const date = new Date(data.dateCreate);
+
   const selectList = ['service', 'tip', 'event'];
 
   const viewlist = () => {
@@ -240,7 +243,11 @@ const DetailContent = ({ noticeId }: Props) => {
 
                     <BeforeEditTitle>
                       <Typography type="b3" color="gray700">
-                        {data.dateCreate}
+                        {data.dateCreate !== undefined &&
+                          format(
+                            new Date(data.dateCreate),
+                            'MMM-dd-yyyy h:mm:ss a',
+                          )}
                       </Typography>
 
                       <UploadEditBlock>
@@ -308,7 +315,11 @@ const DetailContent = ({ noticeId }: Props) => {
                   <>
                     <InsertBottomArea>
                       <Typography type="p4" color="dgray300">
-                        {data.dateCreate}
+                        {data.dateCreate !== undefined &&
+                          format(
+                            new Date(data.dateCreate),
+                            'MMM-dd-yyyy h:mm:ss a',
+                          )}
                       </Typography>
 
                       <UploadEditBlock>

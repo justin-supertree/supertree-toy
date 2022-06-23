@@ -11,14 +11,6 @@ import { baseURL } from 'api/notice';
 import WriteLayout from '@/components/Layout/WriteLayout';
 import MetaTag from '@/components/MetaTag';
 
-type Props = {
-  noticeId?: number;
-  title?: string;
-  type?: string;
-  content?: string;
-  dateCreate?: string;
-};
-
 const FlexMixin = styled.div`
   display: flex;
   align-items: center;
@@ -104,8 +96,7 @@ const WriteContent = () => {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [htmlStr, setHtmlStr] = React.useState<string>('');
-
+  const [htmlStr, setHtmlStr] = useState('');
   const [selected, setSelected] = useState('');
   const [editorName, setEditorName] = useState('base');
 
@@ -135,8 +126,7 @@ const WriteContent = () => {
     axios
       .post(`${baseURL}/notice`, {
         title: title,
-        content: htmlStr,
-        // content: htmlStr.replace(reg, ''),
+        content: htmlStr || content,
         type: selected,
         expireTime: '2050-10-04 23:50:11',
       })
@@ -263,7 +253,11 @@ const WriteContent = () => {
               color="primary"
               variant="solid"
               disabled={
-                selected === '' || title === '' || htmlStr === '' ? true : false
+                selected === '' ||
+                title === '' ||
+                (htmlStr === '' && content === '')
+                  ? true
+                  : false
               }
               onClick={uploadNewData}
             >

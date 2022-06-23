@@ -39,30 +39,10 @@ const Wysiwyg: NextPage<IEditor> = ({ htmlStr, setHtmlStr }) => {
     }
   }, [htmlStr]);
 
-  // editor 수정 이벤트
   const onEditorStateChange = (editorState: EditorState) => {
     setEditorState(editorState);
     setHtmlStr(draftToHtml(convertToRaw(editorState.getCurrentContent())));
   };
-
-  // const uploadCallback = (file: Blob) => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-
-  //     reader.onloadend = async () => {
-  //       const formData = new FormData();
-  //       formData.append('multipartFiles', file);
-  //       const res = await axios.post(
-  //         'http://localhost:8080/uploadImage',
-  //         formData,
-  //       );
-
-  //       resolve({ data: { link: res.data } });
-  //     };
-
-  //     reader.readAsDataURL(file);
-  //   });
-  // };
 
   const toolbar = {
     options: [
