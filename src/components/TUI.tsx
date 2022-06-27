@@ -33,25 +33,6 @@ const TUI: NextPage<IEditor> = ({ htmlStr, setHtmlStr }) => {
     if (editorRef.current) {
       editorRef.current.getInstance().setHTML(htmlStr);
       editorRef.current.getInstance().removeHook('addImageBlobHook');
-
-      // 이미지 서버로 데이터를 전달하는 기능 추가
-      //   editorRef.current
-      //     .getInstance()
-      //     .addHook('addImageBlobHook', (blob, callback) => {
-      //       (async () => {
-      //         const formData = new FormData();
-      //         formData.append('multipartFiles', blob);
-
-      //         const res = await axios.post(
-      //           'http://localhost:8080/uploadImage',
-      //           formData,
-      //         );
-
-      //         callback(res.data, 'input alt text');
-      //       })();
-
-      //       return false;
-      //     });
     }
   }, [htmlStr]);
 

@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 import styled from '@emotion/styled';
 import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
 import { Input, Select, Textarea } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
-import { baseURL } from 'api/notice';
+import {
+  baseURL,
+  deleteNotice,
+  getNoticeDetail,
+  patchSubmit,
+} from 'api/notice';
 import useOpenControl from 'hooks/useOpenControl';
 
 import MetaTag from '@/components/MetaTag';
@@ -136,8 +140,6 @@ const DetailContent = ({ noticeId }: Props) => {
   const [content, setContent] = useState('');
   const [selected, setSelected] = useState('');
 
-  // const date = new Date(data.dateCreate);
-
   const selectList = ['service', 'tip', 'event'];
 
   const viewlist = () => {
@@ -169,50 +171,55 @@ const DetailContent = ({ noticeId }: Props) => {
     setSelected(e.target.value);
   };
 
+  const handleContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+  };
+
   const handleSubmitEdit = async () => {
     try {
-      await axios
-        .patch(`${baseURL}/notice/${id}`, {
-          title: title,
-          content: content,
-          type: selected,
-          expireTime: '2050-10-04 23:50:11',
-        })
-        .then((response) => {
-          if (response && response.status === 200) {
-            handleUploadOpenModal(false);
-            handleEdit(false);
-            router.push('/');
-          }
-        });
+      await patchSubmit({
+        id: id,
+        title: title,
+        content: content,
+        type: selected,
+        expireTime: '2050-10-04 23:50:11',
+      }).then((response) => {
+        if (response && response.status === 200) {
+          handleUploadOpenModal(false);
+          handleEdit(false);
+          router.push('/');
+        }
+      });
     } catch (e) {
       console.log(e);
     }
   };
 
-  const handleContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value);
-  };
-
-  const handleDelete = (isDelete: boolean, id: number) => () => {
-    if (isDelete) {
-      axios.delete(`${baseURL}/notice/${id}`).then((response) => {
-        try {
-          if (response && response.status === 200) {
-            const result = response.status;
-            setIsRemove(result);
-            router.push('/');
-            return isRemove;
-          }
-        } catch (error) {
-          console.log('error', error);
+  const handleDelete = async () => {
+    try {
+      await deleteNotice({
+        id: id,
+        title: title,
+        content: content,
+        type: selected,
+        expireTime: '2050-10-04 23:50:11',
+      }).then((response) => {
+        if (response && response.status === 200) {
+          const result = response.status;
+          setIsRemove(result);
+          router.push('/');
+          return isRemove;
         }
       });
+    } catch (e) {
+      console.log(e);
     }
   };
 
   useEffect(() => {
-    axios.get(`${baseURL}/notice/detail/${id}`).then((response) => {
+    getNoticeDetail({
+      id: id,
+    }).then((response) => {
       try {
         if (response && response.status === 200) {
           const req = response.data.data.info;
@@ -395,7 +402,7 @@ const DetailContent = ({ noticeId }: Props) => {
           id={id}
           isOpen={isOpen}
           handleOpenModal={handleOpenModal}
-          handleDelete={() => handleDelete(true, id)}
+          handleDelete={handleDelete}
         />
       )}
 

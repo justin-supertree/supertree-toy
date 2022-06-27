@@ -1,21 +1,15 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import axios from 'axios';
 import styled from '@emotion/styled';
 import { breakpoints, Button, Typography } from '@playdapp/ui';
 import { Input, Select, Textarea } from '@chakra-ui/react';
 
-import { baseURL } from 'api/notice';
+import { postNoticeInfo } from 'api/notice';
 
 import WriteLayout from '@/components/Layout/WriteLayout';
 import MetaTag from '@/components/MetaTag';
-
-const FlexMixin = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-`;
+import { FlexMixin } from 'styles/mixin';
 
 const WriteTitle = styled.div`
   display: flex;
@@ -48,18 +42,8 @@ const ContentTypeSelect = styled(Select)`
   margin: 0;
 `;
 
-const ContentInputBox = styled(Textarea)`
-  width: 100%;
-  min-height: 392px;
-  margin-top: 1rem;
-`;
-
 const EditorBox = styled.div`
   margin: 16px 0;
-`;
-
-const Editors = styled(Button)`
-  margin-right: 8px;
 `;
 
 const ButtonArea = styled(FlexMixin)`
@@ -95,13 +79,10 @@ const WriteContent = () => {
   const router = useRouter();
 
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
   const [htmlStr, setHtmlStr] = useState('');
   const [selected, setSelected] = useState('');
-  const [editorName, setEditorName] = useState('base');
 
   const selectList = ['service', 'tip', 'event'];
-  const editorList = ['base', 'quill', 'wysiwyg', 'tui'];
 
   const handleSelectOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelected(e.target.value);
@@ -111,38 +92,24 @@ const WriteContent = () => {
     setTitle(e.target.value);
   };
 
-  const handleContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value);
-  };
-
   const cancelWrite = () => {
     router.push('/');
   };
 
-  const uploadNewData = () => {
+  const uploadNewData = async () => {
     if (selected === '') {
       return;
     }
-    axios
-      .post(`${baseURL}/notice`, {
-        title: title,
-        content: htmlStr || content,
-        type: selected,
-        expireTime: '2050-10-04 23:50:11',
-      })
-      .then((res) => {
-        if (res && res.status === 200 && res.data.message === 'Success') {
-          setTitle('');
-          setHtmlStr('');
-          router.push('/');
-        }
-      });
-  };
-
-  const handleEditor = (edit: string) => () => {
-    editorList.map((info) => {
-      if (edit === info) {
-        return setEditorName(edit);
+    await postNoticeInfo({
+      title: title,
+      content: htmlStr,
+      type: selected,
+      expireTime: '2050-10-04 23:50:11',
+    }).then((res) => {
+      if (res && res.status === 200 && res.data.message === 'Success') {
+        setTitle('');
+        setHtmlStr('');
+        router.push('/');
       }
     });
   };
@@ -187,52 +154,8 @@ const WriteContent = () => {
           </InsertItem>
 
           <EditorBox>
-            <Editors
-              color={editorName === 'base' ? 'primary' : 'secondary'}
-              onClick={handleEditor('base')}
-            >
-              base
-            </Editors>
-
-            {/* <Editors
-            color={editorName === 'quill' ? 'primary' : 'secondary'}
-            onClick={handleEditor('quill')}
-          >
-            Q
-          </Editors> */}
-
-            <Editors
-              color={editorName === 'wysiwyg' ? 'primary' : 'secondary'}
-              onClick={handleEditor('wysiwyg')}
-            >
-              W
-            </Editors>
-            <Editors
-              color={editorName === 'tui' ? 'primary' : 'secondary'}
-              onClick={handleEditor('tui')}
-            >
-              TUI
-            </Editors>
-          </EditorBox>
-
-          {editorName === 'base' && (
-            <ContentInputBox
-              type="text"
-              value={content}
-              onChange={handleContent}
-              placeholder="Please Write your contents in here"
-            />
-          )}
-
-          {/* {editorName === 'quill' && <div>quill</div>} */}
-
-          {editorName === 'wysiwyg' && (
-            <Wysiwyg htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
-          )}
-
-          {editorName === 'tui' && (
             <TUI htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
-          )}
+          </EditorBox>
 
           <ButtonArea>
             <ClickButton
@@ -253,11 +176,7 @@ const WriteContent = () => {
               color="primary"
               variant="solid"
               disabled={
-                selected === '' ||
-                title === '' ||
-                (htmlStr === '' && content === '')
-                  ? true
-                  : false
+                selected === '' || title === '' || htmlStr === '' ? true : false
               }
               onClick={uploadNewData}
             >
@@ -271,10 +190,6 @@ const WriteContent = () => {
     </>
   );
 };
-
-const Wysiwyg = dynamic(() => import('../../components/Wysiwyg'), {
-  ssr: false,
-});
 
 const TUI = dynamic(() => import('../../components/TUI'), {
   ssr: false,

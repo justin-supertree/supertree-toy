@@ -36,7 +36,7 @@ type Props = {
   id: number;
   isOpen: boolean;
   handleOpenModal: (isOpen: boolean) => () => void;
-  handleDelete: (isDelete: boolean, id: number) => () => void;
+  handleDelete: () => void;
 };
 
 const DeleteModal = ({ id, isOpen, handleOpenModal, handleDelete }: Props) => (
@@ -85,7 +85,7 @@ const DeleteModal = ({ id, isOpen, handleOpenModal, handleDelete }: Props) => (
         size="sm"
         color="primary"
         variant="solid"
-        onClick={handleDelete(true, id)}
+        onClick={handleDelete}
       >
         <Typography type="b3" color="atlantic">
           Delete
