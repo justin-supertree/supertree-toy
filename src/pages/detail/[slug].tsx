@@ -6,12 +6,8 @@ import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
 import { Input, Select, Textarea } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
-import {
-  baseURL,
-  deleteNotice,
-  getNoticeDetail,
-  patchSubmit,
-} from 'api/notice';
+import { deleteNotice, getNoticeDetail, patchSubmit } from 'api/notice';
+
 import useOpenControl from 'hooks/useOpenControl';
 
 import MetaTag from '@/components/MetaTag';
@@ -199,10 +195,6 @@ const DetailContent = ({ noticeId }: Props) => {
     try {
       await deleteNotice({
         id: id,
-        title: title,
-        content: content,
-        type: selected,
-        expireTime: '2050-10-04 23:50:11',
       }).then((response) => {
         if (response && response.status === 200) {
           const result = response.status;
@@ -217,20 +209,20 @@ const DetailContent = ({ noticeId }: Props) => {
   };
 
   useEffect(() => {
-    getNoticeDetail({
-      id: id,
-    }).then((response) => {
-      try {
+    try {
+      getNoticeDetail({
+        id: id,
+      }).then((response) => {
         if (response && response.status === 200) {
           const req = response.data.data.info;
           setData(req);
 
           return req;
         }
-      } catch (error) {
-        console.log(error);
-      }
-    });
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }, [id]);
 
   return (
