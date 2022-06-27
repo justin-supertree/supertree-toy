@@ -1,13 +1,7 @@
 import NextImage from 'next/image';
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import {
-  breakpoints,
-  spacing,
-  palette,
-  Button,
-  Typography,
-} from '@playdapp/ui';
+import { breakpoints } from '@playdapp/ui';
 import { useMedia } from 'react-use';
 
 import Logo from '../../../public/assets/icons/header-logo.svg';

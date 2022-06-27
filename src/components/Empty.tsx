@@ -1,12 +1,6 @@
 import NextImage from 'next/image';
 import styled from '@emotion/styled';
-import {
-  breakpoints,
-  spacing,
-  palette,
-  Button,
-  Typography,
-} from '@playdapp/ui';
+import { spacing, palette, Typography } from '@playdapp/ui';
 
 import Error from '../../public/assets/icons/error.png';
 

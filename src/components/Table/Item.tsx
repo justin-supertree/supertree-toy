@@ -1,8 +1,8 @@
+import { useMedia } from 'react-use';
 import Link from 'next/link';
+import styled from '@emotion/styled';
 import { breakpoints, Typography } from '@playdapp/ui';
 import { format } from 'date-fns';
-import styled from '@emotion/styled';
-import { useMedia } from 'react-use';
 
 type Props = {
   noticeId: number;

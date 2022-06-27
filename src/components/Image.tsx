@@ -13,11 +13,10 @@ const imageHost = {
   local: '../../public/assets/icons',
 };
 
-/** 이미지 컴포넌트 */
 const Image = ({ name, size, width, height, layout, ...rest }: Props) => {
   return (
     <NextImage
-      src={`${imageHost.local}/${name}`}
+      src={`${name}`}
       width={size || width}
       height={size || height}
       layout="fixed"

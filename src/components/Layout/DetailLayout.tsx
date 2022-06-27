@@ -1,13 +1,6 @@
 import React from 'react';
-
 import styled from '@emotion/styled';
-import {
-  breakpoints,
-  spacing,
-  palette,
-  Button,
-  Typography,
-} from '@playdapp/ui';
+import { breakpoints } from '@playdapp/ui';
 
 import Header from '@/components/Layout/Header';
 import Footer from '@/components/Layout/Footer';

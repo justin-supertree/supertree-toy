@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import axios from 'axios';
 import { Editor } from 'react-draft-wysiwyg';
 import { NextPage } from 'next';
 import { EditorState, ContentState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
+
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 const ContentEditorBox = styled.div`
