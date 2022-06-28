@@ -7,7 +7,7 @@ import { Button, Typography } from '@playdapp/ui';
 import MetaTag from '@/components/MetaTag';
 
 import Error from '../../public/assets/icons/error.png';
-import MainLayout from '@/components/Layout/MainLayout';
+import ErrorLayout from '@/components/Layout/ErrorLayout';
 
 const NotFoundPage: NextPage = () => {
   const TextArea = styled.div`
@@ -17,7 +17,7 @@ const NotFoundPage: NextPage = () => {
   return (
     <>
       <MetaTag title="404 Page : PlayDapp Notice" />
-      <MainLayout>
+      <ErrorLayout>
         <NextImage
           src={Error}
           width={160}
@@ -35,7 +35,7 @@ const NotFoundPage: NextPage = () => {
         <Link href="/">
           <Button>Go Back to Home</Button>
         </Link>
-      </MainLayout>
+      </ErrorLayout>
     </>
   );
 };
