@@ -160,8 +160,6 @@ const IndexPage: NextPageWithLayout = () => {
       <MetaTag title="Notice | PlayDapp Notice" />
 
       <Container>
-        <Header />
-
         <MainLayout>
           <>
             <NoticeTitle>
@@ -236,12 +234,9 @@ const IndexPage: NextPageWithLayout = () => {
                 )}
               </>
             )}
-
             {!isLoading && error && <Empty tab={tab.value} />}
           </>
         </MainLayout>
-
-        <Footer />
       </Container>
     </>
   );

@@ -7,9 +7,10 @@ import { Input, Select, Textarea } from '@chakra-ui/react';
 
 import { postNoticeInfo } from 'api/notice';
 
-import WriteLayout from '@/components/Layout/WriteLayout';
 import MetaTag from '@/components/MetaTag';
 import { FlexMixin } from 'styles/mixin';
+import MainLayout from '@/components/Layout/MainLayout';
+import DetailLayout from '@/components/Layout/DetailLayout';
 
 const WriteTitle = styled.div`
   display: flex;
@@ -118,7 +119,7 @@ const WriteContent = () => {
     <>
       <MetaTag title="Notice | Write Page" />
 
-      <WriteLayout>
+      <DetailLayout>
         <WriteTitle>
           <Typography type="h5" color="black">
             Write Notice / Edit Notice
@@ -186,7 +187,7 @@ const WriteContent = () => {
             </ClickButton>
           </ButtonArea>
         </InsertArea>
-      </WriteLayout>
+      </DetailLayout>
     </>
   );
 };

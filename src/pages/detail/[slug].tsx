@@ -11,9 +11,10 @@ import { deleteNotice, getNoticeDetail, patchSubmit } from 'api/notice';
 import useOpenControl from 'hooks/useOpenControl';
 
 import MetaTag from '@/components/MetaTag';
-import DetailLayout from '@/components/Layout/DetailLayout';
 import DeleteModal from '@/components/Modal/DeleteModal';
 import UploadModal from '@/components/Modal/UploadModal';
+import MainLayout from '@/components/Layout/MainLayout';
+import DetailLayout from '@/components/Layout/DetailLayout';
 
 type Prop = {
   noticeId?: number;
