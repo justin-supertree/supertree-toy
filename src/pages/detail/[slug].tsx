@@ -322,11 +322,17 @@ const DetailContent = ({ noticeId }: Props) => {
                         vali
                         autoFocus
                       />
-                      {data.title === '' ? (
-                        <div>Please enter title text in input box.</div>
-                      ) : (
-                        <div>Email is required.</div>
-                      )}
+                      <div>
+                        {data.title === '' ? (
+                          <Typography color="red">
+                            Please enter title text in input box.
+                          </Typography>
+                        ) : (
+                          <Typography color="primary900">
+                            Title is required.
+                          </Typography>
+                        )}
+                      </div>
                     </InsertItem>
 
                     <Typography type="b4" color="gray900">

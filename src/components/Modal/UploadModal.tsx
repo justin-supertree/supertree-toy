@@ -59,10 +59,10 @@ const UploadModal = ({
         size="sm"
         color="primary"
         variant="outline"
-        onClick={handleSubmitEdit}
+        onClick={handleUploadOpenModal(false)}
       >
         <Typography type="b3" color="primary700">
-          Edit
+          Cancle
         </Typography>
       </ClickButton>
 
@@ -70,10 +70,10 @@ const UploadModal = ({
         size="sm"
         color="primary"
         variant="solid"
-        onClick={handleUploadOpenModal(false)}
+        onClick={handleSubmitEdit}
       >
         <Typography type="b3" color="atlantic">
-          Cancle
+          Edit
         </Typography>
       </ClickButton>
     </ModalButtonBlock>

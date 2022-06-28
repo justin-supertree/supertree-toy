@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic';
 import styled from '@emotion/styled';
 import { breakpoints, Button, Typography } from '@playdapp/ui';
 import { Input, Select } from '@chakra-ui/react';
-import Grid from 'tui-grid';
 
 import { postNoticeInfo } from 'api/notice';
 
@@ -122,7 +121,7 @@ const WriteContent = () => {
       <DetailLayout>
         <WriteTitle>
           <Typography type="h5" color="black">
-            Write Notice / Edit Notice
+            Write Notice
           </Typography>
         </WriteTitle>
 
@@ -155,7 +154,7 @@ const WriteContent = () => {
           </InsertItem>
 
           <EditorBox>
-            <TUI htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
+            <TUI htmlStr={htmlStr} setHtmlStr={setHtmlStr} autofocus={false} />
           </EditorBox>
 
           <ButtonArea>
