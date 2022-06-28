@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
-import { Input, Select, Textarea } from '@chakra-ui/react';
+import { Input, Select, FormControl } from '@chakra-ui/react';
 import { format } from 'date-fns';
+import { Markup } from 'interweave';
+import dynamic from 'next/dynamic';
 
 import { deleteNotice, getNoticeDetail, patchSubmit } from 'api/notice';
 
@@ -19,8 +21,8 @@ type Prop = {
   noticeId?: number;
   title?: string;
   type?: string;
-  content: string;
-  dateCreate?: string;
+  content?: string;
+  dateCreate?: Date | number;
 };
 
 type Props = {
@@ -34,8 +36,15 @@ const FlexMixin = styled.div`
 `;
 
 const ContentHeadArea = styled.div`
-  padding-bottom: 16px;
+  padding-bottom: 1rem;
   border-bottom: 1px solid ${palette.gray400};
+`;
+
+const WriteTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
 `;
 
 const InsertArea = styled.div`
@@ -60,6 +69,15 @@ const ClickButton = styled(Button)`
   max-width: 240px;
   margin: 0 4px;
   color: #ffff;
+
+  ${breakpoints.down('lg')} {
+    max-width: 160px;
+  }
+
+  ${breakpoints.down('md')} {
+    max-width: 100%;
+    margin-bottom: 8px;
+  }
 `;
 
 const TitleBlock = styled.div`
@@ -70,6 +88,7 @@ const TitleBlock = styled.div`
 
 const BeforeEditTitle = styled(FlexMixin)`
   justify-content: space-between;
+  align-items: center;
 
   ${breakpoints.down('md')} {
     display: block;
@@ -88,21 +107,17 @@ const ContentTypeSelect = styled(Select)`
   margin: 0;
 `;
 
-const InsertItem = styled(FlexMixin)<{ type: string }>`
+const InsertItem = styled(FormControl)<{ type: string }>`
   min-width: 5rem;
+  margin: 5px 0;
   text-align: left;
   white-space: nowrap;
 `;
 
 const ContentTitleInput = styled(Input)`
-  min-height: 3rem;
-  margin: 0;
-`;
-
-const ContentInputBox = styled(Textarea)`
   width: 100%;
-  min-height: 392px;
-  margin-top: 1rem;
+  min-height: 3rem;
+  padding: 12px 24px;
 `;
 
 const InsertBottomArea = styled(FlexMixin)`
@@ -115,11 +130,18 @@ const InsertBottomArea = styled(FlexMixin)`
   }
 `;
 
-const UploadEditBlock = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: 8px;
+const UploadButtonBlock = styled(FlexMixin)`
+  justify-content: center;
+  margin-top: 40px;
+
+  ${breakpoints.down('md')} {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+`;
+
+const EditorBox = styled.div`
+  margin: 16px 0;
 `;
 
 const DetailContent = ({ noticeId }: Props) => {
@@ -129,12 +151,18 @@ const DetailContent = ({ noticeId }: Props) => {
   const [isOpen, setIsOpen] = useOpenControl();
   const [isUploadOpen, setUploadOpen] = useOpenControl();
 
-  const [data, setData] = useState<Prop>(Object);
+  const [data, setData] = useState<Prop>({
+    title: '',
+    type: '',
+    content: '',
+    dateCreate: 0,
+  });
+
   const [isEdit, setIsEdit] = useState(false);
   const [isRemove, setIsRemove] = useState(0);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [contents, setContents] = useState('');
   const [selected, setSelected] = useState('');
+  const inputElement = useRef<HTMLInputElement>(null);
 
   const selectList = ['service', 'tip', 'event'];
 
@@ -152,31 +180,22 @@ const DetailContent = ({ noticeId }: Props) => {
 
   const handleEdit = (isEdit: boolean) => () => {
     setIsEdit(isEdit);
-
-    if (isEdit === false) {
-      setTitle('');
-      setContent('');
-    }
   };
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
+    setData({ title: e.currentTarget.value });
   };
 
   const handleSelectOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelected(e.target.value);
   };
 
-  const handleContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value);
-  };
-
   const handleSubmitEdit = async () => {
     try {
       await patchSubmit({
         id: id,
-        title: title,
-        content: content,
+        title: data.title as string | undefined,
+        content: contents,
         type: selected,
         expireTime: '2050-10-04 23:50:11',
       }).then((response) => {
@@ -216,7 +235,6 @@ const DetailContent = ({ noticeId }: Props) => {
         if (response && response.status === 200) {
           const req = response.data.data.info;
           setData(req);
-
           return req;
         }
       });
@@ -225,11 +243,25 @@ const DetailContent = ({ noticeId }: Props) => {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (inputElement.current) {
+      inputElement.current.focus();
+    }
+  }, []);
+
   return (
     <>
       <MetaTag title="Notice | Detial Page" />
 
       <DetailLayout>
+        {isEdit && (
+          <WriteTitle>
+            <Typography type="h5" color="black">
+              Edit Notice
+            </Typography>
+          </WriteTitle>
+        )}
+
         <ContentHeadArea>
           {data && data !== undefined && (
             <>
@@ -249,7 +281,7 @@ const DetailContent = ({ noticeId }: Props) => {
                           )}
                       </Typography>
 
-                      <UploadEditBlock>
+                      <FlexMixin>
                         <EditButton
                           size="sm"
                           color="primary"
@@ -271,7 +303,7 @@ const DetailContent = ({ noticeId }: Props) => {
                             Delete
                           </Typography>
                         </EditButton>
-                      </UploadEditBlock>
+                      </FlexMixin>
                     </BeforeEditTitle>
                   </>
                 ) : (
@@ -280,13 +312,21 @@ const DetailContent = ({ noticeId }: Props) => {
                       Title :
                     </Typography>
 
-                    <InsertItem type="title">
+                    <InsertItem type="title" isInvalid={data.title === ''}>
                       <ContentTitleInput
-                        value={title}
+                        value={data.title}
                         onChange={handleTitle}
+                        ref={inputElement}
                         size="lg"
                         width="100%"
+                        vali
+                        autoFocus
                       />
+                      {data.title === '' ? (
+                        <div>Please enter title text in input box.</div>
+                      ) : (
+                        <div>Email is required.</div>
+                      )}
                     </InsertItem>
 
                     <Typography type="b4" color="gray900">
@@ -309,53 +349,17 @@ const DetailContent = ({ noticeId }: Props) => {
                 )}
               </TitleBlock>
 
-              <TitleBlock>
-                {isEdit && (
-                  <>
-                    <InsertBottomArea>
-                      <Typography type="p4" color="dgray300">
-                        {data.dateCreate !== undefined &&
-                          format(
-                            new Date(data.dateCreate),
-                            'MMM-dd-yyyy h:mm:ss a',
-                          )}
-                      </Typography>
-
-                      <UploadEditBlock>
-                        <EditButton
-                          size="sm"
-                          color="primary"
-                          variant="outline"
-                          onClick={handleUploadOpenModal(true)}
-                          disabled={(title === '' || content === '') && true}
-                        >
-                          <Typography
-                            type="h6"
-                            color={
-                              title === '' || content === ''
-                                ? 'gray700'
-                                : 'primary700'
-                            }
-                          >
-                            Upload
-                          </Typography>
-                        </EditButton>
-
-                        <EditButton
-                          size="sm"
-                          color="primary"
-                          variant="outline"
-                          onClick={handleEdit(false)}
-                        >
-                          <Typography type="h6" color="primary700">
-                            Cancel
-                          </Typography>
-                        </EditButton>
-                      </UploadEditBlock>
-                    </InsertBottomArea>
-                  </>
-                )}
-              </TitleBlock>
+              {isEdit && (
+                <InsertBottomArea>
+                  <Typography type="p4" color="dgray300">
+                    {data.dateCreate !== undefined &&
+                      format(
+                        new Date(data.dateCreate),
+                        'MMM-dd-yyyy h:mm:ss a',
+                      )}
+                  </Typography>
+                </InsertBottomArea>
+              )}
             </>
           )}
         </ContentHeadArea>
@@ -364,11 +368,11 @@ const DetailContent = ({ noticeId }: Props) => {
           {!isEdit ? (
             <>
               <ContentDescBox>
-                <p dangerouslySetInnerHTML={{ __html: data.content }}></p>
+                <Markup content={data.content} />
               </ContentDescBox>
               <ButtonArea>
                 <ClickButton
-                  size="sm"
+                  size="md"
                   color="primary"
                   variant="solid"
                   onClick={viewlist}
@@ -380,11 +384,47 @@ const DetailContent = ({ noticeId }: Props) => {
               </ButtonArea>
             </>
           ) : (
-            <ContentInputBox
-              type="text"
-              value={content}
-              onChange={handleContent}
-            />
+            <>
+              <EditorBox>
+                <TUI
+                  htmlStr={data.content as string}
+                  setHtmlStr={setContents}
+                  autofocus={false}
+                />
+              </EditorBox>
+
+              <UploadButtonBlock>
+                <ClickButton
+                  size="md"
+                  color="primary"
+                  variant="outline"
+                  onClick={handleEdit(false)}
+                >
+                  <Typography type="h6" color="primary700">
+                    Cancel
+                  </Typography>
+                </ClickButton>
+
+                <ClickButton
+                  size="md"
+                  color="primary"
+                  variant="solid"
+                  onClick={handleUploadOpenModal(true)}
+                  disabled={(data.title === '' || data.content === '') && true}
+                >
+                  <Typography
+                    type="h6"
+                    color={
+                      data.title === '' || data.content === ''
+                        ? 'gray700'
+                        : 'atlantic'
+                    }
+                  >
+                    Edit
+                  </Typography>
+                </ClickButton>
+              </UploadButtonBlock>
+            </>
           )}
         </InsertArea>
       </DetailLayout>
@@ -417,4 +457,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   };
 };
 
+const TUI = dynamic(() => import('../../components/TUI'), {
+  ssr: false,
+});
 export default DetailContent;

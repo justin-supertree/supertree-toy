@@ -9,6 +9,7 @@ import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 
 interface IEditor {
+  autofocus: boolean;
   htmlStr: string;
   setHtmlStr: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -20,13 +21,13 @@ const ContentEditorBox = styled(ToastEditor)`
   border: 1px solid;
 `;
 
-const TUI: NextPage<IEditor> = ({ htmlStr, setHtmlStr }) => {
+const TUI: NextPage<IEditor> = ({ htmlStr, setHtmlStr, autofocus }) => {
   const editorRef = React.useRef<ToastEditor>(null);
+
+  const plugins = [colorSyntax];
 
   const onChangeEditor = () => {
     const refstatus = editorRef.current;
-    const textlength = htmlStr.substr(0, htmlStr.length);
-    console.log('textlength', textlength);
 
     if (refstatus) {
       setHtmlStr(refstatus.getInstance().getHTML());
@@ -35,12 +36,9 @@ const TUI: NextPage<IEditor> = ({ htmlStr, setHtmlStr }) => {
 
   useEffect(() => {
     if (editorRef.current) {
-      editorRef.current.getInstance().setHTML(htmlStr);
-      editorRef.current.getInstance().removeHook('addImageBlobHook');
+      editorRef.current?.getInstance().setHTML(htmlStr);
     }
   }, [htmlStr]);
-
-  const plugins = [colorSyntax];
 
   return (
     <ContentEditorBox
@@ -51,6 +49,7 @@ const TUI: NextPage<IEditor> = ({ htmlStr, setHtmlStr }) => {
       ref={editorRef}
       plugins={plugins}
       onChange={onChangeEditor}
+      autofocus={autofocus}
     />
   );
 };

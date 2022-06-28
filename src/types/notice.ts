@@ -7,9 +7,9 @@ export type NoticeItemRequest = {
 
 export type SubmitRequest = {
   id: number;
-  content: string;
-  expireTime: string;
-  title: string;
+  content?: string;
+  expireTime?: string;
+  title?: string;
   type: string;
 };
 
