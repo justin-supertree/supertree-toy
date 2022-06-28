@@ -3,14 +3,14 @@ import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import styled from '@emotion/styled';
 import { breakpoints, Button, Typography } from '@playdapp/ui';
-import { Input, Select, Textarea } from '@chakra-ui/react';
+import { Input, Select } from '@chakra-ui/react';
+import Grid from 'tui-grid';
 
 import { postNoticeInfo } from 'api/notice';
 
 import MetaTag from '@/components/MetaTag';
-import { FlexMixin } from 'styles/mixin';
-import MainLayout from '@/components/Layout/MainLayout';
 import DetailLayout from '@/components/Layout/DetailLayout';
+import { FlexMixin } from 'styles/mixin';
 
 const WriteTitle = styled.div`
   display: flex;

@@ -24,8 +24,12 @@ const TUI: NextPage<IEditor> = ({ htmlStr, setHtmlStr }) => {
   const editorRef = React.useRef<ToastEditor>(null);
 
   const onChangeEditor = () => {
-    if (editorRef.current) {
-      setHtmlStr(editorRef.current.getInstance().getHTML());
+    const refstatus = editorRef.current;
+    const textlength = htmlStr.substr(0, htmlStr.length);
+    console.log('textlength', textlength);
+
+    if (refstatus) {
+      setHtmlStr(refstatus.getInstance().getHTML());
     }
   };
 

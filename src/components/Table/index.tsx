@@ -1,12 +1,6 @@
 import styled from '@emotion/styled';
 
-import {
-  breakpoints,
-  spacing,
-  palette,
-  Button,
-  Typography,
-} from '@playdapp/ui';
+import { breakpoints } from '@playdapp/ui';
 
 import Item from './Item';
 
@@ -20,7 +14,6 @@ type Props = {
 const TableBox = styled.div`
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid #efeff1;
   width: 100%;
   margin: auto;
 

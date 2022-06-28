@@ -13,7 +13,6 @@ import useOpenControl from 'hooks/useOpenControl';
 import MetaTag from '@/components/MetaTag';
 import DeleteModal from '@/components/Modal/DeleteModal';
 import UploadModal from '@/components/Modal/UploadModal';
-import MainLayout from '@/components/Layout/MainLayout';
 import DetailLayout from '@/components/Layout/DetailLayout';
 
 type Prop = {

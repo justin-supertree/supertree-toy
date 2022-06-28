@@ -40,7 +40,7 @@ export const patchSubmit = ({
   type,
   expireTime,
 }: SubmitRequest) => {
-  return axios.post(`${baseURL}/notice/${id}`, {
+  return axios.patch(`${baseURL}/notice/${id}`, {
     title,
     content,
     type,

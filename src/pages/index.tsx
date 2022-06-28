@@ -8,10 +8,8 @@ import type { NextPageWithLayout } from 'types/next-page';
 
 import { getNotice } from 'api/notice';
 
-import Header from '@/components/Layout/Header';
 import MainLayout from '@/components/Layout/MainLayout';
 import Table from '@/components/Table';
-import Footer from '@/components/Layout/Footer';
 import MetaTag from '@/components/MetaTag';
 import Empty from '@/components/Empty';
 
