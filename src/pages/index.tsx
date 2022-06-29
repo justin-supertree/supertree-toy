@@ -12,6 +12,7 @@ import MainLayout from '@/components/Layout/MainLayout';
 import Table from '@/components/Table';
 import MetaTag from '@/components/MetaTag';
 import Empty from '@/components/Empty';
+import Loading from '@/components/Loading';
 
 type Props = {
   noticeId: number;
@@ -159,81 +160,86 @@ const IndexPage: NextPageWithLayout = () => {
 
       <Container>
         <MainLayout>
-          <>
-            <NoticeTitle>
-              <Typography type={isMobile ? 'h4' : 'h3'}>Notice</Typography>
-            </NoticeTitle>
+          {!isLoading && (
+            <>
+              <NoticeTitle>
+                <Typography type={isMobile ? 'h4' : 'h3'}>Notice</Typography>
+              </NoticeTitle>
 
-            <TabBox>
-              <Tab
-                onClick={handleTab('all', 'All')}
-                isSelect={tab.key === 'all'}
-              >
-                All
-              </Tab>
-              <Tab
-                onClick={handleTab('service', 'Service')}
-                isSelect={tab.key === 'service'}
-              >
-                Service
-              </Tab>
-              <Tab
-                onClick={handleTab('event', 'Event')}
-                isSelect={tab.key === 'event'}
-              >
-                Event
-              </Tab>
-              <Tab
-                onClick={handleTab('tip', 'Tip')}
-                isSelect={tab.key === 'tip'}
-              >
-                Tip
-              </Tab>
-            </TabBox>
+              <TabBox>
+                <Tab
+                  onClick={handleTab('all', 'All')}
+                  isSelect={tab.key === 'all'}
+                >
+                  All
+                </Tab>
+                <Tab
+                  onClick={handleTab('service', 'Service')}
+                  isSelect={tab.key === 'service'}
+                >
+                  Service
+                </Tab>
+                <Tab
+                  onClick={handleTab('event', 'Event')}
+                  isSelect={tab.key === 'event'}
+                >
+                  Event
+                </Tab>
+                <Tab
+                  onClick={handleTab('tip', 'Tip')}
+                  isSelect={tab.key === 'tip'}
+                >
+                  Tip
+                </Tab>
+              </TabBox>
 
-            <WritePosition>
-              <Link href={`/write`}>
-                <WrtieButton size={isMobile ? 'sm' : 'sm'}>
-                  <Typography type={isMobile ? 'b5' : 'b2'} color="atlantic">
-                    Write
-                  </Typography>
-                </WrtieButton>
-              </Link>
-            </WritePosition>
-
-            {requestData?.pages[0].data.list?.length !== 0 && !error && (
-              <>
-                <Table title="main-table" headers={['No', 'Title', 'Date']}>
-                  {requestData?.pages.map((noticeData) => {
-                    return noticeData.data?.list?.map((info: Props) => (
-                      <Table.Item
-                        key={info.noticeId}
-                        noticeId={info.noticeId}
-                        title={info.title}
-                        type={info.type}
-                        dateCreate={info.dateCreate}
-                        tab={tab.key}
-                      />
-                    ));
-                  })}
-                </Table>
-
-                {hasNextPage && (
-                  <LoadMore
-                    size="md"
-                    color="primary"
-                    variant="outline"
-                    onClick={handleLoadMore}
-                  >
-                    <Typography type="b3" color="primary700">
-                      LoadMore +
+              <WritePosition>
+                <Link href={`/write`}>
+                  <WrtieButton size={isMobile ? 'sm' : 'sm'}>
+                    <Typography type={isMobile ? 'b5' : 'b2'} color="atlantic">
+                      Write
                     </Typography>
-                  </LoadMore>
-                )}
-              </>
-            )}
-            {!isLoading && error && <Empty tab={tab.value} />}
-          </>
+                  </WrtieButton>
+                </Link>
+              </WritePosition>
+
+              {requestData?.pages[0].data.list?.length !== 0 && !error ? (
+                <>
+                  <Table title="main-table" headers={['No', 'Title', 'Date']}>
+                    {requestData?.pages.map((noticeData) => {
+                      return noticeData.data?.list?.map((info: Props) => (
+                        <Table.Item
+                          key={info.noticeId}
+                          noticeId={info.noticeId}
+                          title={info.title}
+                          type={info.type}
+                          dateCreate={info.dateCreate}
+                          tab={tab.key}
+                        />
+                      ));
+                    })}
+                  </Table>
+
+                  {hasNextPage && (
+                    <LoadMore
+                      size="md"
+                      color="primary"
+                      variant="outline"
+                      onClick={handleLoadMore}
+                    >
+                      <Typography type="b3" color="primary700">
+                        Load more +
+                      </Typography>
+                    </LoadMore>
+                  )}
+                </>
+              ) : (
+                <Empty tab={tab.value} />
+              )}
+            </>
+          )}
+
+          {isLoading && <Loading />}
         </MainLayout>
       </Container>
     </>
