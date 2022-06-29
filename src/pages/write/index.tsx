@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import styled from '@emotion/styled';
 import { breakpoints, Button, Typography } from '@playdapp/ui';
-import { Input, Select } from '@chakra-ui/react';
+import { Input, Select, FormControl } from '@chakra-ui/react';
 
 import { postNoticeInfo } from 'api/notice';
 
@@ -23,7 +23,7 @@ const InsertArea = styled.div`
   text-align: left;
 `;
 
-const InsertItem = styled(FlexMixin)<{ type: string }>`
+const InsertItem = styled(FormControl)<{ type: string }>`
   padding-bottom: 15px;
   text-align: left;
   white-space: nowrap;
@@ -81,6 +81,8 @@ const WriteContent = () => {
   const [title, setTitle] = useState('');
   const [htmlStr, setHtmlStr] = useState('');
   const [selected, setSelected] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   const selectList = ['service', 'tip', 'event'];
 
@@ -100,18 +102,24 @@ const WriteContent = () => {
     if (selected === '') {
       return;
     }
-    await postNoticeInfo({
-      title: title,
-      content: htmlStr,
-      type: selected,
-      expireTime: '2050-10-04 23:50:11',
-    }).then((res) => {
-      if (res && res.status === 200 && res.data.message === 'Success') {
-        setTitle('');
-        setHtmlStr('');
-        router.push('/');
-      }
-    });
+    try {
+      await postNoticeInfo({
+        title: title,
+        content: htmlStr,
+        type: selected,
+        expireTime: '2050-10-04 23:50:11',
+      }).then((res) => {
+        if (res && res.status === 200 && res.data.message === 'Success') {
+          setTitle('');
+          setHtmlStr('');
+          setIsLoading(false);
+          router.push('/');
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      setIsLoading(true);
+    }
   };
 
   return (
@@ -129,16 +137,27 @@ const WriteContent = () => {
           <Typography type="b4" color="gray900">
             Title :
           </Typography>
-          <InsertItem type="title">
+
+          <InsertItem type="title" isInvalid={title === ''}>
             <ContentTitleInput
               value={title}
               onChange={handleTitle}
               placeholder="Notice Title"
             />
+
+            <div>
+              <Typography color={title === '' ? 'red' : 'primary900'}>
+                {title === ''
+                  ? 'Please enter title in input box.'
+                  : 'Title is required.'}
+              </Typography>
+            </div>
           </InsertItem>
+
           <Typography type="b4" color="gray900">
             Type :
           </Typography>
+
           <InsertItem type="type">
             <ContentTypeSelect
               placeholder="타입을 선택해주세요."
@@ -151,6 +170,13 @@ const WriteContent = () => {
                 </option>
               ))}
             </ContentTypeSelect>
+            <div>
+              <Typography color={selected === '' ? 'red' : 'primary900'}>
+                {selected === ''
+                  ? 'Please select type.'
+                  : 'Select is required.'}
+              </Typography>
+            </div>
           </InsertItem>
 
           <EditorBox>
