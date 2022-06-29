@@ -293,6 +293,7 @@ const DetailContent = ({ noticeId }: Props) => {
                           </Typography>
                         </EditButton>
 
+<<<<<<< Updated upstream
                         <EditButton
                           size="sm"
                           color="primary"
@@ -311,6 +312,28 @@ const DetailContent = ({ noticeId }: Props) => {
                     <Typography type="b4" color="gray900">
                       Title :
                     </Typography>
+=======
+                      <InsertItem type="title" isInvalid={data.title === ''}>
+                        <ContentTitleInput
+                          value={data.title}
+                          onChange={handleTitle}
+                          ref={inputElement}
+                          size="lg"
+                          width="100%"
+                          autoFocus
+                        />
+
+                        <div>
+                          <Typography
+                            color={data.title === '' ? 'red' : 'primary900'}
+                          >
+                            {data.title === ''
+                              ? 'Please enter title text in input box.'
+                              : 'Title is required.'}
+                          </Typography>
+                        </div>
+                      </InsertItem>
+>>>>>>> Stashed changes
 
                     <InsertItem type="title" isInvalid={data.title === ''}>
                       <ContentTitleInput
@@ -351,6 +374,7 @@ const DetailContent = ({ noticeId }: Props) => {
                     </InsertItem>
                   </>
                 )}
+<<<<<<< Updated upstream
               </TitleBlock>
 
               {isEdit && (
@@ -422,6 +446,72 @@ const DetailContent = ({ noticeId }: Props) => {
                       data.title === '' || data.content === ''
                         ? 'gray700'
                         : 'atlantic'
+=======
+
+                {isEdit && (
+                  <InsertBottomArea>
+                    <Typography type="p4" color="dgray300">
+                      {data.dateCreate !== undefined &&
+                        format(
+                          new Date(data.dateCreate),
+                          'MMM-dd-yyyy h:mm:ss a',
+                        )}
+                    </Typography>
+                  </InsertBottomArea>
+                )}
+              </>
+            )}
+          </ContentHeadArea>
+
+          <InsertArea>
+            {!isEdit ? (
+              <>
+                <ContentDescBox>
+                  {data.content !== '' ? <Markup content={data.content} /> : ''}
+                </ContentDescBox>
+                <ButtonArea>
+                  <ClickButton
+                    size="md"
+                    color="primary"
+                    variant="solid"
+                    onClick={viewlist}
+                  >
+                    <Typography type="b3" color="atlantic">
+                      View list
+                    </Typography>
+                  </ClickButton>
+                </ButtonArea>
+              </>
+            ) : (
+              <>
+                <EditorBox>
+                  <TUI
+                    htmlStr={data.content as string}
+                    setHtmlStr={setContents}
+                    autofocus={false}
+                  />
+                </EditorBox>
+
+                <UploadButtonBlock>
+                  <ClickButton
+                    size="md"
+                    color="primary"
+                    variant="outline"
+                    onClick={handleEdit(false)}
+                  >
+                    <Typography type="h6" color="primary700">
+                      Cancel
+                    </Typography>
+                  </ClickButton>
+
+                  <ClickButton
+                    size="md"
+                    color="primary"
+                    variant="solid"
+                    onClick={handleUploadOpenModal(true)}
+                    disabled={
+                      (data.title === '' || data.content === '') && true
+>>>>>>> Stashed changes
                     }
                   >
                     Edit
