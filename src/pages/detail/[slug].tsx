@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
@@ -319,19 +319,17 @@ const DetailContent = ({ noticeId }: Props) => {
                         ref={inputElement}
                         size="lg"
                         width="100%"
-                        vali
                         autoFocus
                       />
+
                       <div>
-                        {data.title === '' ? (
-                          <Typography color="red">
-                            Please enter title text in input box.
-                          </Typography>
-                        ) : (
-                          <Typography color="primary900">
-                            Title is required.
-                          </Typography>
-                        )}
+                        <Typography
+                          color={data.title === '' ? 'red' : 'primary900'}
+                        >
+                          {data.title === ''
+                            ? 'Please enter title text in input box.'
+                            : 'Title is required.'}
+                        </Typography>
                       </div>
                     </InsertItem>
 
@@ -374,7 +372,7 @@ const DetailContent = ({ noticeId }: Props) => {
           {!isEdit ? (
             <>
               <ContentDescBox>
-                <Markup content={data.content} />
+                {data.content !== '' ? <Markup content={data.content} /> : ''}
               </ContentDescBox>
               <ButtonArea>
                 <ClickButton
