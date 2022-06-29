@@ -4,10 +4,10 @@ import Link from 'next/link';
 import NextImage from 'next/image';
 import { Button, Typography } from '@playdapp/ui';
 
-import ErrorLayout from '@/components/Layout/ErrorLayout';
 import MetaTag from '@/components/MetaTag';
 
 import Error from '../../public/assets/icons/error.png';
+import ErrorLayout from '@/components/Layout/ErrorLayout';
 
 const NotFoundPage: NextPage = () => {
   const TextArea = styled.div`
