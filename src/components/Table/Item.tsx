@@ -56,6 +56,7 @@ const ColumnData = styled.div`
 
   &:nth-of-type(3) {
     width: 30%;
+    text-align: left;
   }
 
   ${breakpoints.down('md')} {
@@ -94,7 +95,7 @@ const Item = ({ noticeId, title, dateCreate, type, tab }: Props) => {
   return (
     <>
       {type !== '' && (
-        <Link href={`notice?detail/type=${type}/${noticeId}`} passHref>
+        <Link href={`detail/${noticeId}`} passHref>
           <a>
             <ItemContainer>
               <ColumnData>
@@ -110,11 +111,9 @@ const Item = ({ noticeId, title, dateCreate, type, tab }: Props) => {
                 </OverflowColumn>
               </ColumnData>
               <ColumnData>
-                <OverflowColumn>
-                  <Typography type="p4" color="dgray100">
-                    {format(date, 'MMM-dd-yyyy h:mm:ss a')}
-                  </Typography>
-                </OverflowColumn>
+                <Typography type="p4" color="dgray100">
+                  {format(date, 'MMM-dd-yyyy h:mm:ss a')}
+                </Typography>
               </ColumnData>
             </ItemContainer>
           </a>
