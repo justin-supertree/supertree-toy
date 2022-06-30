@@ -77,10 +77,11 @@ const ClickButton = styled(Button)`
 
 const WriteContent = () => {
   const router = useRouter();
+  const { type } = router.query;
 
   const [title, setTitle] = useState('');
   const [htmlStr, setHtmlStr] = useState('');
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState(type);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 

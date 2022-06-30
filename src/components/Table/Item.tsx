@@ -15,9 +15,7 @@ type Props = {
 const ItemContainer = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;
-  height: 63px;
-  margin: 2px 0;
+  padding: 8px 0;
   border-bottom: 1px solid #efeff1;
 
   &:hover {
@@ -96,7 +94,7 @@ const Item = ({ noticeId, title, dateCreate, type, tab }: Props) => {
   return (
     <>
       {type !== '' && (
-        <Link href={`/detail/${noticeId}`} passHref>
+        <Link href={`notice?detail/type=${type}/${noticeId}`} passHref>
           <a>
             <ItemContainer>
               <ColumnData>

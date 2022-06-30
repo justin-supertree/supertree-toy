@@ -74,7 +74,7 @@ const Tab = styled(FlexMixin)<{ isSelect: boolean }>`
   ${breakpoints.down('md')} {
     width: 91px;
     height: 32px;
-    background-color: ${({ isSelect }) => (isSelect ? '#36383F' : '')};
+    background-color: ${({ isSelect }) => isSelect && '#36383F'};
   }
 `;
 
@@ -194,7 +194,7 @@ const IndexPage: NextPageWithLayout = () => {
               </TabBox>
 
               <WritePosition>
-                <Link href={`/write`}>
+                <Link href={{ pathname: `/write`, query: { type: tab.key } }}>
                   <WriteButton size={isMobile ? 'xs' : 'sm'}>
                     <Typography type={isMobile ? 'b3' : 'b3'} color="atlantic">
                       Write
