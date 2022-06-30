@@ -96,19 +96,15 @@ const LoadMore = styled(Button)`
 const tabList = [
   {
     key: 'all',
-    value: 'All',
   },
   {
     key: 'service',
-    value: 'Service',
   },
   {
     key: 'event',
-    value: 'Event',
   },
   {
     key: 'tip',
-    value: 'Tip',
   },
 ];
 
@@ -117,26 +113,20 @@ const IndexPage: NextPageWithLayout = () => {
 
   const router = useRouter();
   const { type } = router.query;
-  console.log('type', type);
+  const [tab, setTab] = useState('all');
 
-  const [tab, setTab] = useState({
-    key: 'all',
-    value: 'All',
-  });
-  console.log('tab', tab);
-
-  const handleTab = (key: string, value: string) => () => {
-    if (key === tab.key) {
-      setTab({ key: 'all', value: 'All' });
+  const handleTab = (select: string) => () => {
+    if (type === select) {
+      setTab(select);
       return;
     }
-    setTab({ key, value });
-    router.push(`/?${key}`);
+    setTab(select);
+    router.push(`/?type=${select}`);
   };
 
   const fetchDataList = async ({ pageParam = 1 }) => {
     const { data } = await getNotice({
-      type: tab.key,
+      type: tab,
       page: pageParam,
     });
 
@@ -154,7 +144,7 @@ const IndexPage: NextPageWithLayout = () => {
     refetch,
     hasNextPage,
     error,
-  } = useInfiniteQuery(['projects', tab.key], fetchDataList, {
+  } = useInfiniteQuery(['projects', type], fetchDataList, {
     getNextPageParam: (table) => {
       if (
         Math.floor(
@@ -191,34 +181,19 @@ const IndexPage: NextPageWithLayout = () => {
               </NoticeTitle>
 
               <TabBox>
-                <Tab
-                  onClick={handleTab('all', 'All')}
-                  isSelect={tab.key === 'all'}
-                >
-                  All
-                </Tab>
-                <Tab
-                  onClick={handleTab('service', 'Service')}
-                  isSelect={tab.key === 'service'}
-                >
-                  Service
-                </Tab>
-                <Tab
-                  onClick={handleTab('event', 'Event')}
-                  isSelect={tab.key === 'event'}
-                >
-                  Event
-                </Tab>
-                <Tab
-                  onClick={handleTab('tip', 'Tip')}
-                  isSelect={tab.key === 'tip'}
-                >
-                  Tip
-                </Tab>
+                {tabList.map((info, index) => (
+                  <Tab
+                    key={index}
+                    onClick={handleTab(info.key)}
+                    isSelect={info.key === type}
+                  >
+                    {info.key}
+                  </Tab>
+                ))}
               </TabBox>
 
               <WritePosition>
-                <Link href={{ pathname: `/write`, query: { type: tab.key } }}>
+                <Link href={{ pathname: `/write`, query: { type: tab } }}>
                   <WriteButton size={isMobile ? 'xs' : 'sm'}>
                     <Typography type={isMobile ? 'b3' : 'b3'} color="atlantic">
                       Write
@@ -238,7 +213,7 @@ const IndexPage: NextPageWithLayout = () => {
                           title={info.title}
                           type={info.type}
                           dateCreate={info.dateCreate}
-                          tab={tab.key}
+                          tab={tab}
                         />
                       ));
                     })}
@@ -258,7 +233,7 @@ const IndexPage: NextPageWithLayout = () => {
                   )}
                 </>
               ) : (
-                <Empty tab={tab.value} />
+                <Empty tab={tab} />
               )}
             </>
           )}
