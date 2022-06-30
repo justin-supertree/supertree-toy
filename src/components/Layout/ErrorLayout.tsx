@@ -10,8 +10,6 @@ const Container = styled.div`
   padding: 32px 0 5rem 0;
   z-index: 0;
   text-align: center;
-  font-size: 16px;
-  font-weight: 600;
 `;
 
 type Props = {

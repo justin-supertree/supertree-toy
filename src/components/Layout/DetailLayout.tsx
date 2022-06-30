@@ -15,8 +15,6 @@ const Container = styled.div`
   margin: auto;
   z-index: 0;
   text-align: center;
-  font-size: 16px;
-  font-weight: 600;
 
   ${breakpoints.down('md')} {
     min-height: 46rem;

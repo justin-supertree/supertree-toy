@@ -150,7 +150,10 @@ const WriteContent = () => {
 
             <div>
               {isValidate && (
-                <Typography color={title === '' ? 'red' : 'primary900'}>
+                <Typography
+                  type="b4"
+                  color={title === '' ? 'red' : 'primary900'}
+                >
                   {title === ''
                     ? 'Please enter title in input box.'
                     : 'Title Info get required.'}
@@ -181,6 +184,7 @@ const WriteContent = () => {
                 color={
                   selected === '' || selected === 'all' ? 'red' : 'primary900'
                 }
+                type="b4"
               >
                 {selected === '' || selected === 'all'
                   ? 'Please select type.'
@@ -211,10 +215,6 @@ const WriteContent = () => {
               size="md"
               color="primary"
               variant="solid"
-              // disabled={
-              //   !isValidate ? true : false
-              //   // selected === '' || title === '' || htmlStr === '' ? true : false
-              // }
               onClick={uploadNewData}
             >
               <Typography type="b3" color="atlantic">
