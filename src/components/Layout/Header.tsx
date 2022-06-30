@@ -27,32 +27,46 @@ const Container = styled.div`
   }
 `;
 
+const ImageBlock = styled.div`
+  cursor: pointer;
+`;
+
 const Header = () => {
   const isMobile = useMedia('(max-width: 752px)', true);
 
   return (
     <Container>
       <Link href="/">
-        {isMobile ? (
-          <NextImage
-            src={LogoM}
-            width={58}
-            height={46}
-            layout="fixed"
-            alt="PlayDapp"
-          />
-        ) : (
-          <NextImage
-            src={Logo}
-            width={213}
-            height={48}
-            layout="fixed"
-            alt="PlayDapp"
-          />
-        )}
+        <ImageBlock>
+          {isMobile ? (
+            <NextImage
+              src={LogoM}
+              width={58}
+              height={46}
+              layout="fixed"
+              alt="PlayDapp"
+            />
+          ) : (
+            <NextImage
+              src={Logo}
+              width={213}
+              height={48}
+              layout="fixed"
+              alt="PlayDapp"
+            />
+          )}
+        </ImageBlock>
       </Link>
 
-      <NextImage src={User} width={40} height={40} layout="fixed" alt="user" />
+      <ImageBlock>
+        <NextImage
+          src={User}
+          width={40}
+          height={40}
+          layout="fixed"
+          alt="user"
+        />
+      </ImageBlock>
     </Container>
   );
 };

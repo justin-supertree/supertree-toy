@@ -83,6 +83,7 @@ const WriteContent = () => {
   const [htmlStr, setHtmlStr] = useState('');
   const [selected, setSelected] = useState(type);
   const [isLoading, setIsLoading] = useState(true);
+  const [isValidate, setIsValidate] = useState(false);
   const [isError, setIsError] = useState(false);
 
   const selectList = ['service', 'tip', 'event'];
@@ -100,7 +101,8 @@ const WriteContent = () => {
   };
 
   const uploadNewData = async () => {
-    if (selected === '') {
+    if (selected === '' || title === '' || htmlStr === '') {
+      setIsValidate(true);
       return;
     }
     try {
@@ -147,11 +149,13 @@ const WriteContent = () => {
             />
 
             <div>
-              <Typography color={title === '' ? 'red' : 'primary900'}>
-                {title === ''
-                  ? 'Please enter title in input box.'
-                  : 'Title is required.'}
-              </Typography>
+              {isValidate && (
+                <Typography color={title === '' ? 'red' : 'primary900'}>
+                  {title === ''
+                    ? 'Please enter title in input box.'
+                    : 'Title Info get required.'}
+                </Typography>
+              )}
             </div>
           </InsertItem>
 
@@ -171,11 +175,16 @@ const WriteContent = () => {
                 </option>
               ))}
             </ContentTypeSelect>
+
             <div>
-              <Typography color={selected === '' ? 'red' : 'primary900'}>
-                {selected === ''
+              <Typography
+                color={
+                  selected === '' || selected === 'all' ? 'red' : 'primary900'
+                }
+              >
+                {selected === '' || selected === 'all'
                   ? 'Please select type.'
-                  : 'Select is required.'}
+                  : `${selected} type is required.`}
               </Typography>
             </div>
           </InsertItem>
@@ -202,9 +211,10 @@ const WriteContent = () => {
               size="md"
               color="primary"
               variant="solid"
-              disabled={
-                selected === '' || title === '' || htmlStr === '' ? true : false
-              }
+              // disabled={
+              //   !isValidate ? true : false
+              //   // selected === '' || title === '' || htmlStr === '' ? true : false
+              // }
               onClick={uploadNewData}
             >
               <Typography type="b3" color="atlantic">
