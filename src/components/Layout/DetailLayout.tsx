@@ -10,7 +10,6 @@ import { DetailContainer } from 'styles/pages/home';
 const Container = styled.div`
   width: 100%;
   max-width: 838px;
-  min-height: 61rem;
   margin-top: 8rem;
   padding: 32px 3rem 5rem 3rem;
   margin: auto;
