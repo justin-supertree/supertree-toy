@@ -7,7 +7,7 @@ import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
 
 import Logo from '../../../public/assets/icons/logo-blank.svg';
 import Twitter from '../../../public/assets/icons/twitter.png';
-import FaceBook from '../../../public/assets/icons/telegram.png';
+import FaceBook from '../../../public/assets/icons/facebook.png';
 import Telegram from '../../../public/assets/icons/telegram.png';
 import Mail from '../../../public/assets/icons/mail.png';
 import Discord from '../../../public/assets/icons/discord.png';
@@ -21,7 +21,7 @@ const Container = styled.div`
   padding: 24px 80px;
   background-color: ${palette.gray200};
 
-  ${breakpoints.down('md')} {
+  ${breakpoints.down('lg')} {
     display: block;
     padding: 1rem 0;
     text-align: center;
@@ -36,7 +36,7 @@ const FooterContentArea = styled.div`
     margin: 0 8px;
   }
 
-  ${breakpoints.down('md')} {
+  ${breakpoints.down('lg')} {
     max-width: 228px;
     margin: auto;
     margin-top: 12px;
@@ -49,43 +49,43 @@ const FooterImageBlock = styled.div`
   justify-content: space-between;
   width: 224px;
 
-  ${breakpoints.down('md')} {
+  ${breakpoints.down('lg')} {
     display: flex;
     justify-content: space-between;
   }
 `;
 
 const FooterInfoText = styled.div`
-  margin-top: 1rem;
+  margin-top: 12px;
 
-  ${breakpoints.down('md')} {
-    margin-top: 12px;
+  ${breakpoints.down('lg')} {
+    margin-top: 0;
   }
 `;
 
 const LinkContainer = styled.div`
-  margin-top: 24px;
+  margin-top: 12px;
 
-  ${breakpoints.down('md')} {
-    margin-top: 16px;
+  ${breakpoints.down('lg')} {
+    margin-top: 8px;
   }
 `;
 
 const Footer = () => {
-  const isMobile = useMedia('(max-width: 752px)', true);
+  const isTablet = useMedia('(max-width: 1023px)', true);
 
   return (
     <Container>
       <div>
         <NextImage
           src={Logo}
-          width={isMobile ? 106 : 142}
-          height={isMobile ? 24 : 32}
+          width={isTablet ? 106 : 142}
+          height={isTablet ? 24 : 32}
           layout="fixed"
           alt="PlayDapp"
         />
         <FooterInfoText>
-          <Typography type={isMobile ? 'p5' : 'b3'} color="black">
+          <Typography type={isTablet ? 'p5' : 'p4'} color="black">
             The Premier Marketplace for NFTs
           </Typography>
         </FooterInfoText>
@@ -131,7 +131,7 @@ const Footer = () => {
         </FooterImageBlock>
 
         <LinkContainer>
-          <Typography type={isMobile ? 'p6' : 'b3'} color="gray700">
+          <Typography type={isTablet ? 'p6' : 'p5'} color="gray700">
             © 2022. PlayDapp Limited All rights reserved.
           </Typography>
         </LinkContainer>

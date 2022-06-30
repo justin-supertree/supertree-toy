@@ -52,14 +52,13 @@ const TableTitle = styled.div`
   }
 
   &:nth-of-type(3) {
-    width: 25%;
+    width: 30%;
   }
 `;
 
 const TableBody = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 723px;
 `;
 
 const Table = ({ children, title, headers, isEmpty }: Props) => {

@@ -7,6 +7,7 @@ import { Input, Select, FormControl } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { Markup } from 'interweave';
 import dynamic from 'next/dynamic';
+import { useMedia } from 'react-use';
 
 import { deleteNotice, getNoticeDetail, patchSubmit } from 'api/notice';
 
@@ -91,10 +92,14 @@ const BeforeEditTitle = styled(FlexMixin)`
   justify-content: space-between;
   align-items: center;
 
-  ${breakpoints.down('md')} {
+  ${breakpoints.down('lg')} {
     display: block;
     margin-top: 8px;
   }
+`;
+
+const SelectButtonBlock = styled(FlexMixin)`
+  justify-content: flex-end;
 `;
 
 const EditButton = styled(Button)`
@@ -145,9 +150,17 @@ const EditorBox = styled.div`
   margin: 16px 0;
 `;
 
+const CreateDateText = styled.p`
+  margin-top: 8px;
+  font-weight: 400;
+  font-size: 12px;
+  color: ${palette.dgray300};
+`;
+
 const DetailContent = ({ noticeId }: Props) => {
   const id = Number(noticeId);
   const router = useRouter();
+  const isTablet = useMedia('(max-width: 1023px)', true);
 
   const [isOpen, setIsOpen] = useOpenControl();
   const [isUploadOpen, setUploadOpen] = useOpenControl();
@@ -286,42 +299,48 @@ const DetailContent = ({ noticeId }: Props) => {
                 <TitleBlock>
                   {!isEdit ? (
                     <>
-                      <Typography type="h4" color="black">
+                      <Typography type={isTablet ? 'h6' : 'h5'} color="black">
                         {data.title}
                       </Typography>
 
                       <BeforeEditTitle>
-                        <Typography type="b3" color="gray700">
+                        <CreateDateText>
                           {data.dateCreate !== undefined &&
                             format(
                               new Date(data.dateCreate),
                               'MMM-dd-yyyy h:mm:ss a',
                             )}
-                        </Typography>
+                        </CreateDateText>
 
-                        <FlexMixin>
+                        <SelectButtonBlock>
                           <EditButton
-                            size="sm"
+                            size={isTablet ? 'xs' : 'sm'}
                             color="primary"
                             variant="outline"
                             onClick={handleEdit(true)}
                           >
-                            <Typography type="h6" color="primary700">
+                            <Typography
+                              type={isTablet ? 'b3' : 'b3'}
+                              color="primary700"
+                            >
                               Edit
                             </Typography>
                           </EditButton>
 
                           <EditButton
-                            size="sm"
+                            size={isTablet ? 'xs' : 'sm'}
                             color="primary"
-                            variant="outline"
+                            variant="solid"
                             onClick={handleOpenModal(true)}
                           >
-                            <Typography type="h6" color="primary700">
+                            <Typography
+                              type={isTablet ? 'b3' : 'b3'}
+                              color="atlantic"
+                            >
                               Delete
                             </Typography>
                           </EditButton>
-                        </FlexMixin>
+                        </SelectButtonBlock>
                       </BeforeEditTitle>
                     </>
                   ) : (

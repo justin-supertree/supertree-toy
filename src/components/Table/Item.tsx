@@ -25,7 +25,7 @@ const ItemContainer = styled.div`
     background-color: #f5f5f7;
   }
 
-  ${breakpoints.down('md')} {
+  ${breakpoints.down('lg')} {
     display: block;
     height: auto;
     background-color: #f5f5f7;
@@ -57,10 +57,10 @@ const ColumnData = styled.div`
   }
 
   &:nth-of-type(3) {
-    width: 25%;
+    width: 30%;
   }
 
-  ${breakpoints.down('md')} {
+  ${breakpoints.down('lg')} {
     padding: 0;
     text-align: left;
 
@@ -86,15 +86,12 @@ const OverflowColumn = styled.div`
 
   ${breakpoints.down('md')} {
     white-space: unset;
-    font-size: 14px;
-    font-weight: 400;
   }
 `;
 
 const Item = ({ noticeId, title, dateCreate, type, tab }: Props) => {
   const date = new Date(dateCreate);
-
-  const isMobile = useMedia('(max-width: 752px)', true);
+  const isTablet = useMedia('(max-width: 1023px)', true);
 
   return (
     <>
@@ -102,13 +99,21 @@ const Item = ({ noticeId, title, dateCreate, type, tab }: Props) => {
         <Link href={`/detail/${noticeId}`} passHref>
           <a>
             <ItemContainer>
-              <ColumnData>{noticeId}</ColumnData>
               <ColumnData>
-                <OverflowColumn>{title ? title : 'Empty Title'}</OverflowColumn>
+                <Typography type={isTablet ? 'p4' : 'p3'} color="black">
+                  {noticeId}
+                </Typography>
               </ColumnData>
               <ColumnData>
                 <OverflowColumn>
-                  <Typography type={!isMobile ? 'b3' : 'b5'} color="dgray100">
+                  <Typography type={isTablet ? 'p4' : 'p3'} color="black">
+                    {title ? title : 'Empty Title'}
+                  </Typography>
+                </OverflowColumn>
+              </ColumnData>
+              <ColumnData>
+                <OverflowColumn>
+                  <Typography type="p4" color="dgray100">
                     {format(date, 'MMM-dd-yyyy h:mm:ss a')}
                   </Typography>
                 </OverflowColumn>
