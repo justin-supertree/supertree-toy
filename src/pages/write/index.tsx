@@ -107,7 +107,7 @@ const WriteContent = () => {
       await postNoticeInfo({
         title: title,
         content: htmlStr,
-        type: selected,
+        type: selected as string,
         expireTime: '2050-10-04 23:50:11',
       }).then((res) => {
         if (res && res.status === 200 && res.data.message === 'Success') {

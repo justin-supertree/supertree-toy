@@ -2,7 +2,7 @@ export type NoticeItemRequest = {
   content: string;
   expireTime: string;
   title: string;
-  type: string;
+  type?: string;
 };
 
 export type SubmitRequest = {
