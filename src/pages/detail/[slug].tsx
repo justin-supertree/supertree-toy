@@ -58,7 +58,6 @@ const ContentDescBox = styled.div`
   width: 100%;
   min-height: 432px;
   margin-top: 1rem;
-  font-weight: 400;
 
   ${breakpoints.down('lg')} {
     font-size: 14px;
@@ -157,7 +156,6 @@ const EditorBox = styled.div`
 
 const CreateDateText = styled.p`
   margin-top: 8px;
-  font-weight: 400;
   font-size: 12px;
   color: ${palette.dgray300};
 `;

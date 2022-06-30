@@ -95,7 +95,7 @@ const Item = ({ noticeId, title, dateCreate, type, tab }: Props) => {
   return (
     <>
       {type !== '' && (
-        <Link href={`/detail/${noticeId}`} passHref>
+        <Link href={`/detail/${noticeId}?${type}`} passHref>
           <a>
             <ItemContainer>
               <ColumnData>

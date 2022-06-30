@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { useMedia } from 'react-use';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import { breakpoints, Button, Typography } from '@playdapp/ui';
 import type { NextPageWithLayout } from 'types/next-page';
@@ -92,13 +93,37 @@ const LoadMore = styled(Button)`
   margin-top: 20px;
 `;
 
+const tabList = [
+  {
+    key: 'all',
+    value: 'All',
+  },
+  {
+    key: 'service',
+    value: 'Service',
+  },
+  {
+    key: 'event',
+    value: 'Event',
+  },
+  {
+    key: 'tip',
+    value: 'Tip',
+  },
+];
+
 const IndexPage: NextPageWithLayout = () => {
   const isMobile = useMedia('(max-width: 752px)', true);
+
+  const router = useRouter();
+  const { type } = router.query;
+  console.log('type', type);
 
   const [tab, setTab] = useState({
     key: 'all',
     value: 'All',
   });
+  console.log('tab', tab);
 
   const handleTab = (key: string, value: string) => () => {
     if (key === tab.key) {
@@ -106,18 +131,17 @@ const IndexPage: NextPageWithLayout = () => {
       return;
     }
     setTab({ key, value });
+    router.push(`/?${key}`);
   };
 
   const fetchDataList = async ({ pageParam = 1 }) => {
-    const inject = [];
     const { data } = await getNotice({
       type: tab.key,
       page: pageParam,
     });
-    inject.push(data);
 
     return {
-      ...inject[0],
+      ...data,
       from: pageParam * 10,
       nextPage: pageParam + 1,
     };
@@ -244,6 +268,12 @@ const IndexPage: NextPageWithLayout = () => {
       </Container>
     </>
   );
+};
+
+IndexPage.getInitialProps = async ({ query }) => {
+  const { tab } = query;
+
+  return { tab };
 };
 
 export default IndexPage;
