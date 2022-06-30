@@ -58,6 +58,11 @@ const ContentDescBox = styled.div`
   width: 100%;
   min-height: 432px;
   margin-top: 1rem;
+  font-weight: 400;
+
+  ${breakpoints.down('lg')} {
+    font-size: 14px;
+  }
 `;
 
 const ButtonArea = styled(FlexMixin)`
@@ -320,7 +325,7 @@ const DetailContent = ({ noticeId }: Props) => {
                             onClick={handleEdit(true)}
                           >
                             <Typography
-                              type={isTablet ? 'b3' : 'b3'}
+                              type={isTablet ? 'b5' : 'b3'}
                               color="primary700"
                             >
                               Edit
@@ -334,7 +339,7 @@ const DetailContent = ({ noticeId }: Props) => {
                             onClick={handleOpenModal(true)}
                           >
                             <Typography
-                              type={isTablet ? 'b3' : 'b3'}
+                              type={isTablet ? 'b5' : 'b3'}
                               color="atlantic"
                             >
                               Delete

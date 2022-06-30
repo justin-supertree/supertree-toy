@@ -68,7 +68,7 @@ const Tab = styled(FlexMixin)<{ isSelect: boolean }>`
   cursor: pointer;
 
   &:hover {
-    background-color: #d0d1d7;
+    background-color: ${({ isSelect }) => (isSelect ? '#36383F' : '#d0d1d7')};
   }
 
   ${breakpoints.down('md')} {
