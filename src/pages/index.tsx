@@ -84,7 +84,7 @@ const WritePosition = styled.div`
   justify-content: flex-end;
 `;
 
-const WrtieButton = styled(Button)`
+const WriteButton = styled(Button)`
   width: auto;
 `;
 
@@ -195,11 +195,11 @@ const IndexPage: NextPageWithLayout = () => {
 
               <WritePosition>
                 <Link href={`/write`}>
-                  <WrtieButton size={isMobile ? 'sm' : 'sm'}>
-                    <Typography type={isMobile ? 'b5' : 'b2'} color="atlantic">
+                  <WriteButton size={isMobile ? 'xs' : 'sm'}>
+                    <Typography type={isMobile ? 'b3' : 'b3'} color="atlantic">
                       Write
                     </Typography>
-                  </WrtieButton>
+                  </WriteButton>
                 </Link>
               </WritePosition>
 

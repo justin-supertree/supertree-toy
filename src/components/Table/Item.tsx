@@ -25,7 +25,7 @@ const ItemContainer = styled.div`
     background-color: #f5f5f7;
   }
 
-  ${breakpoints.down('lg')} {
+  ${breakpoints.down('md')} {
     display: block;
     height: auto;
     background-color: #f5f5f7;
@@ -60,7 +60,7 @@ const ColumnData = styled.div`
     width: 30%;
   }
 
-  ${breakpoints.down('lg')} {
+  ${breakpoints.down('md')} {
     padding: 0;
     text-align: left;
 
