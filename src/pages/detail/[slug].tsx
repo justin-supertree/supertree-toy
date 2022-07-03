@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
 import { format } from 'date-fns';
 import { Markup } from 'interweave';
-import dynamic from 'next/dynamic';
+
 import { useMedia } from 'react-use';
 
 import { deleteNotice, getNoticeDetail } from 'api/notice';
@@ -283,7 +283,4 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   };
 };
 
-const TUI = dynamic(() => import('../../components/TUI'), {
-  ssr: false,
-});
 export default DetailContent;

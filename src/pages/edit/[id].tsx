@@ -85,9 +85,9 @@ const ClickButton = styled(Button)`
   }
 `;
 
-const initContent = '<p><br class="ProseMirror-trailingBreak"></p>';
-const expireTime = '2050-10-04 23:50:11';
 const selectList = ['service', 'tip', 'event'];
+const expireTime = '2050-10-04 23:50:11';
+const initContent = '<p><br class="ProseMirror-trailingBreak"></p>';
 
 const EditPage = () => {
   const router = useRouter();
@@ -105,13 +105,15 @@ const EditPage = () => {
   const [validate, setValidate] = useState({
     title: '',
     selected: '',
-    htmlStr: '',
+    contents: '',
   });
   const [isUploadOpen, setUploadOpen] = useOpenControl();
 
+  const isHtmlStrFail = contents === '' || initContent === contents;
+
   const handleUploadOpenModal = (isUploadOpen: boolean) => () => {
     setUploadOpen(isUploadOpen);
-    if (titles === '' || contents === initContent) {
+    if (titles === '' || isHtmlStrFail) {
       setIsValidate(true);
       return;
     }
@@ -139,7 +141,7 @@ const EditPage = () => {
       setValidate({
         title: titles ? '' : 'Please enter title in input box.',
         selected: selected !== 'all' && selected ? '' : 'Please select type',
-        htmlStr: !isHtmlStrFail ? '' : 'Please enter title in input box.',
+        contents: !isHtmlStrFail ? '' : 'Please enter title in input box.',
       });
       setIsValidate(true);
       setIsError(true);
@@ -150,8 +152,6 @@ const EditPage = () => {
   };
 
   const handleSubmitEdit = async () => {
-    const isHtmlStrFail = !contents || initContent === contents;
-
     const validateCheck = handleValidate({
       titles,
       selected,
@@ -272,7 +272,7 @@ const EditPage = () => {
 
           <EditorBox>
             <TUI
-              htmlStr={contents as string}
+              htmlStr={contents}
               setHtmlStr={setContents}
               autofocus={false}
             />
@@ -280,10 +280,10 @@ const EditPage = () => {
             <div>
               {isValidate && (
                 <Typography
-                  color={contents === initContent ? 'red' : 'primary900'}
+                  color={isHtmlStrFail ? 'red' : 'primary900'}
                   type="b4"
                 >
-                  {contents === initContent
+                  {isHtmlStrFail
                     ? 'Please write your content.'
                     : `Content text is required.`}
                 </Typography>

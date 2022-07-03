@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import styled from '@emotion/styled';
 import { breakpoints, Button, Typography } from '@playdapp/ui';
 import { Input, Select, FormControl } from '@chakra-ui/react';
+import { Markup } from 'interweave';
 
 import { postNoticeInfo } from 'api/notice';
 
@@ -90,18 +91,22 @@ const WriteContent = () => {
   const router = useRouter();
   const { type } = router.query;
 
-  const [selected, setSelected] = useState(type);
   const [isLoading, setIsLoading] = useState(true);
   const [isValidate, setIsValidate] = useState(false);
   const [isError, setIsError] = useState(false);
 
   const [title, setTitle] = useState('');
   const [contents, setContents] = useState('');
+  console.log('contents', contents);
+  const [selected, setSelected] = useState(type);
+
   const [validate, setValidate] = useState({
     title: '',
     selected: '',
     contents: '',
   });
+
+  const isHtmlStrFail = contents === '' || initContent === contents;
 
   const handleSelectOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelected(e.target.value);
@@ -124,7 +129,7 @@ const WriteContent = () => {
       setValidate({
         title: title ? '' : 'Please enter title in input box.',
         selected: selected !== 'all' && selected ? '' : 'Please select type',
-        contents: !isHtmlStrFail ? '' : 'Please enter title in input box.',
+        contents: !isHtmlStrFail ? '' : 'Please enter content in input box.',
       });
       setIsValidate(true);
       setIsError(true);
@@ -247,10 +252,10 @@ const WriteContent = () => {
             <div>
               {isValidate && (
                 <Typography
-                  color={contents === initContent ? 'red' : 'primary900'}
+                  color={isHtmlStrFail ? 'red' : 'primary900'}
                   type="b4"
                 >
-                  {contents === initContent
+                  {isHtmlStrFail
                     ? 'Please write your content.'
                     : `Content text is required.`}
                 </Typography>

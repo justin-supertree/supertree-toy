@@ -29,7 +29,7 @@ const TUI: NextPage<IEditor> = ({ htmlStr, setHtmlStr, autofocus }) => {
   const onChangeEditor = () => {
     const refstatus = editorRef.current;
 
-    if (refstatus && refstatus !== undefined && !htmlStr) {
+    if (refstatus && refstatus !== undefined) {
       setHtmlStr(refstatus.getInstance().getHTML());
     }
   };
