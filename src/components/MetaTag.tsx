@@ -10,7 +10,6 @@ type Props = {
 const MetaTag = ({
   title = 'PlayDapp Notice',
   description = 'The Premier Marketplace for NFTs',
-  image = 'https://images.playdapp.com/marketplace/meta/og-image.png',
   keywords = 'NFT, Marketplace',
 }: Props) => {
   return (

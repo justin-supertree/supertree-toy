@@ -37,7 +37,6 @@ const UploadModal = ({
   handleUploadOpenModal,
   handleSubmitEdit,
 }: Props) => {
-  console.log('Modal isValidate', isValidate);
   return (
     <Modal
       isOpen={isUploadOpen}

@@ -1,6 +1,5 @@
 import NextImage from 'next/image';
 import styled from '@emotion/styled';
-import Link from 'next/link';
 import { useMedia } from 'react-use';
 
 import { breakpoints, palette, Button, Typography } from '@playdapp/ui';

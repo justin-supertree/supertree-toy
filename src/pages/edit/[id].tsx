@@ -5,16 +5,15 @@ import { Input, Select, FormControl } from '@chakra-ui/react';
 import { breakpoints, Button, Typography } from '@playdapp/ui';
 
 import useOpenControl from 'hooks/useOpenControl';
-import { deleteNotice, getNoticeDetail, patchSubmit } from 'api/notice';
+import { getNoticeDetail, patchSubmit } from 'api/notice';
 
 import MetaTag from '@/components/MetaTag';
 import DetailLayout from '@/components/Layout/DetailLayout';
-import DeleteModal from '@/components/Modal/DeleteModal';
 import UploadModal from '@/components/Modal/UploadModal';
+import Loading from '@/components/Loading';
 import TUI from '@/components/TUI';
 
 import { FlexMixin } from 'styles/mixin';
-import Loading from '@/components/Loading';
 
 type ValidateProps = {
   titles?: string;
@@ -153,23 +152,6 @@ const EditPage = () => {
     }
 
     return true;
-  };
-
-  const handleDelete = async () => {
-    try {
-      await deleteNotice({
-        id: noticeId,
-      }).then((response) => {
-        if (response && response.status === 200) {
-          // toast.success("z")
-          router.push(`/`);
-        }
-      });
-    } catch (e) {
-      console.log(e);
-      setIsLoading(false);
-      setIsError(true);
-    }
   };
 
   const handleSubmitEdit = async () => {
@@ -343,15 +325,6 @@ const EditPage = () => {
       </DetailLayout>
 
       {isError && isLoading && <Loading />}
-
-      {isOpen && (
-        <DeleteModal
-          id={noticeId as number}
-          isOpen={isOpen}
-          handleOpenModal={handleOpenModal}
-          handleDelete={handleDelete}
-        />
-      )}
 
       {isUploadOpen && (
         <UploadModal

@@ -1,6 +1,6 @@
 import NextImage from 'next/image';
 import styled from '@emotion/styled';
-import { breakpoints, palette, Button, Typography, Modal } from '@playdapp/ui';
+import { Button, Typography, Modal } from '@playdapp/ui';
 
 import Error from '../../../public/assets/icons/error.png';
 
@@ -39,7 +39,7 @@ type Props = {
   handleDelete: () => void;
 };
 
-const DeleteModal = ({ id, isOpen, handleOpenModal, handleDelete }: Props) => (
+const DeleteModal = ({ isOpen, handleOpenModal, handleDelete }: Props) => (
   <Modal
     isOpen={isOpen}
     handleOpen={handleOpenModal(false)}

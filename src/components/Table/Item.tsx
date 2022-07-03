@@ -9,7 +9,6 @@ type Props = {
   title: string;
   dateCreate: string;
   type: string;
-  tab: string;
 };
 
 const ItemContainer = styled.div`
@@ -88,7 +87,7 @@ const OverflowColumn = styled.div`
   }
 `;
 
-const Item = ({ noticeId, title, dateCreate, type, tab }: Props) => {
+const Item = ({ noticeId, title, dateCreate, type }: Props) => {
   const date = new Date(dateCreate);
   const isTablet = useMedia('(max-width: 1023px)', true);
 
