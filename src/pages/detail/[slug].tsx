@@ -5,8 +5,9 @@ import styled from '@emotion/styled';
 import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
 import { format } from 'date-fns';
 import { Markup } from 'interweave';
-
 import { useMedia } from 'react-use';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { deleteNotice, getNoticeDetail } from 'api/notice';
 
@@ -137,14 +138,16 @@ const DetailContent = ({ noticeId }: Props) => {
 
   const handleDelete = async () => {
     try {
-      await deleteNotice({
+      const param = {
         id: id,
-      }).then((response) => {
-        if (response && response.status === 200) {
-          // toast.success("z")
-          router.push('/');
-        }
-      });
+      };
+      const response = await deleteNotice(param);
+      if (response?.status === 200) {
+        toast.success('Success for Delete your content!!', {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        router.push('/');
+      }
     } catch (e) {
       console.log(e);
       setIsLoading(false);
@@ -260,6 +263,8 @@ const DetailContent = ({ noticeId }: Props) => {
           </InsertArea>
         </DetailLayout>
       )}
+
+      <ToastContainer />
 
       {isLoading && isError && <Loading />}
 

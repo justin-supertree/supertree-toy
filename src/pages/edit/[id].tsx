@@ -170,7 +170,7 @@ const EditPage = () => {
       };
       const response = await patchSubmit(params);
 
-      if (response && response.status === 200) {
+      if (response?.status === 200) {
         handleUploadOpenModal(false);
         setIsValidate(false);
         router.push(`/detail/${id}?${selected}`);
