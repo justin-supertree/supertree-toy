@@ -18,11 +18,12 @@ import DeleteModal from '@/components/Modal/DeleteModal';
 import UploadModal from '@/components/Modal/UploadModal';
 import DetailLayout from '@/components/Layout/DetailLayout';
 import Loading from '@/components/Loading';
+import Link from 'next/link';
 
 type Prop = {
   noticeId?: number;
   title?: string;
-  type?: string;
+  type?: string | string[];
   content?: string;
   dateCreate?: Date | number;
 };
@@ -175,16 +176,14 @@ const DetailContent = ({ noticeId }: Props) => {
     dateCreate: 0,
   });
 
-  const [isEdit, setIsEdit] = useState(false);
-  const [isRemove, setIsRemove] = useState(0);
+  const [titles, setTitles] = useState('');
   const [contents, setContents] = useState('');
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState(data.type);
+  const [isValidate, setIsValidate] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const inputElement = useRef<HTMLInputElement>(null);
-
-  const selectList = ['service', 'tip', 'event'];
 
   const viewlist = () => {
     router.push('/');
@@ -195,33 +194,26 @@ const DetailContent = ({ noticeId }: Props) => {
   };
 
   const handleUploadOpenModal = (isUploadOpen: boolean) => () => {
+    if (data.title === '') {
+      console.log('??????');
+      setIsValidate(true);
+      return;
+    }
     setUploadOpen(isUploadOpen);
-  };
-
-  const handleEdit = (isEdit: boolean) => () => {
-    setIsEdit(isEdit);
-  };
-
-  const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setData({ title: e.currentTarget.value });
-  };
-
-  const handleSelectOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelected(e.target.value);
   };
 
   const handleSubmitEdit = async () => {
     try {
       await patchSubmit({
         id: id,
-        title: data.title as string | undefined,
+        title: titles,
         content: contents,
-        type: selected,
+        type: selected as string | undefined,
         expireTime: '2050-10-04 23:50:11',
       }).then((response) => {
         if (response && response.status === 200) {
           handleUploadOpenModal(false);
-          handleEdit(false);
+          setIsValidate(false);
           setIsLoading(false);
           router.push('/');
         }
@@ -238,16 +230,13 @@ const DetailContent = ({ noticeId }: Props) => {
         id: id,
       }).then((response) => {
         if (response && response.status === 200) {
-          const result = response.status;
+          // toast.success("z")
           router.push('/');
-          setIsRemove(result);
-          setIsLoading(false);
-          return isRemove;
         }
       });
     } catch (e) {
       console.log(e);
-      setIsLoading(true);
+      setIsLoading(false);
     }
   };
 
@@ -286,197 +275,83 @@ const DetailContent = ({ noticeId }: Props) => {
     <>
       <MetaTag title="Notice | Detial Page" />
 
-      {!isLoading ? (
+      {!isLoading && (
         <DetailLayout>
-          {isEdit && (
-            <WriteTitle>
-              <Typography type="h5" color="black">
-                Edit Notice
-              </Typography>
-            </WriteTitle>
-          )}
-
           <ContentHeadArea>
             {data && data !== undefined && (
               <>
                 <TitleBlock>
-                  {!isEdit ? (
-                    <>
-                      <Typography type={isTablet ? 'h6' : 'h5'} color="black">
-                        {data.title}
-                      </Typography>
+                  <Typography type={isTablet ? 'h6' : 'h5'} color="black">
+                    {data.title}
+                  </Typography>
 
-                      <BeforeEditTitle>
-                        <CreateDateText>
-                          {data.dateCreate !== undefined &&
-                            format(
-                              new Date(data.dateCreate),
-                              'MMM-dd-yyyy h:mm:ss a',
-                            )}
-                        </CreateDateText>
-
-                        <SelectButtonBlock>
-                          <EditButton
-                            size={isTablet ? 'xs' : 'sm'}
-                            color="primary"
-                            variant="outline"
-                            onClick={handleEdit(true)}
-                          >
-                            <Typography
-                              type={isTablet ? 'b5' : 'b3'}
-                              color="primary700"
-                            >
-                              Edit
-                            </Typography>
-                          </EditButton>
-
-                          <EditButton
-                            size={isTablet ? 'xs' : 'sm'}
-                            color="primary"
-                            variant="solid"
-                            onClick={handleOpenModal(true)}
-                          >
-                            <Typography
-                              type={isTablet ? 'b5' : 'b3'}
-                              color="atlantic"
-                            >
-                              Delete
-                            </Typography>
-                          </EditButton>
-                        </SelectButtonBlock>
-                      </BeforeEditTitle>
-                    </>
-                  ) : (
-                    <>
-                      <Typography type="b4" color="gray900">
-                        Title :
-                      </Typography>
-
-                      <InsertItem type="title" isInvalid={data.title === ''}>
-                        <ContentTitleInput
-                          value={data.title}
-                          onChange={handleTitle}
-                          ref={inputElement}
-                          size="lg"
-                          width="100%"
-                          autoFocus
-                        />
-
-                        <div>
-                          <Typography
-                            color={data.title === '' ? 'red' : 'primary900'}
-                          >
-                            {data.title === ''
-                              ? 'Please enter title text in input box.'
-                              : 'Title is required.'}
-                          </Typography>
-                        </div>
-                      </InsertItem>
-
-                      <Typography type="b4" color="gray900">
-                        Type :
-                      </Typography>
-
-                      <InsertItem type="type">
-                        <ContentTypeSelect
-                          onChange={handleSelectOption}
-                          value={selected}
-                        >
-                          {selectList.map((item) => (
-                            <option value={item} key={item}>
-                              {item}
-                            </option>
-                          ))}
-                        </ContentTypeSelect>
-                      </InsertItem>
-                    </>
-                  )}
-                </TitleBlock>
-
-                {isEdit && (
-                  <InsertBottomArea>
-                    <Typography type="p4" color="dgray300">
+                  <BeforeEditTitle>
+                    <CreateDateText>
                       {data.dateCreate !== undefined &&
                         format(
                           new Date(data.dateCreate),
                           'MMM-dd-yyyy h:mm:ss a',
                         )}
-                    </Typography>
-                  </InsertBottomArea>
-                )}
+                    </CreateDateText>
+
+                    <SelectButtonBlock>
+                      <Link href={`/edit/${id}`}>
+                        <EditButton
+                          size={isTablet ? 'xs' : 'sm'}
+                          color="primary"
+                          variant="outline"
+                          // onClick={handleEdit(true)}
+                        >
+                          <Typography
+                            type={isTablet ? 'b5' : 'b3'}
+                            color="primary700"
+                          >
+                            Edit
+                          </Typography>
+                        </EditButton>
+                      </Link>
+
+                      <EditButton
+                        size={isTablet ? 'xs' : 'sm'}
+                        color="primary"
+                        variant="solid"
+                        onClick={handleOpenModal(true)}
+                      >
+                        <Typography
+                          type={isTablet ? 'b5' : 'b3'}
+                          color="atlantic"
+                        >
+                          Delete
+                        </Typography>
+                      </EditButton>
+                    </SelectButtonBlock>
+                  </BeforeEditTitle>
+                </TitleBlock>
               </>
             )}
           </ContentHeadArea>
 
           <InsertArea>
-            {!isEdit ? (
-              <>
-                <ContentDescBox>
-                  {data.content !== '' ? <Markup content={data.content} /> : ''}
-                </ContentDescBox>
-                <ButtonArea>
-                  <ClickButton
-                    size="md"
-                    color="primary"
-                    variant="solid"
-                    onClick={viewlist}
-                  >
-                    <Typography type="b3" color="atlantic">
-                      View list
-                    </Typography>
-                  </ClickButton>
-                </ButtonArea>
-              </>
-            ) : (
-              <>
-                <EditorBox>
-                  <TUI
-                    htmlStr={data.content as string}
-                    setHtmlStr={setContents}
-                    autofocus={false}
-                  />
-                </EditorBox>
-
-                <UploadButtonBlock>
-                  <ClickButton
-                    size="md"
-                    color="primary"
-                    variant="outline"
-                    onClick={handleEdit(false)}
-                  >
-                    <Typography type="h6" color="primary700">
-                      Cancel
-                    </Typography>
-                  </ClickButton>
-
-                  <ClickButton
-                    size="md"
-                    color="primary"
-                    variant="solid"
-                    onClick={handleUploadOpenModal(true)}
-                    disabled={
-                      (data.title === '' || data.content === '') && true
-                    }
-                  >
-                    <Typography
-                      type="h6"
-                      color={
-                        data.title === '' || data.content === ''
-                          ? 'gray700'
-                          : 'atlantic'
-                      }
-                    >
-                      Edit
-                    </Typography>
-                  </ClickButton>
-                </UploadButtonBlock>
-              </>
-            )}
+            <ContentDescBox>
+              {data.content !== '' ? <Markup content={data.content} /> : ''}
+            </ContentDescBox>
+            <ButtonArea>
+              <ClickButton
+                size="md"
+                color="primary"
+                variant="solid"
+                onClick={viewlist}
+              >
+                <Typography type="b3" color="atlantic">
+                  View list
+                </Typography>
+              </ClickButton>
+            </ButtonArea>
           </InsertArea>
         </DetailLayout>
-      ) : (
-        <Loading />
       )}
+
+      {isLoading && <Loading />}
 
       {isOpen && (
         <DeleteModal
@@ -492,6 +367,7 @@ const DetailContent = ({ noticeId }: Props) => {
           isUploadOpen={isUploadOpen}
           handleUploadOpenModal={handleUploadOpenModal}
           handleSubmitEdit={handleSubmitEdit}
+          isValidate={isValidate}
         />
       )}
     </>

@@ -113,7 +113,7 @@ const IndexPage: NextPageWithLayout = () => {
 
   const router = useRouter();
   const { type } = router.query;
-  const [tab, setTab] = useState('all');
+  const [tab, setTab] = useState('');
 
   const handleTab = (select: string) => () => {
     if (type === select) {
@@ -144,7 +144,7 @@ const IndexPage: NextPageWithLayout = () => {
     refetch,
     hasNextPage,
     error,
-  } = useInfiniteQuery(['projects', type], fetchDataList, {
+  } = useInfiniteQuery(['projects', tab], fetchDataList, {
     getNextPageParam: (table) => {
       if (
         Math.floor(
@@ -163,6 +163,10 @@ const IndexPage: NextPageWithLayout = () => {
   const handleLoadMore = () => {
     fetchNextPage();
   };
+
+  useEffect(() => {
+    setTab(type ? type.toString() : 'all');
+  }, [type]);
 
   useEffect(() => {
     refetch();
@@ -185,7 +189,7 @@ const IndexPage: NextPageWithLayout = () => {
                   <Tab
                     key={index}
                     onClick={handleTab(info.key)}
-                    isSelect={info.key === type}
+                    isSelect={info.key === tab}
                   >
                     {info.key}
                   </Tab>

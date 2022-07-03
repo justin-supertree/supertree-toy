@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import dynamic from 'next/dynamic';
 import styled from '@emotion/styled';
-import { breakpoints, Button, Typography } from '@playdapp/ui';
 import { Input, Select, FormControl } from '@chakra-ui/react';
-import { Markup } from 'interweave';
+import { breakpoints, Button, Typography } from '@playdapp/ui';
 
-import { postNoticeInfo } from 'api/notice';
+import useOpenControl from 'hooks/useOpenControl';
+import { deleteNotice, getNoticeDetail, patchSubmit } from 'api/notice';
 
 import MetaTag from '@/components/MetaTag';
 import DetailLayout from '@/components/Layout/DetailLayout';
+import DeleteModal from '@/components/Modal/DeleteModal';
+import UploadModal from '@/components/Modal/UploadModal';
+import TUI from '@/components/TUI';
+
 import { FlexMixin } from 'styles/mixin';
+import { GetServerSideProps } from 'next';
 
 type ValidateProps = {
-  title: string;
+  titles?: string;
   selected?: string | string[];
   isHtmlStrFail: boolean;
 };
@@ -82,19 +86,40 @@ const ClickButton = styled(Button)`
   }
 `;
 
-const selectList = ['service', 'tip', 'event'];
-const expireTime = '2050-10-04 23:50:11';
 const initContent = '<p><br class="ProseMirror-trailingBreak"></p>';
+const expireTime = '2050-10-04 23:50:11';
+const selectList = ['service', 'tip', 'event'];
 
-const WriteContent = () => {
+const EditPage = () => {
   const router = useRouter();
-  const { type } = router.query;
-  const [title, setTitle] = useState('');
-  const [contents, setContents] = useState('');
-  const [selected, setSelected] = useState(type);
+  const { id } = router.query;
+  const noticeId = Number(id);
+  const inputElement = useRef<HTMLInputElement>(null);
+
   const [isLoading, setIsLoading] = useState(true);
   const [isValidate, setIsValidate] = useState(false);
   const [isError, setIsError] = useState(false);
+
+  const [titles, setTitles] = useState('');
+  const [contents, setContents] = useState('');
+  const [selected, setSelected] = useState('');
+
+  const [isOpen, setIsOpen] = useOpenControl();
+  const [isUploadOpen, setUploadOpen] = useOpenControl();
+
+  const handleOpenModal = (isOpen: boolean) => () => {
+    setIsOpen(isOpen);
+  };
+
+  const handleUploadOpenModal = (isUploadOpen: boolean) => () => {
+    setUploadOpen(isUploadOpen);
+    if (titles === '' || contents === initContent) {
+      setIsValidate(true);
+      return;
+    }
+    setIsValidate(false);
+  };
+
   const [validate, setValidate] = useState({
     title: '',
     selected: '',
@@ -106,21 +131,21 @@ const WriteContent = () => {
   };
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
+    setTitles(e.target.value);
   };
 
   const cancelWrite = () => {
-    router.push('/');
+    router.push(`/detail/${id}?${selected}`);
   };
 
   const handleValidate = ({
-    title,
+    titles,
     selected,
     isHtmlStrFail,
   }: ValidateProps): boolean => {
-    if (!title || !selected || selected === 'all' || isHtmlStrFail) {
+    if (!titles || !selected || selected === 'all' || isHtmlStrFail) {
       setValidate({
-        title: title ? '' : 'Please enter title in input box.',
+        title: titles ? '' : 'Please enter title in input box.',
         selected: selected !== 'all' && selected ? '' : 'Please select type',
         htmlStr: !isHtmlStrFail ? '' : 'Please enter title in input box.',
       });
@@ -131,11 +156,27 @@ const WriteContent = () => {
     return true;
   };
 
-  const uploadNewData = async () => {
+  const handleDelete = async () => {
+    try {
+      await deleteNotice({
+        id: noticeId,
+      }).then((response) => {
+        if (response && response.status === 200) {
+          // toast.success("z")
+          router.push(`/`);
+        }
+      });
+    } catch (e) {
+      console.log(e);
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmitEdit = async () => {
     const isHtmlStrFail = !contents || initContent === contents;
 
     const validateCheck = handleValidate({
-      title,
+      titles,
       selected,
       isHtmlStrFail,
     });
@@ -143,33 +184,55 @@ const WriteContent = () => {
     if (!validateCheck) return;
 
     try {
-      await postNoticeInfo({
-        title: title,
-        content: contents,
-        type: selected as string,
+      await patchSubmit({
+        id: noticeId,
+        title: titles as string,
+        content: contents as string,
+        type: selected as string | undefined,
         expireTime: expireTime,
-      }).then((res) => {
-        if (res && res.status === 200 && res.data.message === 'Success') {
-          setTitle('');
-          setContents('');
+      }).then((response) => {
+        if (response && response.status === 200) {
+          handleUploadOpenModal(false);
+          //   handleEdit(false);
+          setIsValidate(false);
           setIsLoading(false);
-          router.push('/');
+          router.push(`/detail/${id}?${selected}`);
+        }
+      });
+    } catch (e) {
+      console.log(e);
+      setIsLoading(true);
+    }
+  };
+
+  useEffect(() => {
+    try {
+      getNoticeDetail({
+        id: noticeId,
+      }).then((response) => {
+        if (response && response.status === 200) {
+          const req = response.data.data.info;
+          setTitles(req.title);
+          setContents(req.content);
+          setSelected(req.type);
+          setIsLoading(false);
+          return req;
         }
       });
     } catch (error) {
       console.log(error);
       setIsLoading(true);
     }
-  };
+  }, [noticeId]);
 
   return (
     <>
-      <MetaTag title="Notice | Write Page" />
+      <MetaTag title="Notice | Edit Page" />
 
       <DetailLayout>
         <WriteTitle>
           <Typography type="h5" color="black">
-            Write Notice
+            Edit Notice
           </Typography>
         </WriteTitle>
 
@@ -178,20 +241,24 @@ const WriteContent = () => {
             Title :
           </Typography>
 
-          <InsertItem type="title" isInvalid={!!validate.title}>
+          <InsertItem type="title">
             <ContentTitleInput
-              value={title}
+              value={titles}
               onChange={handleTitle}
-              placeholder="Notice Title"
+              isInvalid={!!isValidate && !titles}
+              ref={inputElement}
+              size="lg"
+              width="100%"
+              autoFocus
             />
 
             <div>
               {isValidate && (
                 <Typography
                   type="b4"
-                  color={validate.title ? 'red' : 'primary900'}
+                  color={!validate.title && !titles ? 'red' : 'primary900'}
                 >
-                  {validate.title
+                  {!validate.title && !titles
                     ? 'Please enter title in input box.'
                     : 'Title Info get required.'}
                 </Typography>
@@ -204,11 +271,7 @@ const WriteContent = () => {
           </Typography>
 
           <InsertItem type="type">
-            <ContentTypeSelect
-              placeholder="타입을 선택해주세요."
-              onChange={handleSelectOption}
-              value={selected}
-            >
+            <ContentTypeSelect onChange={handleSelectOption} value={selected}>
               {selectList.map((item) => (
                 <option value={item} key={item}>
                   {item}
@@ -232,7 +295,7 @@ const WriteContent = () => {
 
           <EditorBox>
             <TUI
-              htmlStr={contents}
+              htmlStr={contents as string}
               setHtmlStr={setContents}
               autofocus={false}
             />
@@ -240,10 +303,10 @@ const WriteContent = () => {
             <div>
               {isValidate && (
                 <Typography
-                  color={contents === '' ? 'red' : 'primary900'}
+                  color={contents === initContent ? 'red' : 'primary900'}
                   type="b4"
                 >
-                  {contents === ''
+                  {contents === initContent
                     ? 'Please write your content.'
                     : `Content text is required.`}
                 </Typography>
@@ -269,21 +332,35 @@ const WriteContent = () => {
               size="md"
               color="primary"
               variant="solid"
-              onClick={uploadNewData}
+              onClick={handleUploadOpenModal(true)}
             >
               <Typography type="b3" color="atlantic">
-                Write
+                Edit
               </Typography>
             </ClickButton>
           </ButtonArea>
         </InsertArea>
       </DetailLayout>
+
+      {isOpen && (
+        <DeleteModal
+          id={noticeId as number}
+          isOpen={isOpen}
+          handleOpenModal={handleOpenModal}
+          handleDelete={handleDelete}
+        />
+      )}
+
+      {isUploadOpen && (
+        <UploadModal
+          isUploadOpen={isUploadOpen}
+          handleUploadOpenModal={handleUploadOpenModal}
+          handleSubmitEdit={handleSubmitEdit}
+          isValidate={isValidate}
+        />
+      )}
     </>
   );
 };
 
-const TUI = dynamic(() => import('../../components/TUI'), {
-  ssr: false,
-});
-
-export default WriteContent;
+export default EditPage;

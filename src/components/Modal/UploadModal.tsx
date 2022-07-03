@@ -3,6 +3,7 @@ import { breakpoints, palette, Button, Typography, Modal } from '@playdapp/ui';
 
 type Props = {
   isUploadOpen: boolean;
+  isValidate: boolean;
   handleUploadOpenModal: (isUploadOpen: boolean) => () => void;
   handleSubmitEdit: () => void;
 };
@@ -32,52 +33,74 @@ const ClickButton = styled(Button)`
 
 const UploadModal = ({
   isUploadOpen,
+  isValidate,
   handleUploadOpenModal,
   handleSubmitEdit,
-}: Props) => (
-  <Modal
-    isOpen={isUploadOpen}
-    handleOpen={handleUploadOpenModal(false)}
-    shouldCloseOnOverlayClick
-  >
-    <ModalTextBlock>
-      <TextArea>
-        <Typography type="h4" color="atlantic">
-          Are you sure you want to Edit the post?
-        </Typography>
-      </TextArea>
+}: Props) => {
+  console.log('Modal isValidate', isValidate);
+  return (
+    <Modal
+      isOpen={isUploadOpen}
+      handleOpen={handleUploadOpenModal(false)}
+      shouldCloseOnOverlayClick
+    >
+      <ModalTextBlock>
+        {!isValidate ? (
+          <>
+            <TextArea>
+              <Typography type="h4" color="atlantic">
+                Are you sure you want to Edit the post?
+              </Typography>
+            </TextArea>
 
-      <TextArea>
-        <Typography type="b3" color="gray900">
-          You can Change again, if you wont!
-        </Typography>
-      </TextArea>
-    </ModalTextBlock>
+            <TextArea>
+              <Typography type="b3" color="gray900">
+                You can Change again, if you wont!
+              </Typography>
+            </TextArea>
+          </>
+        ) : (
+          <TextArea>
+            <Typography type="h4" color="atlantic">
+              You&apos;ve got wrong edit information.
+            </Typography>
 
-    <ModalButtonBlock>
-      <ClickButton
-        size="sm"
-        color="primary"
-        variant="outline"
-        onClick={handleUploadOpenModal(false)}
-      >
-        <Typography type="b3" color="primary700">
-          Cancle
-        </Typography>
-      </ClickButton>
+            <TextArea>
+              <Typography type="b3" color="gray900">
+                Please check again!
+              </Typography>
+            </TextArea>
+          </TextArea>
+        )}
+      </ModalTextBlock>
 
-      <ClickButton
-        size="sm"
-        color="primary"
-        variant="solid"
-        onClick={handleSubmitEdit}
-      >
-        <Typography type="b3" color="atlantic">
-          Edit
-        </Typography>
-      </ClickButton>
-    </ModalButtonBlock>
-  </Modal>
-);
+      <ModalButtonBlock>
+        <ClickButton
+          size="sm"
+          color="primary"
+          variant="outline"
+          onClick={handleUploadOpenModal(false)}
+        >
+          <Typography type="b3" color="primary700">
+            Cancle
+          </Typography>
+        </ClickButton>
+
+        {!isValidate && (
+          <ClickButton
+            size="sm"
+            color="primary"
+            variant="solid"
+            onClick={handleSubmitEdit}
+          >
+            <Typography type="b3" color="atlantic">
+              OK!
+            </Typography>
+          </ClickButton>
+        )}
+      </ModalButtonBlock>
+    </Modal>
+  );
+};
 
 export default UploadModal;

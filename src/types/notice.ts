@@ -1,5 +1,5 @@
 export type NoticeItemRequest = {
-  content: string;
+  content?: string;
   expireTime: string;
   title: string;
   type?: string;
@@ -10,7 +10,7 @@ export type SubmitRequest = {
   content?: string;
   expireTime?: string;
   title?: string;
-  type: string;
+  type?: string;
 };
 
 export type DeleteRequest = {
