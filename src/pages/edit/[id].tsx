@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import { Input, Select, FormControl } from '@chakra-ui/react';
 import { breakpoints, Button, Typography } from '@playdapp/ui';
+import dynamic from 'next/dynamic';
 
 import useOpenControl from 'hooks/useOpenControl';
 import { getNoticeDetail, patchSubmit } from 'api/notice';
@@ -11,7 +12,6 @@ import MetaTag from '@/components/MetaTag';
 import DetailLayout from '@/components/Layout/DetailLayout';
 import UploadModal from '@/components/Modal/UploadModal';
 import Loading from '@/components/Loading';
-import TUI from '@/components/TUI';
 
 import { FlexMixin } from 'styles/mixin';
 
@@ -107,12 +107,7 @@ const EditPage = () => {
     selected: '',
     htmlStr: '',
   });
-  const [isOpen, setIsOpen] = useOpenControl();
   const [isUploadOpen, setUploadOpen] = useOpenControl();
-
-  const handleOpenModal = (isOpen: boolean) => () => {
-    setIsOpen(isOpen);
-  };
 
   const handleUploadOpenModal = (isUploadOpen: boolean) => () => {
     setUploadOpen(isUploadOpen);
@@ -337,5 +332,9 @@ const EditPage = () => {
     </>
   );
 };
+
+const TUI = dynamic(() => import('../../components/TUI'), {
+  ssr: false,
+});
 
 export default EditPage;
