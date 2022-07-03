@@ -218,7 +218,6 @@ const IndexPage: NextPageWithLayout = () => {
                           title={info.title}
                           type={info.type}
                           dateCreate={info.dateCreate}
-                          tab={tab}
                         />
                       ));
                     })}
