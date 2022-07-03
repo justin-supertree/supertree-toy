@@ -97,7 +97,6 @@ const WriteContent = () => {
 
   const [title, setTitle] = useState('');
   const [contents, setContents] = useState('');
-  console.log('contents', contents);
   const [selected, setSelected] = useState(type);
 
   const [validate, setValidate] = useState({
