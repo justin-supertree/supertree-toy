@@ -11,6 +11,7 @@ import { postNoticeInfo } from 'api/notice';
 import MetaTag from '@/components/MetaTag';
 import DetailLayout from '@/components/Layout/DetailLayout';
 import { FlexMixin } from 'styles/mixin';
+import Loading from '@/components/Loading';
 
 type ValidateProps = {
   title: string;
@@ -89,16 +90,18 @@ const initContent = '<p><br class="ProseMirror-trailingBreak"></p>';
 const WriteContent = () => {
   const router = useRouter();
   const { type } = router.query;
-  const [title, setTitle] = useState('');
-  const [contents, setContents] = useState('');
+
   const [selected, setSelected] = useState(type);
   const [isLoading, setIsLoading] = useState(true);
   const [isValidate, setIsValidate] = useState(false);
   const [isError, setIsError] = useState(false);
+
+  const [title, setTitle] = useState('');
+  const [contents, setContents] = useState('');
   const [validate, setValidate] = useState({
     title: '',
     selected: '',
-    htmlStr: '',
+    contents: '',
   });
 
   const handleSelectOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -122,9 +125,10 @@ const WriteContent = () => {
       setValidate({
         title: title ? '' : 'Please enter title in input box.',
         selected: selected !== 'all' && selected ? '' : 'Please select type',
-        htmlStr: !isHtmlStrFail ? '' : 'Please enter title in input box.',
+        contents: !isHtmlStrFail ? '' : 'Please enter title in input box.',
       });
       setIsValidate(true);
+      setIsError(true);
       return false;
     }
 
@@ -141,26 +145,30 @@ const WriteContent = () => {
     });
 
     if (!validateCheck) return;
-
     try {
-      await postNoticeInfo({
-        title: title,
-        content: contents,
+      const params = {
+        title,
+        content: contents as string,
         type: selected as string,
-        expireTime: expireTime,
-      }).then((res) => {
-        if (res && res.status === 200 && res.data.message === 'Success') {
-          setTitle('');
-          setContents('');
-          setIsLoading(false);
-          router.push('/');
-        }
-      });
-    } catch (error) {
-      console.log(error);
+        expireTime,
+      };
+      const res = await postNoticeInfo(params);
+
+      if (res?.status === 200) {
+        router.push('/');
+      }
+    } catch (e) {
+      console.log(e);
       setIsLoading(true);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      setIsLoading(true);
+      setIsError(false);
+    };
+  }, []);
 
   return (
     <>
@@ -240,10 +248,10 @@ const WriteContent = () => {
             <div>
               {isValidate && (
                 <Typography
-                  color={contents === '' ? 'red' : 'primary900'}
+                  color={contents === initContent ? 'red' : 'primary900'}
                   type="b4"
                 >
-                  {contents === ''
+                  {contents === initContent
                     ? 'Please write your content.'
                     : `Content text is required.`}
                 </Typography>
@@ -278,6 +286,8 @@ const WriteContent = () => {
           </ButtonArea>
         </InsertArea>
       </DetailLayout>
+
+      {isError && isLoading && <Loading />}
     </>
   );
 };

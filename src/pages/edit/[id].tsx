@@ -14,7 +14,7 @@ import UploadModal from '@/components/Modal/UploadModal';
 import TUI from '@/components/TUI';
 
 import { FlexMixin } from 'styles/mixin';
-import { GetServerSideProps } from 'next';
+import Loading from '@/components/Loading';
 
 type ValidateProps = {
   titles?: string;
@@ -103,7 +103,11 @@ const EditPage = () => {
   const [titles, setTitles] = useState('');
   const [contents, setContents] = useState('');
   const [selected, setSelected] = useState('');
-
+  const [validate, setValidate] = useState({
+    title: '',
+    selected: '',
+    htmlStr: '',
+  });
   const [isOpen, setIsOpen] = useOpenControl();
   const [isUploadOpen, setUploadOpen] = useOpenControl();
 
@@ -119,12 +123,6 @@ const EditPage = () => {
     }
     setIsValidate(false);
   };
-
-  const [validate, setValidate] = useState({
-    title: '',
-    selected: '',
-    htmlStr: '',
-  });
 
   const handleSelectOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelected(e.target.value);
@@ -150,6 +148,7 @@ const EditPage = () => {
         htmlStr: !isHtmlStrFail ? '' : 'Please enter title in input box.',
       });
       setIsValidate(true);
+      setIsError(true);
       return false;
     }
 
@@ -169,6 +168,7 @@ const EditPage = () => {
     } catch (e) {
       console.log(e);
       setIsLoading(false);
+      setIsError(true);
     }
   };
 
@@ -184,24 +184,24 @@ const EditPage = () => {
     if (!validateCheck) return;
 
     try {
-      await patchSubmit({
+      const params = {
         id: noticeId,
         title: titles as string,
         content: contents as string,
         type: selected as string | undefined,
         expireTime: expireTime,
-      }).then((response) => {
-        if (response && response.status === 200) {
-          handleUploadOpenModal(false);
-          //   handleEdit(false);
-          setIsValidate(false);
-          setIsLoading(false);
-          router.push(`/detail/${id}?${selected}`);
-        }
-      });
+      };
+      const response = await patchSubmit(params);
+
+      if (response && response.status === 200) {
+        handleUploadOpenModal(false);
+        setIsValidate(false);
+        router.push(`/detail/${id}?${selected}`);
+      }
     } catch (e) {
       console.log(e);
       setIsLoading(true);
+      setIsError(true);
     }
   };
 
@@ -215,13 +215,13 @@ const EditPage = () => {
           setTitles(req.title);
           setContents(req.content);
           setSelected(req.type);
-          setIsLoading(false);
           return req;
         }
       });
     } catch (error) {
       console.log(error);
       setIsLoading(true);
+      setIsError(true);
     }
   }, [noticeId]);
 
@@ -341,6 +341,8 @@ const EditPage = () => {
           </ButtonArea>
         </InsertArea>
       </DetailLayout>
+
+      {isError && isLoading && <Loading />}
 
       {isOpen && (
         <DeleteModal

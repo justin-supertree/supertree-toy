@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { breakpoints, palette, Button, Typography, Modal } from '@playdapp/ui';
+import { Button, Typography, Modal } from '@playdapp/ui';
 
 type Props = {
   isUploadOpen: boolean;

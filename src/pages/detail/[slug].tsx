@@ -1,21 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import { breakpoints, palette, Button, Typography } from '@playdapp/ui';
-import { Input, Select, FormControl } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { Markup } from 'interweave';
 import dynamic from 'next/dynamic';
 import { useMedia } from 'react-use';
 
-import { deleteNotice, getNoticeDetail, patchSubmit } from 'api/notice';
+import { deleteNotice, getNoticeDetail } from 'api/notice';
 
 import useOpenControl from 'hooks/useOpenControl';
 
 import MetaTag from '@/components/MetaTag';
 import DeleteModal from '@/components/Modal/DeleteModal';
-import UploadModal from '@/components/Modal/UploadModal';
 import DetailLayout from '@/components/Layout/DetailLayout';
 import Loading from '@/components/Loading';
 import Link from 'next/link';
@@ -41,13 +39,6 @@ const FlexMixin = styled.div`
 const ContentHeadArea = styled.div`
   padding-bottom: 1rem;
   border-bottom: 1px solid ${palette.gray400};
-`;
-
-const WriteTitle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 22px;
 `;
 
 const InsertArea = styled.div`
@@ -112,49 +103,6 @@ const EditButton = styled(Button)`
   margin: 0 4px;
 `;
 
-const ContentTypeSelect = styled(Select)`
-  width: 100%;
-  min-height: 3rem;
-  margin: 0;
-`;
-
-const InsertItem = styled(FormControl)<{ type: string }>`
-  min-width: 5rem;
-  margin: 5px 0;
-  text-align: left;
-  white-space: nowrap;
-`;
-
-const ContentTitleInput = styled(Input)`
-  width: 100%;
-  min-height: 3rem;
-  padding: 12px 24px;
-`;
-
-const InsertBottomArea = styled(FlexMixin)`
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: 16px;
-
-  ${breakpoints.down('md')} {
-    display: block;
-  }
-`;
-
-const UploadButtonBlock = styled(FlexMixin)`
-  justify-content: center;
-  margin-top: 40px;
-
-  ${breakpoints.down('md')} {
-    flex-direction: column-reverse;
-    text-align: center;
-  }
-`;
-
-const EditorBox = styled.div`
-  margin: 16px 0;
-`;
-
 const CreateDateText = styled.p`
   margin-top: 8px;
   font-size: 12px;
@@ -167,7 +115,6 @@ const DetailContent = ({ noticeId }: Props) => {
   const isTablet = useMedia('(max-width: 1023px)', true);
 
   const [isOpen, setIsOpen] = useOpenControl();
-  const [isUploadOpen, setUploadOpen] = useOpenControl();
 
   const [data, setData] = useState<Prop>({
     title: '',
@@ -175,11 +122,6 @@ const DetailContent = ({ noticeId }: Props) => {
     content: '',
     dateCreate: 0,
   });
-
-  const [titles, setTitles] = useState('');
-  const [contents, setContents] = useState('');
-  const [selected, setSelected] = useState(data.type);
-  const [isValidate, setIsValidate] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -191,37 +133,6 @@ const DetailContent = ({ noticeId }: Props) => {
 
   const handleOpenModal = (isOpen: boolean) => () => {
     setIsOpen(isOpen);
-  };
-
-  const handleUploadOpenModal = (isUploadOpen: boolean) => () => {
-    if (data.title === '') {
-      console.log('??????');
-      setIsValidate(true);
-      return;
-    }
-    setUploadOpen(isUploadOpen);
-  };
-
-  const handleSubmitEdit = async () => {
-    try {
-      await patchSubmit({
-        id: id,
-        title: titles,
-        content: contents,
-        type: selected as string | undefined,
-        expireTime: '2050-10-04 23:50:11',
-      }).then((response) => {
-        if (response && response.status === 200) {
-          handleUploadOpenModal(false);
-          setIsValidate(false);
-          setIsLoading(false);
-          router.push('/');
-        }
-      });
-    } catch (e) {
-      console.log(e);
-      setIsLoading(true);
-    }
   };
 
   const handleDelete = async () => {
@@ -300,7 +211,6 @@ const DetailContent = ({ noticeId }: Props) => {
                           size={isTablet ? 'xs' : 'sm'}
                           color="primary"
                           variant="outline"
-                          // onClick={handleEdit(true)}
                         >
                           <Typography
                             type={isTablet ? 'b5' : 'b3'}
@@ -351,7 +261,7 @@ const DetailContent = ({ noticeId }: Props) => {
         </DetailLayout>
       )}
 
-      {isLoading && <Loading />}
+      {isLoading && isError && <Loading />}
 
       {isOpen && (
         <DeleteModal
@@ -359,15 +269,6 @@ const DetailContent = ({ noticeId }: Props) => {
           isOpen={isOpen}
           handleOpenModal={handleOpenModal}
           handleDelete={handleDelete}
-        />
-      )}
-
-      {isUploadOpen && (
-        <UploadModal
-          isUploadOpen={isUploadOpen}
-          handleUploadOpenModal={handleUploadOpenModal}
-          handleSubmitEdit={handleSubmitEdit}
-          isValidate={isValidate}
         />
       )}
     </>

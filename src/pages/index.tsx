@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
+import type { NextPageWithLayout } from 'types/next-page';
 import { useMedia } from 'react-use';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+
 import styled from '@emotion/styled';
 import { breakpoints, Button, Typography } from '@playdapp/ui';
-import type { NextPageWithLayout } from 'types/next-page';
 
 import { getNotice } from 'api/notice';
 
