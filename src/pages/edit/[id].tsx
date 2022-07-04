@@ -154,7 +154,7 @@ const EditPage = () => {
     return true;
   };
 
-  const handleSubmitEdit = async () => {
+  const handleSubmit = async () => {
     const validateCheck = handleValidate({
       titles,
       selected,
@@ -332,7 +332,7 @@ const EditPage = () => {
         <UploadModal
           isUploadOpen={isUploadOpen}
           handleUploadOpenModal={handleUploadOpenModal}
-          handleSubmitEdit={handleSubmitEdit}
+          handleSubmit={handleSubmit}
           isValidate={isValidate}
         />
       )}

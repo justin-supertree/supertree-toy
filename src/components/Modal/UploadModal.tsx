@@ -5,7 +5,7 @@ type Props = {
   isUploadOpen: boolean;
   isValidate: boolean;
   handleUploadOpenModal: (isUploadOpen: boolean) => () => void;
-  handleSubmitEdit: () => void;
+  handleSubmit: () => void;
 };
 
 const ModalTextBlock = styled.div`
@@ -35,7 +35,7 @@ const UploadModal = ({
   isUploadOpen,
   isValidate,
   handleUploadOpenModal,
-  handleSubmitEdit,
+  handleSubmit,
 }: Props) => {
   return (
     <Modal
@@ -90,7 +90,7 @@ const UploadModal = ({
             size="sm"
             color="primary"
             variant="solid"
-            onClick={handleSubmitEdit}
+            onClick={handleSubmit}
           >
             <Typography type="b3" color="atlantic">
               OK!
