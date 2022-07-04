@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import { Input, Select, FormControl } from '@chakra-ui/react';
@@ -109,7 +109,10 @@ const EditPage = () => {
   });
   const [isUploadOpen, setUploadOpen] = useOpenControl();
 
-  const isHtmlStrFail = contents === '' || initContent === contents;
+  const isHtmlStrFail = useMemo(
+    () => contents === '' || initContent === contents,
+    [contents],
+  );
 
   const handleUploadOpenModal = (isUploadOpen: boolean) => () => {
     setUploadOpen(isUploadOpen);
@@ -128,7 +131,7 @@ const EditPage = () => {
     setTitles(e.target.value);
   };
 
-  const cancelWrite = () => {
+  const handleCancelWrite = () => {
     router.push(`/detail/${id}?${selected}`);
   };
 
@@ -301,7 +304,7 @@ const EditPage = () => {
               size="md"
               color="primary"
               variant="outline"
-              onClick={cancelWrite}
+              onClick={handleCancelWrite}
             >
               <Typography type="b3" color="primary700">
                 Cancel

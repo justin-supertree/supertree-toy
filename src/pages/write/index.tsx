@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import styled from '@emotion/styled';
@@ -104,8 +104,10 @@ const WriteContent = () => {
     contents: '',
   });
 
-  const isHtmlStrFail = contents === '' || initContent === contents;
-
+  const isHtmlStrFail = useMemo(
+    () => contents === '' || initContent === contents,
+    [contents],
+  );
   const handleSelectOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelected(e.target.value);
   };
@@ -114,7 +116,7 @@ const WriteContent = () => {
     setTitle(e.target.value);
   };
 
-  const cancelWrite = () => {
+  const handleCancelWrite = () => {
     router.push('/');
   };
 
@@ -268,7 +270,7 @@ const WriteContent = () => {
               size="md"
               color="primary"
               variant="outline"
-              onClick={cancelWrite}
+              onClick={handleCancelWrite}
             >
               <Typography type="b3" color="primary700">
                 Cancel
