@@ -147,6 +147,7 @@ const WriteContent = () => {
     });
 
     if (!validateCheck) return;
+
     try {
       const params = {
         title,

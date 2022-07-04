@@ -154,12 +154,13 @@ const DetailContent = ({ noticeId }: Props) => {
     }
   };
 
-  const fetchData = useCallback(async () => {
+  const getDetail = useCallback(async () => {
     try {
       const response = await getNoticeDetail({
         id: id,
       });
-      if (response && response.status === 200) {
+
+      if (response?.status === 200) {
         const req = response.data.data.info;
         setData(req);
         setIsLoading(false);
@@ -168,12 +169,13 @@ const DetailContent = ({ noticeId }: Props) => {
     } catch (e) {
       console.log(e);
       setIsLoading(true);
+      setIsError(true);
     }
   }, [id]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    getDetail();
+  }, [getDetail]);
 
   useEffect(() => {
     if (inputElement.current) {

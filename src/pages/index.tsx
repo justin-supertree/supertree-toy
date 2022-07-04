@@ -160,6 +160,7 @@ const IndexPage: NextPageWithLayout = () => {
     refetchOnWindowFocus: false,
     cacheTime: 0,
   });
+  const dataList = requestData?.pages[0].data.list;
 
   const handleLoadMore = () => {
     fetchNextPage();
@@ -207,7 +208,7 @@ const IndexPage: NextPageWithLayout = () => {
                 </Link>
               </WritePosition>
 
-              {requestData?.pages[0].data.list?.length !== 0 && !error ? (
+              {!error && !isLoading && dataList?.length !== 0 ? (
                 <>
                   <Table title="main-table" headers={['No', 'Title', 'Date']}>
                     {requestData?.pages.map((noticeData) => {

@@ -182,12 +182,13 @@ const EditPage = () => {
     }
   };
 
-  const fetchEditData = useCallback(async () => {
+  const getDetail = useCallback(async () => {
     try {
       const response = await getNoticeDetail({
         id: noticeId,
       });
-      if (response && response.status === 200) {
+
+      if (response?.status === 200) {
         const req = response.data.data.info;
         setTitles(req.title);
         setContents(req.content);
@@ -202,8 +203,8 @@ const EditPage = () => {
   }, [noticeId]);
 
   useEffect(() => {
-    fetchEditData();
-  }, [fetchEditData]);
+    getDetail();
+  }, [getDetail]);
 
   return (
     <>
