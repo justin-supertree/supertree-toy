@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
@@ -154,23 +154,26 @@ const DetailContent = ({ noticeId }: Props) => {
     }
   };
 
-  useEffect(() => {
+  const fetchData = useCallback(async () => {
     try {
-      getNoticeDetail({
+      const response = await getNoticeDetail({
         id: id,
-      }).then((response) => {
-        if (response && response.status === 200) {
-          const req = response.data.data.info;
-          setData(req);
-          setIsLoading(false);
-          return req;
-        }
       });
+      if (response && response.status === 200) {
+        const req = response.data.data.info;
+        setData(req);
+        setIsLoading(false);
+        return req;
+      }
     } catch (e) {
       console.log(e);
       setIsLoading(true);
     }
   }, [id]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   useEffect(() => {
     if (inputElement.current) {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import { Input, Select, FormControl } from '@chakra-ui/react';
@@ -182,25 +182,28 @@ const EditPage = () => {
     }
   };
 
-  useEffect(() => {
+  const fetchEditData = useCallback(async () => {
     try {
-      getNoticeDetail({
+      const response = await getNoticeDetail({
         id: noticeId,
-      }).then((response) => {
-        if (response && response.status === 200) {
-          const req = response.data.data.info;
-          setTitles(req.title);
-          setContents(req.content);
-          setSelected(req.type);
-          return req;
-        }
       });
-    } catch (error) {
-      console.log(error);
+      if (response && response.status === 200) {
+        const req = response.data.data.info;
+        setTitles(req.title);
+        setContents(req.content);
+        setSelected(req.type);
+        return req;
+      }
+    } catch (e) {
+      console.log(e);
       setIsLoading(true);
       setIsError(true);
     }
   }, [noticeId]);
+
+  useEffect(() => {
+    fetchEditData();
+  }, [fetchEditData]);
 
   return (
     <>

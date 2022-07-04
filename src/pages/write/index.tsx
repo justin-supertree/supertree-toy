@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic';
 import styled from '@emotion/styled';
 import { breakpoints, Button, Typography } from '@playdapp/ui';
 import { Input, Select, FormControl } from '@chakra-ui/react';
-import { Markup } from 'interweave';
 
 import { postNoticeInfo } from 'api/notice';
 
