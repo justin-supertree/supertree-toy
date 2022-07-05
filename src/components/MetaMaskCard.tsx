@@ -37,7 +37,9 @@ function Connect({
   } else if (isActive) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <button>Disconnect</button>
+        <button onClick={() => alert('Disconnect는 아직 개발중입니다!')}>
+          Disconnect
+        </button>
       </div>
     );
   } else {
@@ -94,13 +96,16 @@ export default function MetaMaskCard() {
 
   return (
     <div style={{ border: '1px solid' }}>
-      <b>MetaMask</b>
+      <h1>MetaMask</h1>
+
       <Status isActivating={isActivating} error={''} isActive={isActive} />
+
       <AccountsComponent
         accounts={accounts}
         provider={provider}
         ENSNames={ENSNames}
       />
+
       <Connect
         chainId={chainId}
         isActivating={isActivating}
