@@ -16,6 +16,7 @@ import Table from '@/components/Table';
 import MetaTag from '@/components/MetaTag';
 import Empty from '@/components/Empty';
 import Loading from '@/components/Loading';
+import dynamic from 'next/dynamic';
 
 type Props = {
   noticeId: number;
@@ -175,21 +176,6 @@ const IndexPage: NextPageWithLayout = () => {
     refetch();
   }, [refetch]);
 
-  const { chainId, account } = useWeb3React();
-
-  const handleConnect = () => {
-    // if (active) {
-    //   deactivate();
-    //   return;
-    // }
-    // console.log('Connect button is clicked!');
-    // activate(injected, (error) => {
-    //   if ('/No Ethereum provider was found on window.ethereum/'.test(error)) {
-    //     window.open('https://metamask.io/download.html');
-    //   }
-    // });
-  };
-
   return (
     <>
       <MetaTag title="Notice | PlayDapp Notice" />
@@ -214,17 +200,7 @@ const IndexPage: NextPageWithLayout = () => {
                 ))}
               </TabBox>
 
-              <div>
-                <div>
-                  <p>Account: {account}</p>
-                  <p>ChainId: {chainId}</p>
-                </div>
-
-                <button type="button" onClick={handleConnect}>
-                  connect
-                  {/* {active ? 'disconnect' : 'connect'} */}
-                </button>
-              </div>
+              <MetaMaskCard />
 
               <WritePosition>
                 <Link href={{ pathname: `/write`, query: { type: tab } }}>
@@ -277,6 +253,10 @@ const IndexPage: NextPageWithLayout = () => {
     </>
   );
 };
+
+const MetaMaskCard = dynamic(() => import('../components/MetaMaskCard'), {
+  ssr: false,
+});
 
 IndexPage.getInitialProps = async ({ query }) => {
   const { tab } = query;
