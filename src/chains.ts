@@ -50,7 +50,7 @@ export const CHAINS: {
 } = {
   // Polygon
   137: {
-    urls: [
+    urls: <string[]>[
       ...[
         process.env.infuraKey
           ? `https://polygon-mainnet.infura.io/v3/${process.env.infuraKey}`
@@ -63,11 +63,13 @@ export const CHAINS: {
     blockExplorerUrls: ['https://polygonscan.com'],
   },
   80001: {
-    urls: [
-      process.env.infuraKey
-        ? `https://polygon-mumbai.infura.io/v3/${process.env.infuraKey}`
-        : undefined,
-    ].filter((url) => url !== undefined),
+    urls: <string[]>(
+      [
+        process.env.infuraKey
+          ? `https://polygon-mumbai.infura.io/v3/${process.env.infuraKey}`
+          : undefined,
+      ].filter((url) => url !== undefined)
+    ),
     name: 'Polygon Mumbai',
     nativeCurrency: MATIC,
     blockExplorerUrls: ['https://mumbai.polygonscan.com'],
