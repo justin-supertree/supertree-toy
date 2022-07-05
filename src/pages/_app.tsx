@@ -1,23 +1,25 @@
-import { useState } from 'react';
+import { AppProps } from 'next/app';
+
 import { Global } from '@emotion/react';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ChakraProvider } from '@chakra-ui/react';
-import type { AppProps } from 'next/app';
+
+import type { NextPageWithLayout } from 'types/next-page';
+
+import AppProvider from '@/components/AppProvider';
 
 import styles from '../styles';
 
-function MyApp({ Component, pageProps }: AppProps) {
-  const [queryClient] = useState(() => new QueryClient());
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
-    <>
+    <AppProvider>
       <Global styles={styles} />
-      <ChakraProvider>
-        <QueryClientProvider client={queryClient}>
-          <Component {...pageProps} />
-        </QueryClientProvider>
-      </ChakraProvider>
-    </>
+      {getLayout(<Component {...pageProps} />)}
+    </AppProvider>
   );
 }
 
