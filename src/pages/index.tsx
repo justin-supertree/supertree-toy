@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import { breakpoints, Button, Typography } from '@playdapp/ui';
 
+import { useWeb3React } from '@web3-react/core';
 import { getNotice } from 'api/notice';
 
 import MainLayout from '@/components/Layout/MainLayout';
@@ -174,6 +175,21 @@ const IndexPage: NextPageWithLayout = () => {
     refetch();
   }, [refetch]);
 
+  const { chainId, account } = useWeb3React();
+
+  const handleConnect = () => {
+    // if (active) {
+    //   deactivate();
+    //   return;
+    // }
+    // console.log('Connect button is clicked!');
+    // activate(injected, (error) => {
+    //   if ('/No Ethereum provider was found on window.ethereum/'.test(error)) {
+    //     window.open('https://metamask.io/download.html');
+    //   }
+    // });
+  };
+
   return (
     <>
       <MetaTag title="Notice | PlayDapp Notice" />
@@ -197,6 +213,18 @@ const IndexPage: NextPageWithLayout = () => {
                   </Tab>
                 ))}
               </TabBox>
+
+              <div>
+                <div>
+                  <p>Account: {account}</p>
+                  <p>ChainId: {chainId}</p>
+                </div>
+
+                <button type="button" onClick={handleConnect}>
+                  connect
+                  {/* {active ? 'disconnect' : 'connect'} */}
+                </button>
+              </div>
 
               <WritePosition>
                 <Link href={{ pathname: `/write`, query: { type: tab } }}>
