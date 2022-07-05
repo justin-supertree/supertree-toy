@@ -8,12 +8,12 @@ import { Network } from '@web3-react/network';
 import { WalletConnect } from '@web3-react/walletconnect';
 import { ChakraProvider } from '@chakra-ui/react';
 
-import { metahooks as metaMaskHooks, metaMask } from '../connectors';
-import { networkhooks as networkHooks, network } from '../connectors';
+import { metahooks as metaMaskHooks, metaMask } from '../lib/connectors';
+import { networkhooks as networkHooks, network } from '../lib/connectors';
 import {
   wallethooks as walletConnectHooks,
   walletConnect,
-} from '../connectors';
+} from '../lib/connectors';
 
 import { store } from 'store';
 
